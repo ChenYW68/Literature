@@ -1,7 +1,7 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2020.9.12)  12 OCT 2020 21:37
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2020.9.12)  12 OCT 2020 21:48
 entering extended mode
 **Summary*for*spatial*methods.tex
-("G:\Mirror\Report\Re2-Summary\Summary for spatial methods.tex"
+("G:\Github\Literature\Summary\Summary for spatial methods.tex"
 LaTeX2e <2011/06/27>
 Babel <v3.8m> and hyphenation patterns for loaded.
 (D:\CTEX\MiKTeX\tex\latex\koma-script\scrartcl.cls
@@ -109,7 +109,7 @@ Package typearea Info: These are the values describing the layout:
 \c@figure=\count86
 \c@table=\count87
 \bibindent=\dimen102
-) (G:\Mirror\Report\Re2-Summary\structure.tex
+) (G:\Github\Literature\Summary\structure.tex
 (D:\CTEX\MiKTeX\tex\latex\classicthesis\classicthesis.sty
 Package: classicthesis 2011/12/17 v4.0 Typographic style for a classic-looking 
 thesis
@@ -878,7 +878,7 @@ Package: framed 2007/10/04 v 0.95: framed or shaded text with page breaks
 \FrameRule=\dimen154
 \FrameSep=\dimen155
 )
-("G:\Mirror\Report\Re2-Summary\Summary for spatial methods.aux")
+("G:\Github\Literature\Summary\Summary for spatial methods.aux")
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 104.
 LaTeX Font Info:    ... okay on input line 104.
 LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 104.
@@ -914,8 +914,8 @@ LaTeX Info: Redefining \ref on input line 104.
 LaTeX Info: Redefining \pageref on input line 104.
 LaTeX Info: Redefining \nameref on input line 104.
 
-("G:\Mirror\Report\Re2-Summary\Summary for spatial methods.out")
-("G:\Mirror\Report\Re2-Summary\Summary for spatial methods.out")
+("G:\Github\Literature\Summary\Summary for spatial methods.out")
+("G:\Github\Literature\Summary\Summary for spatial methods.out")
 \@outlinefile=\write4
 LaTeX Info: Redefining \Ref on input line 104.
 
@@ -1031,7 +1031,7 @@ File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 Package tocbasic Info: character protrusion at toc deactivated on input line 12
 8.
 
-("G:\Mirror\Report\Re2-Summary\Summary for spatial methods.toc"
+("G:\Github\Literature\Summary\Summary for spatial methods.toc"
 Package microtype Info: Character `029' is missing
 (microtype)             in font `T1/qbk/m/sc/12'.
 (microtype)             Ignoring protrusion settings for this character.
@@ -1040,12 +1040,12 @@ Package microtype Info: Character `029' is missing
 Package tocbasic Info: character protrusion at lof deactivated on input line 13
 0.
 
-("G:\Mirror\Report\Re2-Summary\Summary for spatial methods.lof")
+("G:\Github\Literature\Summary\Summary for spatial methods.lof")
 \tf@lof=\write6
 Package tocbasic Info: character protrusion at lot deactivated on input line 13
 2.
 
-("G:\Mirror\Report\Re2-Summary\Summary for spatial methods.lot")
+("G:\Github\Literature\Summary\Summary for spatial methods.lot")
 \tf@lot=\write7
  [1
 
@@ -1058,12 +1058,12 @@ Package microtype Info: Character `029' is missing
 (microtype)             in font `T1/iwona/m/sc/12'.
 (microtype)             Ignoring protrusion settings for this character.
  [2] [3]
-("G:\Mirror\Report\Re2-Summary\Summary for spatial methods.bbl" [4])
+("G:\Github\Literature\Summary\Summary for spatial methods.bbl" [4])
 Package atveryend Info: Empty hook `BeforeClearDocument' on input line 214.
  [5]
 Package atveryend Info: Empty hook `AfterLastShipout' on input line 214.
 
-("G:\Mirror\Report\Re2-Summary\Summary for spatial methods.aux")
+("G:\Github\Literature\Summary\Summary for spatial methods.aux")
 Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 214.
 Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 214.
 Package rerunfilecheck Info: File `Summary*for*spatial*methods.out' has not cha
@@ -1088,7 +1088,7 @@ msfonts/euler/eurm10.pfb><D:/CTEX/MiKTeX/fonts/type1/nowacki/iwona/iwonar.pfb><
 D:/CTEX/MiKTeX/fonts/type1/nowacki/iwona/iwonari.pfb><D:/CTEX/MiKTeX/fonts/type
 1/public/tex-gyre/qbkr.pfb><D:/CTEX/MiKTeX/fonts/type1/public/tex-gyre/qbkri.pf
 b><D:/CTEX/MiKTeX/fonts/type1/urw/palatino/uplr8a.pfb>
-Output written on "Summary for spatial methods.pdf" (5 pages, 173061 bytes).
+Output written on "Summary for spatial methods.pdf" (5 pages, 173034 bytes).
 PDF statistics:
  146 PDF objects out of 1000 (max. 8388607)
  27 named destinations out of 1000 (max. 500000)
