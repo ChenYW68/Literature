@@ -1,0 +1,15 @@
+\contentsline {section}{\numberline {1}Why is Gaussian random field}{2}{section.1}
+\contentsline {section}{\numberline {2}Computational challenge}{2}{section.2}
+\contentsline {section}{\numberline {3}Several approaches to overcome this large matrix problem}{2}{section.3}
+\contentsline {subsection}{\numberline {3.1}Low rank methods}{2}{subsection.3.1}
+\contentsline {subsubsection}{\numberline {3.1.1}Fixed Rank Kriging}{2}{subsubsection.3.1.1}
+\contentsline {subsubsection}{\numberline {3.1.2}Gaussian Predictive Processes (GPP)}{2}{subsubsection.3.1.2}
+\contentsline {subsection}{\numberline {3.2}Sparse covariance methods}{3}{subsection.3.2}
+\contentsline {subsubsection}{\numberline {3.2.1}Tapering}{3}{subsubsection.3.2.1}
+\contentsline {subsubsection}{\numberline {3.2.2}Spatial Partitioning}{3}{subsubsection.3.2.2}
+\contentsline {subsection}{\numberline {3.3}Sparse precision methods}{3}{subsection.3.3}
+\contentsline {subsubsection}{\numberline {3.3.1}LatticeKrig}{3}{subsubsection.3.3.1}
+\contentsline {subsubsection}{\numberline {3.3.2}Multiresolution Approximations}{3}{subsubsection.3.3.2}
+\contentsline {subsubsection}{\numberline {3.3.3}SPDE/INLA}{3}{subsubsection.3.3.3}
+\contentsline {subsubsection}{\numberline {3.3.4}NNGP}{4}{subsubsection.3.3.4}
+\contentsline {section}{\numberline {4}Likelihood Approximations}{4}{section.4}

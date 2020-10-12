@@ -1,0 +1,214 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Arsclassica Article
+% LaTeX Template
+% Version 1.1 (1/8/17)
+%
+% This template has been downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% Original author:
+% Lorenzo Pantieri (http://www.lorenzopantieri.net) with extensive modifications by:
+% Vel (vel@latextemplates.com)
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[
+12pt, % Main document font size
+a4paper, % Paper type, use 'letterpaper' for US Letter paper
+oneside, % One page layout (no page indentation)
+%twoside, % Two page layout (page indentation for binding and different headers)
+headinclude,footinclude, % Extra spacing for the header and footer
+BCOR5mm, % Binding correction
+]{scrartcl}
+
+\input{structure.tex} % Include the structure.tex file which specified the document structure and layout
+
+\hyphenation{Fortran hy-phen-ation} % Specify custom hyphenation points in words with dashes where you would like hyphenation to occur, or alternatively, don't put any dashes in a word to stop hyphenation altogether
+
+%----------------------------------------------------------------------------------------
+%	TITLE AND AUTHOR(S)
+%----------------------------------------------------------------------------------------
+
+\title{\normalfont\spacedallcaps{Understanding of spatial problem for Large Datasets}} % The article title
+
+%\subtitle{Subtitle} % Uncomment to display a subtitle
+
+\author{\spacedlowsmallcaps{Yewen Chen}} % The article author(s) - author affiliations need to be specified in the AUTHOR AFFILIATIONS block
+
+\date{} % An optional date to appear under the author(s)
+
+%----------------------------------------------------------------------------------------
+\usepackage[margin=0.8in]{geometry}
+\usepackage{tgbonum}
+\usepackage{amsmath}
+\usepackage{natbib}
+\usepackage{float}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{color}
+\usepackage{fancyvrb}
+\usepackage{relsize}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,
+    urlcolor=cyan,
+}
+
+\urlstyle{same}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+
+
+\begin{document}
+
+\bibliographystyle{abbrvnat}
+\setlength{\abovecaptionskip}{0pt}
+\setlength{\belowcaptionskip}{10pt}
+%----------------------------------------------------------------------------------------
+%	HEADERS
+%----------------------------------------------------------------------------------------
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}  % Use Input in the format of Algorithm
+\renewcommand{\algorithmicensure}{\textbf{Update step:}} % Use Output in the format of Algorithm
+\renewcommand{\sectionmark}[1]{\markright{\spacedlowsmallcaps{#1}}} % The header for all pages (oneside) or for even pages (twoside)
+%\renewcommand{\subsectionmark}[1]{\markright{\thesubsection~#1}} % Uncomment when using the twoside option - this modifies the header on odd pages
+\lehead{\mbox{\llap{\small\thepage\kern1em\color{halfgray} \vline}\color{halfgray}\hspace{0.5em}\rightmark\hfil}} % The header style
+
+\pagestyle{scrheadings} % Enable the headers specified in this block
+
+%----------------------------------------------------------------------------------------
+%	TABLE OF CONTENTS & LISTS OF FIGURES AND TABLES
+%----------------------------------------------------------------------------------------
+
+\maketitle % Print the title/author/date block
+
+\setcounter{tocdepth}{2} % Set the depth of the table of contents to show sections and subsections only
+
+\tableofcontents % Print the table of contents
+
+\listoffigures % Print the list of figures
+
+\listoftables % Print the list of tables
+
+%----------------------------------------------------------------------------------------
+%	ABSTRACT
+%----------------------------------------------------------------------------------------
+\newpage
+\section{Why is Gaussian random field}
+Gaussian spatial processes has been popular for decades in spatial data contexts like geostatistics where they are known as kriging, and in computer experiments where they are deployed as surrogate models or emulators. More recently, they have become a popular prediction engine in the machine learning literature. The reasons are many, but the most important are probably that: the Gaussian structure affords a large degree of analytic capability not enjoyed by other general-purpose approaches to nonparametric nonlinear modeling; and because they perform well in out-of-sample tests.
+
+They are not, however, without their drawbacks. Important ones are computational tractability for large spatial dataset.
+
+\begin{equation}
+\begin{aligned}
+y(s) = \boldsymbol{\beta}\boldsymbol{X}(s) + w(s) + \epsilon(s)
+\end{aligned} \label{model}
+\end{equation}
+
+\section{Computational challenge}
+Kriging, the spatial optimal interpolation, involves the inversion of covariance matrices. Straightforward kriging of massive datasets is not possible and ad hoc local kriging neighborhoods are typically used. One remedy is to approximate the kriging equations by covariance tapering, nnGP.
+\section{Several approaches to overcome this large matrix problem}
+
+\subsection{Low rank methods}
+\textcolor[rgb]{1.00,0.00,1.00}{Comments:}
+The reduced rank based methods usually fail to accurately capture the local, small scale dependence structure. The subsequent multiresolution (MR) methods (e.g. LatticeKrig, Multiresolution Approximations) compensates for this problem to some extent.
+\subsubsection{Fixed Rank Kriging}
+\href{https://chenyw68.github.io/Literature/[2008]Fixed rank kriging for very large spatial data sets.pdf}{FRK} (\cite{cressie2008fixed}) aims to approximate the spatial process $w(s)$ in (\ref{model}) by a linear combination of $r$ ($<< n$) basis functions which ensures that all estimation and prediction equations only contain inverses of matrices of size $r \times r$.
+\subsubsection{Gaussian Predictive Processes (GPP)}
+With regard to the challenge of computational cost on covariance matrices, \href{https://chenyw68.github.io/Literature/[2016]Hierarchical nearest-neighbor Gaussian process models for large geostatistical datasets.pdf}{\cite{banerjee2008gaussian}} proposed a class of models based on the idea of a spatial predictive process which is motivated by kriging ideas or kriging equation. The predictive process projects the original process onto a subspace generated by realizations of the original process at a specified set of locations (or knots). The approach is in the same spirit as process modeling approaches using basis functions and kernel convolutions, that is, specifications which attempt to facilitate computations through lower dimensional process representations.
+
+\textcolor[rgb]{1.00,0.00,1.00}{Comments:}
+One advertised advantage of using the GPP approach as opposed to FRK or LatticeKrig is that the GPP basis functions are completely determined by the choice of covariance function $C(\cdot, \cdot)$.
+
+At the same time, however, when $C(\cdot, \cdot)$ is governed by unknown parameters (which is nearly always the case) the GPP basis functions need to be calculated iteratively rather than once as in FRK or LatticeKrig which will subsequently increase computation time.
+
+
+\subsection{Sparse covariance methods}
+\subsubsection{Tapering}
+\textcolor[rgb]{1.00,0.00,1.00}{Comments:}
+\begin{itemize}
+  \item [1)]
+  The covariance tapering has shown great computational gains, but it also has its own drawbacks. The covariance tapering may not be effective in accounting for spatial dependence with long range.
+
+ \item [2)]The accuracy of the tapering approximation for nonstationary problems remains an open question.
+
+ \item [3)]The application of tapering techniques to multivariate random fields remains to be explored due to the lack of flexible compactly supported cross-covariance functions.
+\end{itemize}
+\subsubsection{Spatial Partitioning}
+
+
+The approximation of the likelihood in either the spatial or spectral domain is another solution to overcome computational obstacles.
+\subsection{Sparse precision methods}
+Likelihood Approximations by Conditional method in the Spatial Domain.
+\subsubsection{LatticeKrig}
+\subsubsection{Multiresolution Approximations}
+\subsubsection{SPDE/INLA}
+The numerical factorization of the precision matrix using sparse matrix algorithms can be done at a typical cost of $O(n^{3/2})$ for two-dimensional GMRFs.
+
+\textcolor[rgb]{1.00,0.00,1.00}{Comments:}
+The drawback of this approachis that we can only find the explicit form of GMRFs for those Gaussian random fields that have a Matérn covariance structure at certain integer smoothnesses.  they can be extended to model Matérn covariances on the sphere, nonstationary locally isotropic Gaussian random fields, Gaussian random fields with oscillating correlation functions, and non-isotropic fields.
+
+
+\subsubsection{NNGP}
+The nearest neighbor Gaussian process (\href{https://chenyw68.github.io/Literature/[2016]Hierarchical nearest-neighbor Gaussian process models for large geostatistical datasets.pdf}{\cite{datta2016hierarchical}},
+\href{https://chenyw68.github.io/Literature/[2016]Hierarchical nearest-neighbor Gaussian process models for large geostatistical datasets.pdf}{\cite{datta2016nonseparable}},
+\href{https://chenyw68.github.io/Literature/[2016]Hierarchical nearest-neighbor Gaussian process models for large geostatistical datasets.pdf}{\cite{finley2019efficient}}
+) is defined from the conditional specification of the joint distribution of spatial process $w(s)$ in (\ref{model}), one forms of composite likelihoods which is motivated by Vecchia (1988) ideas.  The total flop counts is of the order $(n + k)m^3$,
+where $m (\approx 20)$, NNGP is much faster than the full Gaussian model which requires $O(n^3 )$ flops.
+
+Composite likelihoods which points out the difficulty in choosing conditioning sets and  evaluation of the approximation accuracy, but with the advent of the NNGP approach, the problem has been solved.
+
+\section{Likelihood Approximations}
+Likelihood Approximations in the Spectral Domain
+
+\textcolor[rgb]{1.00,0.00,1.00}{Comments:}
+The spectral methods are computationally efficient by avoiding the calculation of determinants and can be easily adapted to model nonstationary processes as a mixture of independent stationary processes. [15] presented a version of Whittle’s approximation to the Gaussian
+negative log-likelihood by introducing a lattice process which can be used to deal with irregularly spaced data. Additional computational savings were obtained by truncating the spectral representation of the lattice process. If $n$ is the total number of observations of the process $\boldsymbol{Y}$, m is lattice size, the calculation requires $O(m \log_2 m + n)$ operations rather than $O(n^3)$ for the exact likelihood of $\boldsymbol{Y}$.
+
+However, they do not overcome the difficulty in prediction with massive data.
+
+%----------------------------------------------------------------------------------------
+\bibliographystyle{achemso}
+\bibliography{summary_spatial}
+\end{document} 
