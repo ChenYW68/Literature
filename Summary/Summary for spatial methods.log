@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2020.9.12)  12 OCT 2020 22:09
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2020.9.12)  12 OCT 2020 22:30
 entering extended mode
 **Summary*for*spatial*methods.tex
 ("G:\Github\Literature\Summary\Summary for spatial methods.tex"
@@ -869,7 +869,7 @@ Style option: `fancyvrb' v2.7a, with DG/SPQR fixes, and firstline=lastline fix
 ) (D:\CTEX\MiKTeX\tex\latex\ltxmisc\relsize.sty
 Package: relsize 2003/07/04 ver 3.1
 )
-Package hyperref Info: Option `colorlinks' set `true' on input line 64.
+Package hyperref Info: Option `colorlinks' set `true' on input line 65.
 
 (D:\CTEX\MiKTeX\tex\latex\framed\framed.sty
 Package: framed 2007/10/04 v 0.95: framed or shaded text with page breaks
@@ -879,27 +879,27 @@ Package: framed 2007/10/04 v 0.95: framed or shaded text with page breaks
 \FrameSep=\dimen155
 )
 ("G:\Github\Literature\Summary\Summary for spatial methods.aux")
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 104.
-LaTeX Font Info:    ... okay on input line 104.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 104.
-LaTeX Font Info:    ... okay on input line 104.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 104.
-LaTeX Font Info:    ... okay on input line 104.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 104.
-LaTeX Font Info:    ... okay on input line 104.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 104.
-LaTeX Font Info:    ... okay on input line 104.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 104.
-LaTeX Font Info:    ... okay on input line 104.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 104.
-LaTeX Font Info:    ... okay on input line 104.
-LaTeX Font Info:    Try loading font information for T1+qbk on input line 104.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 105.
+LaTeX Font Info:    ... okay on input line 105.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 105.
+LaTeX Font Info:    ... okay on input line 105.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 105.
+LaTeX Font Info:    ... okay on input line 105.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 105.
+LaTeX Font Info:    ... okay on input line 105.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 105.
+LaTeX Font Info:    ... okay on input line 105.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 105.
+LaTeX Font Info:    ... okay on input line 105.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 105.
+LaTeX Font Info:    ... okay on input line 105.
+LaTeX Font Info:    Try loading font information for T1+qbk on input line 105.
 
 (D:\CTEX\MiKTeX\tex\latex\tex-gyre\t1qbk.fd
 File: t1qbk.fd 2009/09/25 v1.2 font definition file for T1/qbk
 )
 \AtBeginShipoutBox=\box34
-Package hyperref Info: Link coloring ON on input line 104.
+Package hyperref Info: Link coloring ON on input line 105.
 
 (D:\CTEX\MiKTeX\tex\latex\hyperref\nameref.sty
 Package: nameref 2010/04/30 v2.40 Cross-referencing by name of section
@@ -910,14 +910,14 @@ Package: gettitlestring 2010/12/03 v1.4 Cleanup title references (HO)
 \c@section@level=\count145
 LaTeX Info: Redefining \Ref on input line 498.
 )
-LaTeX Info: Redefining \ref on input line 104.
-LaTeX Info: Redefining \pageref on input line 104.
-LaTeX Info: Redefining \nameref on input line 104.
+LaTeX Info: Redefining \ref on input line 105.
+LaTeX Info: Redefining \pageref on input line 105.
+LaTeX Info: Redefining \nameref on input line 105.
 
 ("G:\Github\Literature\Summary\Summary for spatial methods.out")
 ("G:\Github\Literature\Summary\Summary for spatial methods.out")
 \@outlinefile=\write4
-LaTeX Info: Redefining \Ref on input line 104.
+LaTeX Info: Redefining \Ref on input line 105.
 
 (D:\CTEX\MiKTeX\tex\context\base\supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
@@ -933,7 +933,7 @@ LaTeX Info: Redefining \Ref on input line 104.
 \makeMPintoPDFobject=\count151
 \everyMPtoPDFconversion=\toks36
 )
-LaTeX Info: Redefining \microtypecontext on input line 104.
+LaTeX Info: Redefining \microtypecontext on input line 105.
 Package microtype Info: Generating PDF output.
 Package microtype Info: Character protrusion enabled (level 2).
 Package microtype Info: Using default protrusion set `alltext'.
@@ -980,12 +980,12 @@ Package caption Info: End \AtBeginDocument code.
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-LaTeX Font Info:    Try loading font information for T1+iwona on input line 125
+LaTeX Font Info:    Try loading font information for T1+iwona on input line 126
 .
 (D:\CTEX\MiKTeX\tex\latex\iwona\t1iwona.fd
 File: t1iwona.fd 2008/07/22 v0.995 font definition file for T1/iwona (MW)
 )
-LaTeX Font Info:    Try loading font information for OT1+pplj on input line 125
+LaTeX Font Info:    Try loading font information for OT1+pplj on input line 126
 .
 
 (D:\CTEX\MiKTeX\tex\latex\psnfss\ot1pplj.fd
@@ -994,7 +994,7 @@ File: ot1pplj.fd 2004/09/06 font definitions for OT1/pplj.
 (D:\CTEX\MiKTeX\tex\latex\microtype\mt-ppl.cfg
 File: mt-ppl.cfg 2005/11/16 v1.6 microtype config. file: Palatino (RS)
 )
-LaTeX Font Info:    Try loading font information for U+zeur on input line 125.
+LaTeX Font Info:    Try loading font information for U+zeur on input line 126.
 
 (D:\CTEX\MiKTeX\tex\latex\eulervm\uzeur.fd
 File: uzeur.fd 2005/01/11 v4.0 (WaS)
@@ -1002,7 +1002,7 @@ File: uzeur.fd 2005/01/11 v4.0 (WaS)
 (D:\CTEX\MiKTeX\tex\latex\microtype\mt-eur.cfg
 File: mt-eur.cfg 2006/07/31 v1.1 microtype config. file: AMS Euler Roman (RS)
 )
-LaTeX Font Info:    Try loading font information for U+zeus on input line 125.
+LaTeX Font Info:    Try loading font information for U+zeus on input line 126.
 
 (D:\CTEX\MiKTeX\tex\latex\eulervm\uzeus.fd
 File: uzeus.fd 2005/01/11 v4.0 (WaS)
@@ -1010,13 +1010,13 @@ File: uzeus.fd 2005/01/11 v4.0 (WaS)
 (D:\CTEX\MiKTeX\tex\latex\microtype\mt-eus.cfg
 File: mt-eus.cfg 2006/07/28 v1.2 microtype config. file: AMS Euler Script (RS)
 )
-LaTeX Font Info:    Try loading font information for U+zeuex on input line 125.
+LaTeX Font Info:    Try loading font information for U+zeuex on input line 126.
 
 
 (D:\CTEX\MiKTeX\tex\latex\eulervm\uzeuex.fd
 File: uzeuex.fd 2005/01/11 v4.0 (WaS)
 )
-LaTeX Font Info:    Try loading font information for OT1+zplm on input line 125
+LaTeX Font Info:    Try loading font information for OT1+zplm on input line 126
 .
 
 (D:\CTEX\MiKTeX\tex\latex\psnfss\ot1zplm.fd
@@ -1029,7 +1029,7 @@ File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
 File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 )
 Package tocbasic Info: character protrusion at toc deactivated on input line 12
-8.
+9.
 
 ("G:\Github\Literature\Summary\Summary for spatial methods.toc"
 Package microtype Info: Character `029' is missing
@@ -1038,12 +1038,12 @@ Package microtype Info: Character `029' is missing
 )
 \tf@toc=\write5
 Package tocbasic Info: character protrusion at lof deactivated on input line 13
-0.
+1.
 
 ("G:\Github\Literature\Summary\Summary for spatial methods.lof")
 \tf@lof=\write6
 Package tocbasic Info: character protrusion at lot deactivated on input line 13
-2.
+3.
 
 ("G:\Github\Literature\Summary\Summary for spatial methods.lot")
 \tf@lot=\write7
@@ -1059,13 +1059,13 @@ Package microtype Info: Character `029' is missing
 (microtype)             Ignoring protrusion settings for this character.
  [2] [3]
 ("G:\Github\Literature\Summary\Summary for spatial methods.bbl" [4])
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 214.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 215.
  [5]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 214.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 215.
 
 ("G:\Github\Literature\Summary\Summary for spatial methods.aux")
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 214.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 214.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 215.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 215.
 Package rerunfilecheck Info: File `Summary*for*spatial*methods.out' has not cha
 nged.
 (rerunfilecheck)             Checksum: <no file>.
@@ -1077,7 +1077,7 @@ Here is how much of TeX's memory you used:
  17267 multiletter control sequences out of 15000+200000
  91458 words of font info for 103 fonts, out of 3000000 for 9000
  16 hyphenation exceptions out of 8191
- 52i,13n,52p,829b,447s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 52i,13n,52p,804b,447s stack positions out of 5000i,500n,10000p,200000b,50000s
 {D:/CTEX/MiKTeX/fonts/enc/dvips/tex-gyre/q-ec.enc}{D:/CTEX/MiKTeX/fonts/enc/d
 vips/fontname/8r.enc}{D:/CTEX/MiKTeX/fonts/enc/dvips/iwona/ec-iwona.enc}{D:/CTE
 X/MiKTeX/fonts/enc/dvips/tex-gyre/q-ec-sc.enc}{D:/CTEX/MiKTeX/fonts/enc/dvips/i
@@ -1088,7 +1088,7 @@ msfonts/euler/eurm10.pfb><D:/CTEX/MiKTeX/fonts/type1/nowacki/iwona/iwonar.pfb><
 D:/CTEX/MiKTeX/fonts/type1/nowacki/iwona/iwonari.pfb><D:/CTEX/MiKTeX/fonts/type
 1/public/tex-gyre/qbkr.pfb><D:/CTEX/MiKTeX/fonts/type1/public/tex-gyre/qbkri.pf
 b><D:/CTEX/MiKTeX/fonts/type1/urw/palatino/uplr8a.pfb>
-Output written on "Summary for spatial methods.pdf" (5 pages, 173871 bytes).
+Output written on "Summary for spatial methods.pdf" (5 pages, 173821 bytes).
 PDF statistics:
  150 PDF objects out of 1000 (max. 8388607)
  28 named destinations out of 1000 (max. 500000)
