@@ -136,27 +136,83 @@ BCOR5mm, % Binding correction
 %	ABSTRACT
 %----------------------------------------------------------------------------------------
 \newpage
-\section{Why is Gaussian random field}
+\section{Gaussian random field and its challenge}
 Gaussian spatial processes has been popular for decades in spatial data contexts like geostatistics where they are known as kriging, and in computer experiments where they are deployed as surrogate models or emulators. More recently, they have become a popular prediction engine in the machine learning literature. The reasons are many, but the most important are probably that: the Gaussian structure affords a large degree of analytic capability not enjoyed by other general-purpose approaches to nonparametric nonlinear modeling; and because they perform well in out-of-sample tests.
 
-They are not, however, without their drawbacks. Important ones are computational tractability for large spatial dataset.
-
+Assume there is a response or dependent variable $Y(s)$ at a generic location $s \in \boldsymbol{D} \subset \mathcal{R}^2$ along with a $p \times 1$ vector of spatially referenced predictors $\boldsymbol{X}(s)$. A spatial regression model has the form
 \begin{equation}
 \begin{aligned}
 y(s) = \boldsymbol{\beta}\boldsymbol{X}(s) + w(s) + \epsilon(s)
 \end{aligned} \label{model}
 \end{equation}
+where $\boldsymbol{\beta}$ is the vector of regression coefficients. The residual from the regression is decomposed into two independent parts: a spatial process, $w(s)$, modelling spatial association, and an independent process, $\epsilon(s)$, also known as the nugget effect, modelling measurement error.
 
-\section{Computational challenge}
-Kriging, the spatial optimal interpolation, involves the inversion of covariance matrices. Straightforward kriging of massive datasets is not possible and ad hoc local kriging neighborhoods are typically used. One remedy is to approximate the kriging equations by covariance tapering, nnGP.
+The nugget effect $\epsilon(s)$ is often assumed to follow a normal distribution with variance $\tau^2$ for every location $s$.
+The spatial process $w(s)$ in (\ref{model}) is often referred to as spatial random effects, capturing the effect of unmeasured or unobserved covariates with spatial pattern.
+
+The most common specification for $w(s)$ is $w(s) \sim GP(0, \boldsymbol{C}(\cdot, \cdot))$, a zero-mean Gaussian process with a valid covariance function $\boldsymbol{C}(s, s^\prime)$. It is often reasonable to assume a constant process variance and thus we specify \
+$\boldsymbol{C}(s, s^\prime) = \sigma^2 \rho (s, s^\prime; \boldsymbol{\theta})$, where $\rho (s, s^\prime; \boldsymbol{\theta})$ is a correlation function and $\boldsymbol{\theta}$ is a vector of correlation parameters which needs to be estimated from a finite number of observations, $\boldsymbol{Y} = \left(y(s_1). \cdots, y(s_n)\right)^\prime$.
+
+Therefore, $y(s)$ follows a spatial Gaussian process, and thus we have the log-likelihood function for $(\boldsymbol{\beta}, \tau^2, \sigma^2, \boldsymbol{\theta}):$
+\begin{equation}
+\begin{aligned}
+l(\boldsymbol{\beta}, \tau^2, \sigma^2, \boldsymbol{\theta}) \propto  - \frac{1}{2}\log |\boldsymbol{\Sigma}| - \frac{1}{2}\left(\boldsymbol{Y} - \boldsymbol{\beta}\boldsymbol{X}\right)^\prime \boldsymbol{\Sigma}^{- 1}\left(\boldsymbol{Y} - \boldsymbol{\beta}\boldsymbol{X}\right)
+\end{aligned} \label{loglik}
+\end{equation}
+where $\boldsymbol{\Sigma} = \boldsymbol{C} + \tau^2\boldsymbol{I}.$
+Then best linear unbiased prediction (BLUP) at an unobserved location $s_0$ can be obtained by the kriging
+equation:
+\begin{equation}
+\begin{aligned}
+\hat{y}(s_0) = \boldsymbol{\beta}\boldsymbol{X}(s_0) + \boldsymbol{c}_{s_0}^\prime\boldsymbol{\Sigma}^{- 1}\left(\boldsymbol{Y} - \boldsymbol{\beta}\boldsymbol{X}\right)
+\end{aligned} \label{Kriging}
+\end{equation}
+where $\boldsymbol{c}_{s_0} = \left(\boldsymbol{C}(s_0, s_1), \dots, \boldsymbol{C}(s_0, s_n)\right)^\prime$.
+
+However, with large or massive data, direct implementation of these statistical process, including parameter etimation by (\ref{loglik}) and interpolation by (\ref{Kriging}), becomes computationally prohibitive, since evaluating the log-likelihood in (\ref{loglik}) and solving the kriging equation (\ref{Kriging}) involve the Cholesky factorization of an $n \times n$ covariance matrix for data of size $n$, which requires $O(n^3)$ operations and $O(n^2)$ memory in general(see \href{https://chenyw68.github.io/Literature/[2012]Advances and Challenges in Space-time Modelling of Natural Events.pdf}{\cite{porcu2012advances}}, \href{https://chenyw68.github.io/Literature/[2012]A full scale approximation of covariance functions for large spatial data sets.pdf}{\cite{sang2012full}}, \href{https://chenyw68.github.io/Literature/[2018]A case study competition among methods for analyzing large spatial data.pdf}{\cite{heaton2019case}}, \href{https://chenyw68.github.io/Literature/[2020]A Fused Gaussian Process Model for Very Large Spatial Data.pdf}{\cite{ma2020fused}}).
+
 \section{Several approaches to overcome this large matrix problem}
+Solutions to this computational intractability focus on model development, the design of efficient and parallel algorithms (see  \href{https://chenyw68.github.io/Literature/[2017-formal]Parallel inference for massive distributed spatial data using low-rank models.pdf
+}{\cite{katzfuss2017parallel}} and  \href{https://chenyw68.github.io/Literature/[2017]A Multi-Resolution Approximation for Massive Spatial Datasets.pdf}{\cite{katzfuss2017multi}}), and the improvement and efficient use of modern computing platforms (e.g. Using \href{https://hpc.niasra.uow.edu.au/azm/Spatial_GPUs.html}{TensorFlow} and  \href{https://github.com/cdeterman/gpuR}{GPU}).
+
+
+Model:
+\begin{itemize}
+  \item [1)] Conditional distributions: \href{http://www.stat.uchicago.edu/~stein/}{Michael L. Stein} (The restricted likelihood, \href{https://chenyw68.github.io/Literature/[2004]Approximating likelihoods for large spatial data sets.pdf}{2004});
+  \item [2)] Sparse covariance by tapering method: \href{http://user.math.uzh.ch/furrer/}{Reinhard Furrer}, \href{https://chenyw68.github.io/Literature/[2006]Covariance tapering for interpolation of large spatial datasets.pdf}{2006};
+       \href{https://dnychka.github.io/}{Douglas Nychka}, \href{https://chenyw68.github.io/Literature/[2008]Covariance Tapering for Likelihood Based Estimation in Large Spatial Data Sets.pdf}{2008}; \href{http://www.stat.uchicago.edu/~stein/}{Michael L. Stein}(2013);
+  \item [3)] Low-Rank methods: \href{https://niasra.uow.edu.au/cei/people/UOW202822.html}{Noel Cressie} (FRK, \href{https://chenyw68.github.io/Literature/[2008]Fixed rank kriging for very large spatial data sets.pdf}{2008}),
+  \href{https://ph.ucla.edu/faculty/banerjee}{Sudipto Banerjee} (Predictive process, \href{https://chenyw68.github.io/Literature/[2008]Gaussian predictive process models for large spatial data sets.pdf}{2008});
+  \item [4)] Sparse precision: \href{https://dnychka.github.io/}{Douglas Nychka}(lattice kriging, \href{https://chenyw68.github.io/Literature/[2015]A Multiresolution Gaussian Process Model for the Analysis of Large Spatial Datasets.pdf}{2015}) by basis-function; \href{https://sites.google.com/view/katzfuss/}{Matthias Katfuss}(multiresolution approximation, \href{https://chenyw68.github.io/Literature/[2017]A Multi-Resolution Approximation for Massive Spatial Datasets.pdf}{2017}
+) by basis-function;
+   \href{https://www.maths.ed.ac.uk/~flindgre/}{Finn Lindgren} (GRMF Approximations, \href{https://chenyw68.github.io/Literature/[2011]An explicit link between GF and GMRFs the SPDE approach.pdf}{2011}) by SPDE;
+   \href{http://abhidatta.com/}{Abhi Datta} (NNGP, \href{https://chenyw68.github.io/Literature/[2016]Hierarchical nearest-neighbor Gaussian process models for large geostatistical datasets.pdf}{2016a},
+\href{https://chenyw68.github.io/Literature/[2016]On nearest neighbor Gaussian process models for massive spatial data.pdf}{2016b},
+\href{https://chenyw68.github.io/Literature/[2016]Nonseparable dynamic NNGP models for large spatio-temporal data.pdf}{2016c},
+\href{https://chenyw68.github.io/Literature/[2019]Efficient algorithms for bayesian nearest neighbor gaussian processes.pdf}{2019}) by conditional distributions;
+  \item [5)] Spectral method: \href{https://scholar.google.com/citations?user=xPuzEj8AAAAJ&hl=zh-CN}{Montserrat Fuentes} and \href{http://guinness.cals.cornell.edu/}{Joe Guinness}( Circulant embedding, \href{https://chenyw68.github.io/Literature/[2017]Circulant Embedding of Approximate Covariances for Inference From Gaussian Data on Large Lattices.pdf}{2017} and Periodic Embeddings,  \href{https://chenyw68.github.io/Literature/[2007]Approximate Likelihood for Large Irregularly Spaced Spatial Data.pdf}{2007},  \href{https://chenyw68.github.io/Literature/[2020]Spectral Density Estimation for Random Fields via Periodic Embeddings.pdf}{2019}).
+  \item [6)] Discrete process convolutions.
+\end{itemize}
+
+%\href{https://chenyw68.github.io/Literature/[2008]Covariance Tapering for Likelihood Based Estimation in Large Spatial Data Sets.pdf}{2008}
+
+%\href{http://user.math.uzh.ch/furrer/}{Reinhard Furrer}
+
+Algorithms and platforms:
+\begin{itemize}
+  \item [1)] INLA: \href{https://cemse.kaust.edu.sa/bayescomp}{Haavard Rue}.
+  \item [2)] Parallel algorithm: \href{https://sites.google.com/view/katzfuss/}{Matthias Katfuss}.
+  \item [3)] TensorFlow: \href{https://niasra.uow.edu.au/cei/people/UOW202823.html}{Andrew Zammit-Mangion}.
+\end{itemize}
+
+
 
 \subsection{Low rank methods}
 \textcolor[rgb]{1.00,0.00,1.00}{Comments:}
 The reduced rank based methods usually fail to accurately capture the local, small scale dependence structure. The subsequent multiresolution (MR) methods (e.g. LatticeKrig, Multiresolution Approximations) compensates for this problem to some extent.
-\subsubsection{Fixed Rank Kriging}
+\subsubsection{\href{https://chenyw68.github.io/Literature/[2017]An R Package for Spatial and Spatio-Temporal Prediction with Large Datasets(FRK).pdf}{Fixed Rank Kriging}}
 FRK (\href{https://chenyw68.github.io/Literature/[2006]Spatial prediction for massive datasets.pdf}{\cite{cressie2006spatial}}, \href{https://chenyw68.github.io/Literature/[2008]Fixed rank kriging for very large spatial data sets.pdf}{\cite{cressie2008fixed}}) aims to approximate the spatial process $w(s)$ in (\ref{model}) by a linear combination of $r$ ($<< n$) basis functions which ensures that all estimation and prediction equations only contain inverses of matrices of size $r \times r$.
-\subsubsection{Gaussian Predictive Processes (GPP)}
+\subsubsection{\href{https://chenyw68.github.io/Literature/[2015]spBayes for Large Spatio-Temporal Data Models.pdf}{Gaussian Predictive Processes} (\href{https://chenyw68.github.io/Literature/[2020]Bayesian spatially varying coefficient models in the spBayes R package.pdf}{GPP})}
 With regard to the challenge of computational cost on covariance matrices, \href{https://chenyw68.github.io/Literature/[2008]Gaussian predictive process models for large spatial data sets.pdf}{\cite{banerjee2008gaussian}} proposed a class of models based on the idea of a spatial predictive process which is motivated by kriging ideas or kriging equation. The predictive process projects the original process onto a subspace generated by realizations of the original process at a specified set of locations (or knots). The approach is in the same spirit as process modeling approaches using basis functions and kernel convolutions, that is, specifications which attempt to facilitate computations through lower dimensional process representations.
 
 \textcolor[rgb]{1.00,0.00,1.00}{Comments:}
@@ -167,6 +223,8 @@ At the same time, however, when $C(\cdot, \cdot)$ is governed by unknown paramet
 
 \subsection{Sparse covariance methods}
 \subsubsection{Tapering}
+Including \href{https://chenyw68.github.io/Literature/[2008]Covariance Tapering for Likelihood Based Estimation in Large Spatial Data Sets.pdf}{tapering for estimation} (e.g. approximation log-likelihood function by a tapered covariance. See \href{https://chenyw68.github.io/Literature/[2008]Covariance Tapering for Likelihood Based Estimation in Large Spatial Data Sets.pdf}{\cite{kaufman2008covariance}}) and \href{https://chenyw68.github.io/Literature/[2006]Covariance tapering for interpolation of large spatial datasets.pdf}{tapering for Kriging} (or for interpolation or for prediction, e.g. approximation kriging equation by replacing the original covariance by a tapered version. See \href{https://chenyw68.github.io/Literature/[2006]Covariance tapering for interpolation of large spatial datasets.pdf}{\cite{furrer2006covariance}}).
+
 \textcolor[rgb]{1.00,0.00,1.00}{Comments:}
 \begin{itemize}
   \item [1)]
@@ -210,6 +268,6 @@ negative log-likelihood by introducing a lattice process which can be used to de
 However, they do not overcome the difficulty in prediction with massive data.
 
 %----------------------------------------------------------------------------------------
-\bibliographystyle{achemso}
+%\bibliographystyle{achemso}
 \bibliography{summary_spatial}
 \end{document} 

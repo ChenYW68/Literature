@@ -1,15 +1,14 @@
-\contentsline {section}{\numberline {1}Why is Gaussian random field}{2}{section.1}
-\contentsline {section}{\numberline {2}Computational challenge}{2}{section.2}
-\contentsline {section}{\numberline {3}Several approaches to overcome this large matrix problem}{2}{section.3}
-\contentsline {subsection}{\numberline {3.1}Low rank methods}{2}{subsection.3.1}
-\contentsline {subsubsection}{\numberline {3.1.1}Fixed Rank Kriging}{2}{subsubsection.3.1.1}
-\contentsline {subsubsection}{\numberline {3.1.2}Gaussian Predictive Processes (GPP)}{2}{subsubsection.3.1.2}
-\contentsline {subsection}{\numberline {3.2}Sparse covariance methods}{3}{subsection.3.2}
-\contentsline {subsubsection}{\numberline {3.2.1}Tapering}{3}{subsubsection.3.2.1}
-\contentsline {subsubsection}{\numberline {3.2.2}Spatial Partitioning}{3}{subsubsection.3.2.2}
-\contentsline {subsection}{\numberline {3.3}Sparse precision methods}{3}{subsection.3.3}
-\contentsline {subsubsection}{\numberline {3.3.1}LatticeKrig}{3}{subsubsection.3.3.1}
-\contentsline {subsubsection}{\numberline {3.3.2}Multiresolution Approximations}{3}{subsubsection.3.3.2}
-\contentsline {subsubsection}{\numberline {3.3.3}SPDE/INLA}{3}{subsubsection.3.3.3}
-\contentsline {subsubsection}{\numberline {3.3.4}NNGP}{4}{subsubsection.3.3.4}
-\contentsline {section}{\numberline {4}Likelihood Approximations}{4}{section.4}
+\contentsline {section}{\numberline {1}Gaussian random field and its challenge}{2}{section.1}
+\contentsline {section}{\numberline {2}Several approaches to overcome this large matrix problem}{3}{section.2}
+\contentsline {subsection}{\numberline {2.1}Low rank methods}{3}{subsection.2.1}
+\contentsline {subsubsection}{\numberline {2.1.1}\href {https://chenyw68.github.io/Literature/[2017]An R Package for Spatial and Spatio-Temporal Prediction with Large Datasets(FRK).pdf}{Fixed Rank Kriging}}{3}{subsubsection.2.1.1}
+\contentsline {subsubsection}{\numberline {2.1.2}\href {https://chenyw68.github.io/Literature/[2015]spBayes for Large Spatio-Temporal Data Models.pdf}{Gaussian Predictive Processes} (\href {https://chenyw68.github.io/Literature/[2020]Bayesian spatially varying coefficient models in the spBayes R package.pdf}{GPP})}{4}{subsubsection.2.1.2}
+\contentsline {subsection}{\numberline {2.2}Sparse covariance methods}{4}{subsection.2.2}
+\contentsline {subsubsection}{\numberline {2.2.1}Tapering}{4}{subsubsection.2.2.1}
+\contentsline {subsubsection}{\numberline {2.2.2}Spatial Partitioning}{4}{subsubsection.2.2.2}
+\contentsline {subsection}{\numberline {2.3}Sparse precision methods}{4}{subsection.2.3}
+\contentsline {subsubsection}{\numberline {2.3.1}LatticeKrig}{5}{subsubsection.2.3.1}
+\contentsline {subsubsection}{\numberline {2.3.2}Multiresolution Approximations}{5}{subsubsection.2.3.2}
+\contentsline {subsubsection}{\numberline {2.3.3}SPDE/INLA}{5}{subsubsection.2.3.3}
+\contentsline {subsubsection}{\numberline {2.3.4}NNGP}{5}{subsubsection.2.3.4}
+\contentsline {section}{\numberline {3}Likelihood Approximations}{5}{section.3}

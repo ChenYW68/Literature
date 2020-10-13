@@ -1,4 +1,4 @@
-\begin{thebibliography}{6}
+\begin{thebibliography}{14}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -11,17 +11,24 @@ S.~Banerjee, A.~E. Gelfand, A.~O. Finley, and H.~Sang.
 \newblock Gaussian predictive process models for large spatial data sets.
 \newblock \emph{Journal of the Royal Statistical Society: Series B (Statistical
   Methodology)}, 70\penalty0 (4):\penalty0 825--848, 2008.
+\newblock URL \url{https://chenyw68.github.io/Literature/[2008]Gaussian
+  predictive process models for large spatial data sets.pdf}.
 
 \bibitem[Cressie and Johannesson(2008)]{cressie2008fixed}
 N.~Cressie and G.~Johannesson.
 \newblock Fixed rank kriging for very large spatial data sets.
 \newblock \emph{Journal of the Royal Statistical Society: Series B (Statistical
   Methodology)}, 70\penalty0 (1):\penalty0 209--226, 2008.
+\newblock URL \url{https://chenyw68.github.io/Literature/[2008]Fixed rank
+  kriging for very large spatial data sets.pdf}.
 
 \bibitem[Cressie and Johannesson(2006)]{cressie2006spatial}
 N.~A. Cressie and G.~Johannesson.
 \newblock Spatial prediction for massive datasets.
-\newblock 2006.
+\newblock \emph{Proceedings of the Australian Academy of Science Elizabeth and
+  Frederick White Conference}, 2006.
+\newblock URL \url{https://chenyw68.github.io/Literature/[2006]Spatial
+  prediction for massive datasets.pdf}.
 
 \bibitem[Datta et~al.(2016{\natexlab{a}})Datta, Banerjee, Finley, and
   Gelfand]{datta2016hierarchical}
@@ -30,6 +37,9 @@ A.~Datta, S.~Banerjee, A.~O. Finley, and A.~E. Gelfand.
   geostatistical datasets.
 \newblock \emph{Journal of the American Statistical Association}, 111\penalty0
   (514):\penalty0 800--812, 2016{\natexlab{a}}.
+\newblock URL \url{https://chenyw68.github.io/Literature/[2016]Hierarchical
+  nearest-neighbor Gaussian process models for large geostatistical
+  datasets.pdf}.
 
 \bibitem[Datta et~al.(2016{\natexlab{b}})Datta, Banerjee, Finley, Hamm, and
   Schaap]{datta2016nonseparable}
@@ -39,6 +49,8 @@ A.~Datta, S.~Banerjee, A.~O. Finley, N.~A. Hamm, and M.~Schaap.
   analysis.
 \newblock \emph{The annals of applied statistics}, 10\penalty0 (3):\penalty0
   1286, 2016{\natexlab{b}}.
+\newblock URL \url{https://chenyw68.github.io/Literature/[2016]Nonseparable
+  dynamic NNGP models for large spatio-temporal data.pdf}.
 
 \bibitem[Finley et~al.(2019)Finley, Datta, Cook, Morton, Andersen, and
   Banerjee]{finley2019efficient}
@@ -48,5 +60,76 @@ A.~O. Finley, A.~Datta, B.~D. Cook, D.~C. Morton, H.~E. Andersen, and
   processes.
 \newblock \emph{Journal of Computational and Graphical Statistics}, 28\penalty0
   (2):\penalty0 401--414, 2019.
+\newblock URL \url{https://chenyw68.github.io/Literature/[2019]Efficient
+  algorithms for bayesian nearest neighbor gaussian processes.pdf}.
+
+\bibitem[Furrer et~al.(2006)Furrer, Genton, and Nychka]{furrer2006covariance}
+R.~Furrer, M.~G. Genton, and D.~Nychka.
+\newblock Covariance tapering for interpolation of large spatial datasets.
+\newblock \emph{Journal of Computational and Graphical Statistics}, 15\penalty0
+  (3):\penalty0 502--523, 2006.
+\newblock URL \url{https://chenyw68.github.io/Literature/[2006]Covariance
+  tapering for interpolation of large spatial datasets.pdf}.
+
+\bibitem[Heaton et~al.(2019)Heaton, Datta, Finley, Furrer, Guinness,
+  Guhaniyogi, Gerber, Gramacy, Hammerling, Katzfuss, et~al.]{heaton2019case}
+M.~J. Heaton, A.~Datta, A.~O. Finley, R.~Furrer, J.~Guinness, R.~Guhaniyogi,
+  F.~Gerber, R.~B. Gramacy, D.~Hammerling, M.~Katzfuss, et~al.
+\newblock A case study competition among methods for analyzing large spatial
+  data.
+\newblock \emph{Journal of Agricultural, Biological and Environmental
+  Statistics}, 24\penalty0 (3):\penalty0 398--425, 2019.
+\newblock URL \url{https://chenyw68.github.io/Literature/[2018]A case study
+  competition among methods for analyzing large spatial data.pdf}.
+
+\bibitem[Katzfuss(2017)]{katzfuss2017multi}
+M.~Katzfuss.
+\newblock A multi-resolution approximation for massive spatial datasets.
+\newblock \emph{Journal of the American Statistical Association}, 112\penalty0
+  (517):\penalty0 201--214, 2017.
+
+\bibitem[Katzfuss and Hammerling(2017)]{katzfuss2017parallel}
+M.~Katzfuss and D.~Hammerling.
+\newblock Parallel inference for massive distributed spatial data using
+  low-rank models.
+\newblock \emph{Statistics and Computing}, 27\penalty0 (2):\penalty0 363--375,
+  2017.
+\newblock URL \url{https://chenyw68.github.io/Literature/[2017-formal]Parallel
+  inference for massive distributed spatial data using low-rank models.pdf}.
+
+\bibitem[Kaufman et~al.(2008)Kaufman, Schervish, and
+  Nychka]{kaufman2008covariance}
+C.~G. Kaufman, M.~J. Schervish, and D.~W. Nychka.
+\newblock Covariance tapering for likelihood-based estimation in large spatial
+  data sets.
+\newblock \emph{Journal of the American Statistical Association}, 103\penalty0
+  (484):\penalty0 1545--1555, 2008.
+\newblock URL \url{https://chenyw68.github.io/Literature/[2008]Covariance
+  Tapering for Likelihood Based Estimation in Large Spatial Data Sets.pdf}.
+
+\bibitem[Ma and Kang(2020)]{ma2020fused}
+P.~Ma and E.~L. Kang.
+\newblock A fused gaussian process model for very large spatial data.
+\newblock \emph{Journal of Computational and Graphical Statistics}, pages
+  1--11, 2020.
+\newblock URL \url{https://chenyw68.github.io/Literature/[2020]A Fused Gaussian
+  Process Model for Very Large Spatial Data.pdf}.
+
+\bibitem[Porcu et~al.(2012)Porcu, Montero, and Schlather]{porcu2012advances}
+E.~Porcu, J.-M. Montero, and M.~Schlather.
+\newblock \emph{Advances and challenges in space-time modelling of natural
+  events}, volume 207.
+\newblock Springer Science \& Business Media, 2012.
+\newblock URL \url{https://chenyw68.github.io/Literature/[2012]Advances and
+  Challenges in Space-time Modelling of Natural Events.pdf}.
+
+\bibitem[Sang and Huang(2012)]{sang2012full}
+H.~Sang and J.~Z. Huang.
+\newblock A full scale approximation of covariance functions for large spatial
+  data sets.
+\newblock \emph{Journal of the Royal Statistical Society: Series B (Statistical
+  Methodology)}, 74\penalty0 (1):\penalty0 111--132, 2012.
+\newblock URL \url{https://chenyw68.github.io/Literature/[2012]A full scale
+  approximation of covariance functions for large spatial data sets.pdf}.
 
 \end{thebibliography}
