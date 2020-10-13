@@ -1,4 +1,4 @@
-\begin{thebibliography}{22}
+\begin{thebibliography}{24}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -128,6 +128,16 @@ H.-M. Kim, B.~K. Mallick, and C.~Holmes.
 \newblock URL \url{https://chenyw68.github.io/Literature/[2005]Analyzing
   nonstationary spatial data using piecewise Gaussian processes.pdf}.
 
+\bibitem[Konomi et~al.(2019)Konomi, Hanandeh, Ma, and
+  Kang]{konomi2019computationally}
+B.~Konomi, A.~Hanandeh, P.~Ma, and E.~Kang.
+\newblock Computationally efficient nonstationary nearest-neighbor gaussian
+  process models using data-driven techniques.
+\newblock \emph{Environmetrics}, 30\penalty0 (8):\penalty0 e2571, 2019.
+\newblock URL \url{https://chenyw68.github.io/Literature/[2020]Computationally
+  efficient nonstationary nearest-neighborGaussian process models using
+  data-driven techniques.pdf}.
+
 \bibitem[Konomi et~al.(2014)Konomi, Sang, and Mallick]{konomi2014adaptive}
 B.~A. Konomi, H.~Sang, and B.~K. Mallick.
 \newblock Adaptive bayesian nonstationary modeling for large spatial datasets
@@ -208,5 +218,13 @@ H.~Sang, M.~Jun, and J.~Z. Huang.
 \newblock \emph{The Annals of Applied Statistics}, pages 2519--2548, 2011.
 \newblock URL \url{https://chenyw68.github.io/Literature/[2011]Covariance
   approximation for large multivariate spatial data sets.pdf}.
+
+\bibitem[Yang and Bradley(2020)]{yang2020bayesian}
+H.-C. Yang and J.~R. Bradley.
+\newblock Bayesian inference for big spatial data using non-stationary spectral
+  simulation.
+\newblock \emph{arXiv preprint arXiv:2001.06477}, 2020.
+\newblock URL \url{https://chenyw68.github.io/Literature/[2020]Bayesian
+  Inference for Big Spatial Data Using Non-stationary Spectral Simulation.pdf}.
 
 \end{thebibliography}

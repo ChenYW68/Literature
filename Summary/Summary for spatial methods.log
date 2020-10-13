@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2020.9.12)  13 OCT 2020 20:58
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2020.9.12)  13 OCT 2020 21:18
 entering extended mode
 **Summary*for*spatial*methods.tex
 ("G:\Github\Literature\Summary\Summary for spatial methods.tex"
@@ -1221,145 +1221,169 @@ Underfull \hbox (badness 10000) in paragraph at lines 114--121
 68 . github . io / Literature / [2008 ]
  []
 
+[7]
+Overfull \hbox (92.87128pt too wide) in paragraph at lines 133--140
+\T1/fvm/m/n/10.95 Computationallyefficientnonstationarynearest-[]neighborGaussi
+anprocessmodelsusingdata-[]driventechniques .
+ []
 
-Underfull \hbox (badness 5417) in paragraph at lines 132--140
+
+Underfull \hbox (badness 5417) in paragraph at lines 142--150
 []\T1/qbk/m/n/12 B. A. Kono-mi, H. Sang, and B. K. Mallick.  Adap-tive bayesian
  non-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 132--140
+Underfull \hbox (badness 10000) in paragraph at lines 142--150
 \T1/qbk/m/n/12 sta-tion-ary mod-el-ing for large s-pa-tial dataset-s us-ing co-
 vari-ance ap-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 132--140
+Underfull \hbox (badness 10000) in paragraph at lines 142--150
 \T1/qbk/m/n/12 prox-i-ma-tion-s.  \T1/qbk/m/it/12 Jour-nal of Com-pu-ta-tion-al
  and Graph-i-cal S-tatis-tic-s\T1/qbk/m/n/12 , 23
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 132--140
+Underfull \hbox (badness 10000) in paragraph at lines 142--150
 \T1/qbk/m/n/12 (3):802--829, 2014.  URL [][]$\T1/fvm/m/n/10.95 https : / / chen
 yw68 . github . io / Literature / [2014 ]
  []
 
 
-Overfull \hbox (29.95741pt too wide) in paragraph at lines 132--140
+Overfull \hbox (29.95741pt too wide) in paragraph at lines 142--150
 \T1/fvm/m/n/10.95 AdaptiveBayesianNonstationaryModelingforLargeSpatialDatasetsU
 singCovarianceApproximations .
  []
 
-[7]
-Underfull \hbox (badness 7631) in paragraph at lines 152--158
+
+Underfull \hbox (badness 7631) in paragraph at lines 162--168
 []\T1/qbk/m/n/12 P. Ma and E. L. Kang.  A fused gaus-sian pro-cess mod-el for v
 ery
  []
 
 
-Underfull \hbox (badness 6944) in paragraph at lines 152--158
+Underfull \hbox (badness 6944) in paragraph at lines 162--168
 \T1/qbk/m/n/12 large s-pa-tial da-ta.  \T1/qbk/m/it/12 Jour-nal of Com-pu-ta-ti
 on-al and Graph-i-cal S-tatis-tic-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 152--158
+Underfull \hbox (badness 10000) in paragraph at lines 162--168
 \T1/qbk/m/it/12 s\T1/qbk/m/n/12 , pages 1--11, 2020.  URL [][]$\T1/fvm/m/n/10.9
 5 https : / / chenyw68 . github . io / Literature / [2020 ]
  []
 
 
-Underfull \hbox (badness 1014) in paragraph at lines 161--168
+Underfull \hbox (badness 1014) in paragraph at lines 171--178
 []\T1/qbk/m/n/12 B. Neelon, A. E. Gelfand, and M. L. Mi-ran-da.  A mul-ti-vari-
 ate s-pa-tial mix-
  []
 
 
-Underfull \hbox (badness 1028) in paragraph at lines 161--168
+Underfull \hbox (badness 1028) in paragraph at lines 171--178
 \T1/qbk/m/n/12 ture mod-el for are-al da-ta: ex-am-in-ing re-gion-al d-if-fer-e
 nces in s-tan-dard-ized
  []
 
 
-Underfull \hbox (badness 1661) in paragraph at lines 161--168
+Underfull \hbox (badness 1661) in paragraph at lines 171--178
 \T1/qbk/m/n/12 test s-cores.  \T1/qbk/m/it/12 Jour-nal of the Roy-al S-ta-tis-t
 i-cal So-ci-ety. Se-ries C, Ap-plied s-
  []
 
 
-Underfull \hbox (badness 3250) in paragraph at lines 161--168
+Underfull \hbox (badness 3250) in paragraph at lines 171--178
 \T1/qbk/m/it/12 tatis-tic-s\T1/qbk/m/n/12 , 63(5):737, 2014.  URL [][]$\T1/fvm/
 m/n/10.95 https : / / chenyw68 . github . io / Literature / [2014 ]
  []
 
 
-Underfull \hbox (badness 2088) in paragraph at lines 171--179
+Underfull \hbox (badness 2088) in paragraph at lines 181--189
 []\T1/qbk/m/n/12 D. Ny-ch-ka, S. Bandy-opad-hyay, D. Ham-mer-ling, F. Lind-gren
 , and S. Sain.
  []
 
 
-Underfull \hbox (badness 5274) in paragraph at lines 171--179
+Underfull \hbox (badness 5274) in paragraph at lines 181--189
 \T1/qbk/m/n/12 A mul-tires-o-lu-tion gaus-sian pro-cess mod-el for the anal-y-s
 is of large s-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 171--179
+Underfull \hbox (badness 10000) in paragraph at lines 181--189
 \T1/qbk/m/n/12 pa-tial dataset-s.  \T1/qbk/m/it/12 Jour-nal of Com-pu-ta-tion-a
 l and Graph-i-cal S-tatis-tic-s\T1/qbk/m/n/12 ,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 171--179
+Underfull \hbox (badness 10000) in paragraph at lines 181--189
 \T1/qbk/m/n/12 24(2):579--599, 2015.  URL [][]$\T1/fvm/m/n/10.95 https : / / ch
 enyw68 . github . io / Literature / [2015 ]
  []
 
 
-Underfull \hbox (badness 1931) in paragraph at lines 181--187
+Underfull \hbox (badness 1931) in paragraph at lines 191--197
 []\T1/qbk/m/n/12 E. Por-cu, J.-M. Mon-tero, and M. Schlather.  \T1/qbk/m/it/12 
 Ad-vances and chal-lenges in
  []
 
 
-Underfull \hbox (badness 3942) in paragraph at lines 181--187
+Underfull \hbox (badness 3942) in paragraph at lines 191--197
 \T1/qbk/m/it/12 space-time mod-elling of nat-u-ral events\T1/qbk/m/n/12 , vol-u
 me 207.  Springer Sci-ence
  []
 
 
-Underfull \hbox (badness 2680) in paragraph at lines 181--187
+Underfull \hbox (badness 2680) in paragraph at lines 191--197
 \T1/qbk/m/n/12 & Busi-ness Me-di-a, 2012.  URL [][]$\T1/fvm/m/n/10.95 https : /
  / chenyw68 . github . io / Literature / [2012 ]
  []
 
 
-Underfull \hbox (badness 2005) in paragraph at lines 189--194
+Underfull \hbox (badness 2005) in paragraph at lines 199--204
 []\T1/qbk/m/n/12 H. Rue and L. Held.  \T1/qbk/m/it/12 Gaus-sian Markov ran-dom 
 field-s: the-o-ry and ap-pli-
  []
 
+[8]
+Underfull \hbox (badness 4779) in paragraph at lines 223--229
+[]\T1/qbk/m/n/12 H.-C. Yang and J. R. Bradley.  Bayesian in-fer-ence for big s-
+pa-tial da-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 223--229
+\T1/qbk/m/n/12 ta us-ing non-stationary spec-tral sim-u-la-tion.  \T1/qbk/m/it/
+12 arX-iv preprint arX-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 223--229
+\T1/qbk/m/it/12 iv:2001.06477\T1/qbk/m/n/12 , 2020.  URL [][]$\T1/fvm/m/n/10.95
+ https : / / chenyw68 . github . io / Literature / [2020 ]
+ []
+
 )
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 301.
- [8]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 301.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 308.
+ [9]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 308.
  ("G:\Github\Literature\Summary\Summary for spatial methods.aux")
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 301.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 301.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 308.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 308.
 Package rerunfilecheck Info: File `Summary*for*spatial*methods.out' has not cha
 nged.
 (rerunfilecheck)             Checksum: <no file>.
  ) 
 Here is how much of TeX's memory you used:
- 14571 strings out of 495354
- 218941 string characters out of 3183859
+ 14580 strings out of 495354
+ 219169 string characters out of 3183859
  464841 words of memory out of 3000000
- 17386 multiletter control sequences out of 15000+200000
+ 17392 multiletter control sequences out of 15000+200000
  103214 words of font info for 131 fonts, out of 3000000 for 9000
  16 hyphenation exceptions out of 8191
- 52i,14n,52p,1234b,465s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 52i,13n,52p,1234b,481s stack positions out of 5000i,500n,10000p,200000b,50000s
 {D:/CTEX/MiKTeX/fonts/enc/dvips/fontname/8r.enc}{D:/CTEX/MiKTeX/fonts/enc/dvi
 ps/tex-gyre/q-ec.enc}{D:/CTEX/MiKTeX/fonts/enc/dvips/iwona/ec-iwona.enc}{D:/CTE
 X/MiKTeX/fonts/enc/dvips/tex-gyre/q-ec-sc.enc}{D:/CTEX/MiKTeX/fonts/enc/dvips/i
@@ -1373,9 +1397,9 @@ r.pfb><D:/CTEX/MiKTeX/fonts/type1/nowacki/iwona/iwonari.pfb><D:/CTEX/MiKTeX/fon
 ts/type1/public/tex-gyre/qbkb.pfb><D:/CTEX/MiKTeX/fonts/type1/public/tex-gyre/q
 bkr.pfb><D:/CTEX/MiKTeX/fonts/type1/public/tex-gyre/qbkri.pfb><D:/CTEX/MiKTeX/f
 onts/type1/urw/palatino/uplr8a.pfb>
-Output written on "Summary for spatial methods.pdf" (8 pages, 294392 bytes).
+Output written on "Summary for spatial methods.pdf" (9 pages, 300780 bytes).
 PDF statistics:
- 387 PDF objects out of 1000 (max. 8388607)
- 49 named destinations out of 1000 (max. 500000)
+ 404 PDF objects out of 1000 (max. 8388607)
+ 52 named destinations out of 1000 (max. 500000)
  22577 words of extra memory for PDF output out of 24883 (max. 10000000)
 

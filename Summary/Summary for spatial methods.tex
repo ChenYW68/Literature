@@ -281,14 +281,21 @@ The sparse precision methods focus on basis function and conditional likelihood.
 
 \subsubsection{NNGP}
 The nearest neighbor Gaussian process (\href{https://chenyw68.github.io/Literature/[2016]Hierarchical nearest-neighbor Gaussian process models for large geostatistical datasets.pdf}{\cite{datta2016hierarchical}},
-\href{https://chenyw68.github.io/Literature/[2016]Nonseparable dynamic NNGP models for large spatio-temporal data.pdf}{\cite{datta2016nonseparable}},
-\href{https://chenyw68.github.io/Literature/[2016]Hierarchical nearest-neighbor Gaussian process models for large geostatistical datasets.pdf}{\cite{finley2019efficient}}
-) is defined from the conditional specification of the joint distribution of spatial process $w(s)$ in (\ref{model}), one forms of composite likelihoods which is motivated by Vecchia (1988) ideas.  The total flop counts is of the order $(n + k)m^3$,
-where $m (\approx 20)$, NNGP is much faster than the full Gaussian model which requires $O(n^3 )$ flops.
+\href{https://chenyw68.github.io/Literature/[2019]Efficient algorithms for bayesian nearest neighbor gaussian processes.pdf}{\cite{finley2019efficient}}
+) is defined from the conditional specification of the joint distribution of spatial process $w(s)$ in (\ref{model}), one forms of composite likelihoods which is motivated by Vecchia (1988) ideas.
 
 Composite likelihoods which points out the difficulty in choosing conditioning sets and  evaluation of the approximation accuracy, but with the advent of the NNGP approach, the problem has been solved.
+\textcolor[rgb]{1.00,0.00,1.00}{Comments:}
+\begin{itemize}
+ \item [1)] Total operations is $O((n + k)m^3)$ where $m (\approx 20)$ is the size of conditioning set or neighbor set, and $n$ and $k$ is sample size and reference set size.
+ \item [2)] NNGP can be extended to large spatio-temporal data (
+\href{https://chenyw68.github.io/Literature/[2016]Nonseparable dynamic NNGP models for large spatio-temporal data.pdf}{\cite{datta2016nonseparable}}) and non-stationary process(\href{https://chenyw68.github.io/Literature/[2020]Computationally efficient nonstationary nearest-neighborGaussian process models using data-driven techniques.pdf}{\cite{konomi2019computationally}}).
+\end{itemize}
+ 
 
 \subsection{Likelihood approximations in the spectral Domain: Circulant embedding and Periodic embeddings}
+\href{https://chenyw68.github.io/Literature/[2020]Bayesian Inference for Big Spatial Data Using Non-stationary Spectral Simulation.pdf}{\citep{yang2020bayesian}}
+
 \textcolor[rgb]{1.00,0.00,1.00}{Comments:}
 The spectral methods are computationally efficient by avoiding the calculation of determinants and can be easily adapted to model nonstationary processes as a mixture of independent stationary processes. [15] presented a version of Whittle’s approximation to the Gaussian
 negative log-likelihood by introducing a lattice process which can be used to deal with irregularly spaced data. Additional computational savings were obtained by truncating the spectral representation of the lattice process. If $n$ is the total number of observations of the process $\boldsymbol{Y}$, m is lattice size, the calculation requires $O(m \log_2 m + n)$ operations rather than $O(n^3)$ for the exact likelihood of $\boldsymbol{Y}$.
