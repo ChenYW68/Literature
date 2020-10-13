@@ -171,9 +171,8 @@ where $\boldsymbol{c}_{s_0} = \left(\boldsymbol{C}(s_0, s_1), \dots, \boldsymbol
 
 However, with large or massive data, direct implementation of these statistical process, including parameter etimation by (\ref{loglik}) and interpolation by (\ref{Kriging}), becomes computationally prohibitive, since evaluating the log-likelihood in (\ref{loglik}) and solving the kriging equation (\ref{Kriging}) involve the Cholesky factorization of an $n \times n$ covariance matrix for data of size $n$, which requires $O(n^3)$ operations and $O(n^2)$ memory in general(see \href{https://chenyw68.github.io/Literature/[2012]Advances and Challenges in Space-time Modelling of Natural Events.pdf}{\cite{porcu2012advances}}, \href{https://chenyw68.github.io/Literature/[2012]A full scale approximation of covariance functions for large spatial data sets.pdf}{\cite{sang2012full}}, \href{https://chenyw68.github.io/Literature/[2018]A case study competition among methods for analyzing large spatial data.pdf}{\cite{heaton2019case}}, \href{https://chenyw68.github.io/Literature/[2020]A Fused Gaussian Process Model for Very Large Spatial Data.pdf}{\cite{ma2020fused}}).
 
-\section{Several approaches to overcome this large matrix problem}
-Solutions to this computational intractability focus on model development, the design of efficient and parallel algorithms, and the improvement and efficient use of modern computing platforms (e.g. Using \href{https://hpc.niasra.uow.edu.au/azm/Spatial_GPUs.html}{TensorFlow} and  \href{https://github.com/cdeterman/gpuR}{GPU}).
-
+\section{Several approaches to overcome the computational problem}
+From an \textbf{approximation} point of view, the approximation of the likelihood in either the spatial or spectral domain is fundamental solution to overcome computational obstacles. These solutions focus on model development, the design of efficient and parallel algorithms, and the improvement and efficient use of modern computing platforms (e.g. Using \href{https://hpc.niasra.uow.edu.au/azm/Spatial_GPUs.html}{TensorFlow} and  \href{https://github.com/cdeterman/gpuR}{GPU}).
 
 Model:
 \begin{itemize}
@@ -214,8 +213,6 @@ Other scholars:\href{https://www.stat.missouri.edu/people/wikle}{Christopher K. 
 \href{https://mheaton.byu.edu/docs/research.html}{Matthew J. Heaton}, 
 \href{https://www.kaust.edu.sa/en/study/faculty/ying-sun}{Ying Sun},
 \href{https://scholar.google.com/citations?user=dbFZvbwAAAAJ&hl=en}{Furong Sun}.
-
-From an \textbf{approximation} point of view, the approximation of the likelihood in either the spatial or spectral domain is another solution to overcome computational obstacles.
 
 \subsection{Likelihood approximations in the spatial domain by low rank methods}
 \textcolor[rgb]{1.00,0.00,1.00}{Comments:}
@@ -274,11 +271,13 @@ The sparse precision methods focus on basis function and conditional likelihood.
  (see  \href{https://chenyw68.github.io/Literature/[2017-formal]Parallel inference for massive distributed spatial data using low-rank models.pdf
 }{\citep{katzfuss2017parallel}} and  \href{https://chenyw68.github.io/Literature/[2017]A Multi-Resolution Approximation for Massive Spatial Datasets.pdf}{\citep{katzfuss2017multi}})
 \subsubsection{SPDE/INLA}
-The numerical factorization of the precision matrix using sparse matrix algorithms can be done at a typical cost of $O(n^{3/2})$ for two-dimensional GMRFs.
+\href{https://chenyw68.github.io/Literature/[2005]Gaussian markov random fields theory and applications.pdf}{\citet{rue2005gaussian}} rigorously suggest to approximate Gaussian random fields through Markov fields with a huge increase in speed for the simulations. \href{https://chenyw68.github.io/Literature/[2011]An explicit link between GF and GMRFs the SPDE approach.pdf}{\citep{lindgren2011explicit}} show the construction of the corresponding GMRFs can be used to represent the Matérn field on a triangulated lattice.
 
 \textcolor[rgb]{1.00,0.00,1.00}{Comments:}
-The drawback of this approachis that we can only find the explicit form of GMRFs for those Gaussian random fields that have a Matérn covariance structure at certain integer smoothnesses.  they can be extended to model Matérn covariances on the sphere, nonstationary locally isotropic Gaussian random fields, Gaussian random fields with oscillating correlation functions, and non-isotropic fields.
-
+\begin{itemize}
+ \item [1)]The numerical factorization of the precision matrix using sparse matrix algorithms can be done at a typical cost of $O(n^{3/2})$ for two-dimensional GMRFs.
+ \item [2)]The drawback of this approachis that we can only find the explicit form of GMRFs for those Gaussian random fields that have a Matérn covariance structure at certain integer smoothnesses.  they can be extended to model Matérn covariances on the sphere, nonstationary locally isotropic Gaussian random fields, Gaussian random fields with oscillating correlation functions, and non-isotropic fields.
+\end{itemize}
 
 \subsubsection{NNGP}
 The nearest neighbor Gaussian process (\href{https://chenyw68.github.io/Literature/[2016]Hierarchical nearest-neighbor Gaussian process models for large geostatistical datasets.pdf}{\cite{datta2016hierarchical}},
