@@ -1,4 +1,4 @@
-\begin{thebibliography}{14}
+\begin{thebibliography}{20}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -71,6 +71,16 @@ R.~Furrer, M.~G. Genton, and D.~Nychka.
 \newblock URL \url{https://chenyw68.github.io/Literature/[2006]Covariance
   tapering for interpolation of large spatial datasets.pdf}.
 
+\bibitem[Heaton et~al.(2017)Heaton, Christensen, and
+  Terres]{heaton2017nonstationary}
+M.~J. Heaton, W.~F. Christensen, and M.~A. Terres.
+\newblock Nonstationary gaussian process models using spatial hierarchical
+  clustering from finite differences.
+\newblock \emph{Technometrics}, 59\penalty0 (1):\penalty0 93--101, 2017.
+\newblock URL \url{https://chenyw68.github.io/Literature/[2017]Nonstationary
+  Gaussian Process Models Using Spatial Hierarchical Clustering from Finite
+  Differences.pdf}.
+
 \bibitem[Heaton et~al.(2019)Heaton, Datta, Finley, Furrer, Guinness,
   Guhaniyogi, Gerber, Gramacy, Hammerling, Katzfuss, et~al.]{heaton2019case}
 M.~J. Heaton, A.~Datta, A.~O. Finley, R.~Furrer, J.~Guinness, R.~Guhaniyogi,
@@ -109,6 +119,25 @@ C.~G. Kaufman, M.~J. Schervish, and D.~W. Nychka.
 \newblock URL \url{https://chenyw68.github.io/Literature/[2008]Covariance
   Tapering for Likelihood Based Estimation in Large Spatial Data Sets.pdf}.
 
+\bibitem[Kim et~al.(2005)Kim, Mallick, and Holmes]{kim2005analyzing}
+H.-M. Kim, B.~K. Mallick, and C.~Holmes.
+\newblock Analyzing nonstationary spatial data using piecewise gaussian
+  processes.
+\newblock \emph{Journal of the American Statistical Association}, 100\penalty0
+  (470):\penalty0 653--668, 2005.
+\newblock URL \url{https://chenyw68.github.io/Literature/[2005]Analyzing
+  nonstationary spatial data using piecewise Gaussian processes.pdf}.
+
+\bibitem[Konomi et~al.(2014)Konomi, Sang, and Mallick]{konomi2014adaptive}
+B.~A. Konomi, H.~Sang, and B.~K. Mallick.
+\newblock Adaptive bayesian nonstationary modeling for large spatial datasets
+  using covariance approximations.
+\newblock \emph{Journal of Computational and Graphical Statistics}, 23\penalty0
+  (3):\penalty0 802--829, 2014.
+\newblock URL \url{https://chenyw68.github.io/Literature/[2014]Adaptive
+  Bayesian Nonstationary Modeling for Large Spatial Datasets Using Covariance
+  Approximations.pdf}.
+
 \bibitem[Ma and Kang(2020)]{ma2020fused}
 P.~Ma and E.~L. Kang.
 \newblock A fused gaussian process model for very large spatial data.
@@ -116,6 +145,24 @@ P.~Ma and E.~L. Kang.
   1--11, 2020.
 \newblock URL \url{https://chenyw68.github.io/Literature/[2020]A Fused Gaussian
   Process Model for Very Large Spatial Data.pdf}.
+
+\bibitem[Neelon et~al.(2014)Neelon, Gelfand, and
+  Miranda]{neelon2014multivariate}
+B.~Neelon, A.~E. Gelfand, and M.~L. Miranda.
+\newblock A multivariate spatial mixture model for areal data: examining
+  regional differences in standardized test scores.
+\newblock \emph{Journal of the Royal Statistical Society. Series C, Applied
+  statistics}, 63\penalty0 (5):\penalty0 737, 2014.
+\newblock URL \url{https://chenyw68.github.io/Literature/[2014]A multivariate
+  spatial mixture model for areal data.pdf}.
+
+\bibitem[Nychka et~al.(2015)Nychka, Bandyopadhyay, Hammerling, Lindgren, and
+  Sain]{nychka2015multiresolution}
+D.~Nychka, S.~Bandyopadhyay, D.~Hammerling, F.~Lindgren, and S.~Sain.
+\newblock A multiresolution gaussian process model for the analysis of large
+  spatial datasets.
+\newblock \emph{Journal of Computational and Graphical Statistics}, 24\penalty0
+  (2):\penalty0 579--599, 2015.
 
 \bibitem[Porcu et~al.(2012)Porcu, Montero, and Schlather]{porcu2012advances}
 E.~Porcu, J.-M. Montero, and M.~Schlather.
@@ -133,5 +180,13 @@ H.~Sang and J.~Z. Huang.
   Methodology)}, 74\penalty0 (1):\penalty0 111--132, 2012.
 \newblock URL \url{https://chenyw68.github.io/Literature/[2012]A full scale
   approximation of covariance functions for large spatial data sets.pdf}.
+
+\bibitem[Sang et~al.(2011)Sang, Jun, and Huang]{sang2011covariance}
+H.~Sang, M.~Jun, and J.~Z. Huang.
+\newblock Covariance approximation for large multivariate spatial data sets
+  with an application to multiple climate model errors.
+\newblock \emph{The Annals of Applied Statistics}, pages 2519--2548, 2011.
+\newblock URL \url{https://chenyw68.github.io/Literature/[2011]Covariance
+  approximation for large multivariate spatial data sets.pdf}.
 
 \end{thebibliography}

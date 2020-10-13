@@ -1,6 +1,6 @@
 \BOOKMARK [1][-]{section.1}{1 Gaussian random field and its challenge}{}% 1
 \BOOKMARK [1][-]{section.2}{2 Several approaches to overcome this large matrix problem}{}% 2
-\BOOKMARK [2][-]{subsection.2.1}{2.1 Low rank methods}{section.2}% 3
-\BOOKMARK [2][-]{subsection.2.2}{2.2 Sparse covariance methods}{section.2}% 4
-\BOOKMARK [2][-]{subsection.2.3}{2.3 Sparse precision methods}{section.2}% 5
-\BOOKMARK [1][-]{section.3}{3 Likelihood Approximations}{}% 6
+\BOOKMARK [2][-]{subsection.2.1}{2.1 Likelihood approximations in the spatial domain by low rank methods}{section.2}% 3
+\BOOKMARK [2][-]{subsection.2.2}{2.2 Likelihood approximations in the spatial domain by sparse covariance methods}{section.2}% 4
+\BOOKMARK [2][-]{subsection.2.3}{2.3 Likelihood approximations in the spatial domain by sparse precision methods}{section.2}% 5
+\BOOKMARK [2][-]{subsection.2.4}{2.4 Likelihood approximations in the spectral Domain: Circulant embedding and Periodic embeddings}{section.2}% 6
