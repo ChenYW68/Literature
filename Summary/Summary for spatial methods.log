@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2020.9.12)  13 OCT 2020 17:00
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2020.9.12)  13 OCT 2020 19:22
 entering extended mode
 **Summary*for*spatial*methods.tex
 ("G:\Github\Literature\Summary\Summary for spatial methods.tex"
@@ -1055,9 +1055,21 @@ Package microtype Info: Character `029' is missing
 (microtype)             in font `T1/iwona/m/sc/17.28'.
 (microtype)             Ignoring protrusion settings for this character.
  [2]
-Overfull \hbox (7.9155pt too wide) in paragraph at lines 186--193
+Overfull \hbox (7.9155pt too wide) in paragraph at lines 185--192
 [][]\T1/qbk/m/n/12 Matthias Kat-fuss[][](multiresolution ap-prox-i-ma-tion, [][
 ]2017[][] ) by basis-function; [][]Finn
+ []
+
+
+Overfull \hbox (6.38666pt too wide) in paragraph at lines 193--195
+[]\T1/qbk/m/n/12 Discrete pro-cess con-vo-lu-tion-s. [][]Dav-e Hig-don[][]([][]
+2002[][]); [][]Bruno San-só[][]([][]2009[][]); [][]Franck-
+ []
+
+
+Overfull \hbox (21.20143pt too wide) in paragraph at lines 205--217
+[]\T1/qbk/m/n/12 Other schol-ars:[][]Christopher K. Wik-le[][], [][]Robert B. G
+ra-ma-cy[][], [][]Bradley P. Car-lin[][], [][]Jonathan
  []
 
 Package microtype Info: Character `029' is missing
@@ -1144,90 +1156,108 @@ yw68 . github . io / Literature / [2018 ]
  []
 
 
-Underfull \hbox (badness 1881) in paragraph at lines 92--99
+Underfull \hbox (badness 10000) in paragraph at lines 86--92
+[]\T1/qbk/m/n/12 M. Katz-fuss.  A multi-resolution ap-prox-i-ma-tion for mas-si
+ve s-pa-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 86--92
+\T1/qbk/m/n/12 tial dataset-s.  \T1/qbk/m/it/12 Jour-nal of the Amer-i-can S-ta
+-tis-ti-cal As-so-ci-a-tion\T1/qbk/m/n/12 , 112
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 86--92
+\T1/qbk/m/n/12 (517):201--214, 2017.  URL [][]$\T1/fvm/m/n/10.95 https : / / ch
+enyw68 . github . io / Literature / [2017 ]
+ []
+
+
+Underfull \hbox (badness 1881) in paragraph at lines 94--101
 []\T1/qbk/m/n/12 M. Katz-fuss and D. Ham-mer-ling.  Par-al-lel in-fer-ence for 
 mas-sive dis-tribut-
  []
 
 
-Underfull \hbox (badness 3646) in paragraph at lines 92--99
+Underfull \hbox (badness 3646) in paragraph at lines 94--101
 \T1/qbk/m/n/12 ed s-pa-tial da-ta us-ing low-rank mod-el-s.  \T1/qbk/m/it/12 S-
 tatis-tic-s and Com-put-ing\T1/qbk/m/n/12 , 27
  []
 
 
-Underfull \hbox (badness 5862) in paragraph at lines 92--99
+Underfull \hbox (badness 5862) in paragraph at lines 94--101
 \T1/qbk/m/n/12 (2):363--375, 2017.  URL [][]$\T1/fvm/m/n/10.95 https : / / chen
 yw68 . github . io / Literature / [2017-[]formal ]
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 102--109
+Underfull \hbox (badness 10000) in paragraph at lines 104--111
 []\T1/qbk/m/n/12 C. G. Kauf-man, M. J. Schervish, and D. W. Ny-ch-ka.  Co-vari-
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 102--109
+Underfull \hbox (badness 10000) in paragraph at lines 104--111
 \T1/qbk/m/n/12 ance ta-per-ing for likelihood-based es-ti-ma-tion in large s-pa
 -tial da-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 102--109
+Underfull \hbox (badness 10000) in paragraph at lines 104--111
 \T1/qbk/m/n/12 ta set-s.  \T1/qbk/m/it/12 Jour-nal of the Amer-i-can S-ta-tis-t
 i-cal As-so-ci-a-tion\T1/qbk/m/n/12 , 103(484):
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 102--109
+Underfull \hbox (badness 10000) in paragraph at lines 104--111
 \T1/qbk/m/n/12 1545--1555, 2008.  URL [][]$\T1/fvm/m/n/10.95 https : / / chenyw
 68 . github . io / Literature / [2008 ]
  []
 
 [6]
-Underfull \hbox (badness 7631) in paragraph at lines 111--117
+Underfull \hbox (badness 7631) in paragraph at lines 113--119
 []\T1/qbk/m/n/12 P. Ma and E. L. Kang.  A fused gaus-sian pro-cess mod-el for v
 ery
  []
 
 
-Underfull \hbox (badness 6944) in paragraph at lines 111--117
+Underfull \hbox (badness 6944) in paragraph at lines 113--119
 \T1/qbk/m/n/12 large s-pa-tial da-ta.  \T1/qbk/m/it/12 Jour-nal of Com-pu-ta-ti
 on-al and Graph-i-cal S-tatis-tic-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 111--117
+Underfull \hbox (badness 10000) in paragraph at lines 113--119
 \T1/qbk/m/it/12 s\T1/qbk/m/n/12 , pages 1--11, 2020.  URL [][]$\T1/fvm/m/n/10.9
 5 https : / / chenyw68 . github . io / Literature / [2020 ]
  []
 
 
-Underfull \hbox (badness 1931) in paragraph at lines 119--125
+Underfull \hbox (badness 1931) in paragraph at lines 121--127
 []\T1/qbk/m/n/12 E. Por-cu, J.-M. Mon-tero, and M. Schlather.  \T1/qbk/m/it/12 
 Ad-vances and chal-lenges in
  []
 
 
-Underfull \hbox (badness 3942) in paragraph at lines 119--125
+Underfull \hbox (badness 3942) in paragraph at lines 121--127
 \T1/qbk/m/it/12 space-time mod-elling of nat-u-ral events\T1/qbk/m/n/12 , vol-u
 me 207.  Springer Sci-ence
  []
 
 
-Underfull \hbox (badness 2680) in paragraph at lines 119--125
+Underfull \hbox (badness 2680) in paragraph at lines 121--127
 \T1/qbk/m/n/12 & Busi-ness Me-di-a, 2012.  URL [][]$\T1/fvm/m/n/10.95 https : /
  / chenyw68 . github . io / Literature / [2012 ]
  []
 
 )
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 273.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 287.
  [7]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 273.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 287.
  ("G:\Github\Literature\Summary\Summary for spatial methods.aux")
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 273.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 273.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 287.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 287.
 Package rerunfilecheck Info: File `Summary*for*spatial*methods.out' has not cha
 nged.
 (rerunfilecheck)             Checksum: <no file>.
@@ -1239,7 +1269,7 @@ Here is how much of TeX's memory you used:
  17361 multiletter control sequences out of 15000+200000
  103214 words of font info for 131 fonts, out of 3000000 for 9000
  16 hyphenation exceptions out of 8191
- 52i,14n,52p,1123b,459s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 52i,14n,52p,1234b,459s stack positions out of 5000i,500n,10000p,200000b,50000s
 {D:/CTEX/MiKTeX/fonts/enc/dvips/fontname/8r.enc}{D:/CTEX/MiKTeX/fonts/enc/dvi
 ps/tex-gyre/q-ec.enc}{D:/CTEX/MiKTeX/fonts/enc/dvips/iwona/ec-iwona.enc}{D:/CTE
 X/MiKTeX/fonts/enc/dvips/tex-gyre/q-ec-sc.enc}{D:/CTEX/MiKTeX/fonts/enc/dvips/i
@@ -1252,9 +1282,9 @@ TeX/fonts/type1/bera/fvmr8a.pfb><D:/CTEX/MiKTeX/fonts/type1/nowacki/iwona/iwona
 r.pfb><D:/CTEX/MiKTeX/fonts/type1/nowacki/iwona/iwonari.pfb><D:/CTEX/MiKTeX/fon
 ts/type1/public/tex-gyre/qbkr.pfb><D:/CTEX/MiKTeX/fonts/type1/public/tex-gyre/q
 bkri.pfb><D:/CTEX/MiKTeX/fonts/type1/urw/palatino/uplr8a.pfb>
-Output written on "Summary for spatial methods.pdf" (7 pages, 233898 bytes).
+Output written on "Summary for spatial methods.pdf" (7 pages, 243653 bytes).
 PDF statistics:
- 277 PDF objects out of 1000 (max. 8388607)
+ 313 PDF objects out of 1000 (max. 8388607)
  39 named destinations out of 1000 (max. 500000)
  22577 words of extra memory for PDF output out of 24883 (max. 10000000)
 

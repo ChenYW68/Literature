@@ -4,7 +4,7 @@
 \contentsline {subsubsection}{\numberline {2.1.1}\href {https://chenyw68.github.io/Literature/[2017]An R Package for Spatial and Spatio-Temporal Prediction with Large Datasets(FRK).pdf}{Fixed Rank Kriging}}{3}{subsubsection.2.1.1}
 \contentsline {subsubsection}{\numberline {2.1.2}\href {https://chenyw68.github.io/Literature/[2015]spBayes for Large Spatio-Temporal Data Models.pdf}{Gaussian Predictive Processes} (\href {https://chenyw68.github.io/Literature/[2020]Bayesian spatially varying coefficient models in the spBayes R package.pdf}{GPP})}{4}{subsubsection.2.1.2}
 \contentsline {subsection}{\numberline {2.2}Sparse covariance methods}{4}{subsection.2.2}
-\contentsline {subsubsection}{\numberline {2.2.1}Tapering}{4}{subsubsection.2.2.1}
+\contentsline {subsubsection}{\numberline {2.2.1}\href {https://user.math.uzh.ch/furrer/software/KriSp/}{Tapering}}{4}{subsubsection.2.2.1}
 \contentsline {subsubsection}{\numberline {2.2.2}Spatial Partitioning}{4}{subsubsection.2.2.2}
 \contentsline {subsection}{\numberline {2.3}Sparse precision methods}{4}{subsection.2.3}
 \contentsline {subsubsection}{\numberline {2.3.1}LatticeKrig}{5}{subsubsection.2.3.1}
