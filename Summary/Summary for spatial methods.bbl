@@ -1,4 +1,4 @@
-\begin{thebibliography}{35}
+\begin{thebibliography}{38}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -87,6 +87,16 @@ A.~Datta, S.~Banerjee, A.~O. Finley, N.~A. Hamm, and M.~Schaap.
 \newblock URL \url{https://chenyw68.github.io/Literature/[2016]Nonseparable
   dynamic NNGP models for large spatio-temporal data.pdf}.
 
+\bibitem[Finley et~al.(2017)Finley, Datta, Cook, Morton, Andersen, and
+  Banerjee]{finley2017applying}
+A.~O. Finley, A.~Datta, B.~C. Cook, D.~C. Morton, H.~E. Andersen, and
+  S.~Banerjee.
+\newblock Applying nearest neighbor gaussian processes to massive spatial data
+  sets forest canopy height prediction across tanana valley alaska.”.
+\newblock \emph{arXiv preprint arXiv:1702.00434}, 2017.
+\newblock URL \url{https://chenyw68.github.io/Literature/[2017]Applying Nearest
+  Neighbor Gaussian Processes to Massive Spatial Data Sets.pdf}.
+
 \bibitem[Finley et~al.(2019)Finley, Datta, Cook, Morton, Andersen, and
   Banerjee]{finley2019efficient}
 A.~O. Finley, A.~Datta, B.~D. Cook, D.~C. Morton, H.~E. Andersen, and
@@ -171,6 +181,15 @@ X.~Hu, D.~Simpson, F.~Lindgren, and H.~Rue.
   Gaussian random fields using systems of stochastic partial differential
   equations.pdf}.
 
+\bibitem[Jurek and Katzfuss(2020)]{jurek2020hierarchical}
+M.~Jurek and M.~Katzfuss.
+\newblock Hierarchical sparse cholesky decomposition with applications to
+  high-dimensional spatio-temporal filtering.
+\newblock \emph{arXiv preprint arXiv:2006.16901}, 2020.
+\newblock URL \url{https://chenyw68.github.io/Literature/[2020]Hierarchical
+  sparse Cholesky decomposition with applications to high-dimensional
+  spatio-temporal filtering.pdf}.
+
 \bibitem[Katzfuss(2017)]{katzfuss2017multi}
 M.~Katzfuss.
 \newblock A multi-resolution approximation for massive spatial datasets.
@@ -187,6 +206,15 @@ M.~Katzfuss and D.~Hammerling.
   2017.
 \newblock URL \url{https://chenyw68.github.io/Literature/[2017-formal]Parallel
   inference for massive distributed spatial data using low-rank models.pdf}.
+
+\bibitem[Katzfuss et~al.(2020)Katzfuss, Guinness, Gong, and
+  Zilber]{katzfuss2020vecchia}
+M.~Katzfuss, J.~Guinness, W.~Gong, and D.~Zilber.
+\newblock Vecchia approximations of gaussian-process predictions.
+\newblock \emph{Journal of Agricultural, Biological and Environmental
+  Statistics}, 25\penalty0 (3):\penalty0 383--414, 2020.
+\newblock URL \url{https://chenyw68.github.io/Literature/[2020]Vecchia
+  Approximations of Gaussian-Process Predictions.pdf}.
 
 \bibitem[Kaufman et~al.(2008)Kaufman, Schervish, and
   Nychka]{kaufman2008covariance}
@@ -313,12 +341,13 @@ A.~V. Vecchia.
 \newblock \emph{Journal of the Royal Statistical Society: Series B
   (Methodological)}, 50\penalty0 (2):\penalty0 297--312, 1988.
 
-\bibitem[Yang and Bradley(2020)]{yang2020bayesian}
-H.-C. Yang and J.~R. Bradley.
-\newblock Bayesian inference for big spatial data using non-stationary spectral
-  simulation.
-\newblock \emph{arXiv preprint arXiv:2001.06477}, 2020.
-\newblock URL \url{https://chenyw68.github.io/Literature/[2020]Bayesian
-  Inference for Big Spatial Data Using Non-stationary Spectral Simulation.pdf}.
+\bibitem[Zilber and Katzfuss(2020)]{zilber2019vecchia}
+D.~Zilber and M.~Katzfuss.
+\newblock Vecchia–laplace approximations of generalized gaussian processes
+  for big non-gaussian spatial data.
+\newblock \emph{Computational Statistics and Data Analysis}, 153:\penalty0
+  107081, 2020.
+\newblock URL \url{https://chenyw68.github.io/Literature/[2020]Vecchia laplace
+  approximations of generalized gaussian processes.pdf}.
 
 \end{thebibliography}
