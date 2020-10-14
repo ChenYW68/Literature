@@ -1,4 +1,4 @@
-\begin{thebibliography}{24}
+\begin{thebibliography}{35}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -13,6 +13,41 @@ S.~Banerjee, A.~E. Gelfand, A.~O. Finley, and H.~Sang.
   Methodology)}, 70\penalty0 (4):\penalty0 825--848, 2008.
 \newblock URL \url{https://chenyw68.github.io/Literature/[2008]Gaussian
   predictive process models for large spatial data sets.pdf}.
+
+\bibitem[Bevilacqua et~al.(2016)Bevilacqua, Fass{\`o}, Gaetan, Porcu, and
+  Velandia]{bevilacqua2016covariance}
+M.~Bevilacqua, A.~Fass{\`o}, C.~Gaetan, E.~Porcu, and D.~Velandia.
+\newblock Covariance tapering for multivariate gaussian random fields
+  estimation.
+\newblock \emph{Statistical Methods \& Applications}, 25\penalty0 (1):\penalty0
+  21--37, 2016.
+\newblock URL \url{https://chenyw68.github.io/Literature/[2015]Covariance
+  tapering for multivariate Gaussian random fields estimation.pdf}.
+
+\bibitem[Blangiardo and Cameletti(2015)]{blangiardo2015spatial}
+M.~Blangiardo and M.~Cameletti.
+\newblock \emph{Spatial and spatio-temporal Bayesian models with R-INLA}.
+\newblock John Wiley \& Sons, 2015.
+\newblock URL \url{https://chenyw68.github.io/Literature/[2015]Spatial and
+  Spatio temporal Bayesian Models with R INLA.pdf}.
+
+\bibitem[Bolin and Kirchner(2020)]{bolin2020rational}
+D.~Bolin and K.~Kirchner.
+\newblock The rational spde approach for gaussian random fields with general
+  smoothness.
+\newblock \emph{Journal of Computational and Graphical Statistics}, 29\penalty0
+  (2):\penalty0 274--285, 2020.
+\newblock URL \url{https://chenyw68.github.io/Literature/[2020]The Rational
+  SPDE Approach for Gaussian Random Fields With General Smoothness.pdf}.
+
+\bibitem[Bolin and Wallin(2020)]{bolin2020multivariate}
+D.~Bolin and J.~Wallin.
+\newblock Multivariate type g mat{\'e}rn stochastic partial differential
+  equation random fields.
+\newblock \emph{Journal of the Royal Statistical Society: Series B (Statistical
+  Methodology)}, 82\penalty0 (1):\penalty0 215--239, 2020.
+\newblock URL \url{https://chenyw68.github.io/Literature/[2020]Multivariate
+  type G Matern stochastic partial differential equation random fields.pdf}.
 
 \bibitem[Cressie and Johannesson(2008)]{cressie2008fixed}
 N.~Cressie and G.~Johannesson.
@@ -63,6 +98,14 @@ A.~O. Finley, A.~Datta, B.~D. Cook, D.~C. Morton, H.~E. Andersen, and
 \newblock URL \url{https://chenyw68.github.io/Literature/[2019]Efficient
   algorithms for bayesian nearest neighbor gaussian processes.pdf}.
 
+\bibitem[Fuentes(2007)]{fuentes2007approximate}
+M.~Fuentes.
+\newblock Approximate likelihood for large irregularly spaced spatial data.
+\newblock \emph{Journal of the American Statistical Association}, 102\penalty0
+  (477):\penalty0 321--331, 2007.
+\newblock URL \url{https://chenyw68.github.io/Literature/[2007]Approximate
+  Likelihood for Large Irregularly Spaced Spatial Data.pdf}.
+
 \bibitem[Furrer et~al.(2006)Furrer, Genton, and Nychka]{furrer2006covariance}
 R.~Furrer, M.~G. Genton, and D.~Nychka.
 \newblock Covariance tapering for interpolation of large spatial datasets.
@@ -70,6 +113,24 @@ R.~Furrer, M.~G. Genton, and D.~Nychka.
   (3):\penalty0 502--523, 2006.
 \newblock URL \url{https://chenyw68.github.io/Literature/[2006]Covariance
   tapering for interpolation of large spatial datasets.pdf}.
+
+\bibitem[Guinness(2019)]{guinness2019spectral}
+J.~Guinness.
+\newblock Spectral density estimation for random fields via periodic
+  embeddings.
+\newblock \emph{Biometrika}, 106\penalty0 (2):\penalty0 267--286, 2019.
+\newblock URL \url{https://chenyw68.github.io/Literature/[2020]Spectral Density
+  Estimation for Random Fields via Periodic Embeddings.pdf}.
+
+\bibitem[Guinness and Fuentes(2017)]{guinness2017circulant}
+J.~Guinness and M.~Fuentes.
+\newblock Circulant embedding of approximate covariances for inference from
+  gaussian data on large lattices.
+\newblock \emph{Journal of computational and Graphical Statistics}, 26\penalty0
+  (1):\penalty0 88--97, 2017.
+\newblock URL \url{https://chenyw68.github.io/Literature/[2017]Circulant
+  Embedding of Approximate Covariances for Inference From Gaussian Data on
+  Large Lattices.pdf}.
 
 \bibitem[Heaton et~al.(2017)Heaton, Christensen, and
   Terres]{heaton2017nonstationary}
@@ -91,6 +152,24 @@ M.~J. Heaton, A.~Datta, A.~O. Finley, R.~Furrer, J.~Guinness, R.~Guhaniyogi,
   Statistics}, 24\penalty0 (3):\penalty0 398--425, 2019.
 \newblock URL \url{https://chenyw68.github.io/Literature/[2018]A case study
   competition among methods for analyzing large spatial data.pdf}.
+
+\bibitem[Hu and Steinsland(2016)]{hu2016spatial}
+X.~Hu and I.~Steinsland.
+\newblock Spatial modeling with system of stochastic partial differential
+  equations.
+\newblock \emph{Wiley Interdisciplinary Reviews: Computational Statistics},
+  8\penalty0 (2):\penalty0 112--125, 2016.
+\newblock URL \url{https://chenyw68.github.io/Literature/[2016]Spatial modeling
+  with system of stochastic partial differential equations.pdf}.
+
+\bibitem[Hu et~al.(2013)Hu, Simpson, Lindgren, and Rue]{hu2013multivariate}
+X.~Hu, D.~Simpson, F.~Lindgren, and H.~Rue.
+\newblock Multivariate gaussian random fields using systems of stochastic
+  partial differential equations.
+\newblock \emph{arXiv preprint arXiv:1307.1379}, 2013.
+\newblock URL \url{https://chenyw68.github.io/Literature/[2013] Multivariate
+  Gaussian random fields using systems of stochastic partial differential
+  equations.pdf}.
 
 \bibitem[Katzfuss(2017)]{katzfuss2017multi}
 M.~Katzfuss.
@@ -195,6 +274,15 @@ E.~Porcu, J.-M. Montero, and M.~Schlather.
 \newblock URL \url{https://chenyw68.github.io/Literature/[2012]Advances and
   Challenges in Space-time Modelling of Natural Events.pdf}.
 
+\bibitem[Risser and Turek(2020)]{risser2020bayesian}
+M.~D. Risser and D.~Turek.
+\newblock Bayesian inference for high-dimensional nonstationary gaussian
+  processes.
+\newblock \emph{Journal of Statistical Computation and Simulation}, pages
+  1--27, 2020.
+\newblock URL \url{https://chenyw68.github.io/Literature/[2020-formal]Bayesian
+  inference for high dimensional nonstationary Gaussian processes.pdf}.
+
 \bibitem[Rue and Held(2005)]{rue2005gaussian}
 H.~Rue and L.~Held.
 \newblock \emph{Gaussian Markov random fields: theory and applications}.
@@ -218,6 +306,12 @@ H.~Sang, M.~Jun, and J.~Z. Huang.
 \newblock \emph{The Annals of Applied Statistics}, pages 2519--2548, 2011.
 \newblock URL \url{https://chenyw68.github.io/Literature/[2011]Covariance
   approximation for large multivariate spatial data sets.pdf}.
+
+\bibitem[Vecchia(1988)]{vecchia1988estimation}
+A.~V. Vecchia.
+\newblock Estimation and model identification for continuous spatial processes.
+\newblock \emph{Journal of the Royal Statistical Society: Series B
+  (Methodological)}, 50\penalty0 (2):\penalty0 297--312, 1988.
 
 \bibitem[Yang and Bradley(2020)]{yang2020bayesian}
 H.-C. Yang and J.~R. Bradley.

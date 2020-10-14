@@ -1,6 +1,16 @@
 \BOOKMARK [1][-]{section.1}{1 Gaussian random field and its challenge}{}% 1
 \BOOKMARK [1][-]{section.2}{2 Several approaches to overcome the computational problem}{}% 2
-\BOOKMARK [2][-]{subsection.2.1}{2.1 Likelihood approximations in the spatial domain by low rank methods}{section.2}% 3
-\BOOKMARK [2][-]{subsection.2.2}{2.2 Likelihood approximations in the spatial domain by sparse covariance methods}{section.2}% 4
-\BOOKMARK [2][-]{subsection.2.3}{2.3 Likelihood approximations in the spatial domain by sparse precision methods}{section.2}% 5
-\BOOKMARK [2][-]{subsection.2.4}{2.4 Likelihood approximations in the spectral Domain: Circulant embedding and Periodic embeddings}{section.2}% 6
+\BOOKMARK [1][-]{section.3}{3 Likelihood approximations in the spatial domain}{}% 3
+\BOOKMARK [2][-]{subsection.3.1}{3.1 Low rank methods}{section.3}% 4
+\BOOKMARK [3][-]{subsubsection.3.1.1}{3.1.1 Fixed rank Kriging}{subsection.3.1}% 5
+\BOOKMARK [3][-]{subsubsection.3.1.2}{3.1.2 Gaussian predictive processes \(GPP\)}{subsection.3.1}% 6
+\BOOKMARK [3][-]{subsubsection.3.1.3}{3.1.3 Multi-resolution approximations}{subsection.3.1}% 7
+\BOOKMARK [2][-]{subsection.3.2}{3.2 Sparse covariance methods}{section.3}% 8
+\BOOKMARK [3][-]{subsubsection.3.2.1}{3.2.1 Tapering}{subsection.3.2}% 9
+\BOOKMARK [3][-]{subsubsection.3.2.2}{3.2.2 Spatial partitioning}{subsection.3.2}% 10
+\BOOKMARK [2][-]{subsection.3.3}{3.3 Sparse precision methods}{section.3}% 11
+\BOOKMARK [3][-]{subsubsection.3.3.1}{3.3.1 LatticeKrig}{subsection.3.3}% 12
+\BOOKMARK [3][-]{subsubsection.3.3.2}{3.3.2 Gaussian Markov random field approximations by SPDE}{subsection.3.3}% 13
+\BOOKMARK [3][-]{subsubsection.3.3.3}{3.3.3 The nearest neighbor Gaussian process}{subsection.3.3}% 14
+\BOOKMARK [1][-]{section.4}{4 Likelihood approximations in the spectral domain}{}% 15
+\BOOKMARK [2][-]{subsection.4.1}{4.1 Whittle\220s likelihood}{section.4}% 16
