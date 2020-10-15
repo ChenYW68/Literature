@@ -430,6 +430,21 @@ $f(s) = \sum_{k = 1}^{K}h_{k}(s)w_{k}^{\star}$, and let $\boldsymbol{w}^{\star} 
 \end{equation}
 where $\boldsymbol{\Sigma}(\cdot; \boldsymbol{\theta}) = \boldsymbol{\tilde{C}}_1(\cdot; \boldsymbol{\theta}_1) +
 \boldsymbol{H}\boldsymbol{\tilde{C}}_2(\cdot; \boldsymbol{\theta}_1)\boldsymbol{H}^\prime + \tau^2\boldsymbol{I}.$
+
+Let $\boldsymbol{A} = \boldsymbol{\tilde{C}}_1 + \tau^2\boldsymbol{I}$, and by applying the Sherman-Woodbury-Morrison formula for inverse matrices, we obtain:
+\begin{equation}
+\begin{aligned}
+  \boldsymbol{\Sigma}(\cdot; \boldsymbol{\theta})^{-1} = & \boldsymbol{A}^{-1} - \boldsymbol{A}^{-1}\boldsymbol{H}^\prime 
+  \left(\boldsymbol{\tilde{C}}_2^{-1} + \boldsymbol{H}^\prime\boldsymbol{A}^{-1}\boldsymbol{H}\right)^{-1}\boldsymbol{H}^\prime\boldsymbol{A}^{-1}
+\end{aligned}
+\end{equation}
+On the other hand, the determinant can be computed using
+\begin{equation}
+\begin{aligned}
+  \text{det}\{\boldsymbol{\Sigma}\} = &  \text{det}\{\boldsymbol{\tilde{C}}_2^{-1} + + \boldsymbol{H}^\prime\boldsymbol{A}^{-1}\boldsymbol{H}\}\text{det}\{\boldsymbol{\tilde{C}}_2^{-1}\}^{-1}\text{det}\{\boldsymbol{A}\}
+\end{aligned}
+\end{equation}
+
  \item [2)] Ideas for Problem 2: Similar to \href{https://chenyw68.github.io/Literature/[2012]A full scale approximation of covariance functions for large spatial data sets.pdf}{\cite{sang2012full}},
 \begin{equation}
     \begin{aligned}
@@ -445,7 +460,6 @@ y(s) = \sum_{r = 1}^{R}\sum_{k = 1}^{K_r}h_{ri}(s)w_{rk}^{\star}  + \epsilon(s)
 \end{equation}
 where $\boldsymbol{w}_r^{\star} = \left(w_{r, 1}^{\star}, \cdots, w_{r, K_r}^{\star}\right)^\prime \sim NNGP\left(\boldsymbol{0}, \boldsymbol{\tilde{C}}_r(\cdot; \boldsymbol{\theta}_r)\right)$.
 \end{itemize}
-
 
 %----------------------------------------------------------------------------------------
 %\bibliographystyle{achemso}
