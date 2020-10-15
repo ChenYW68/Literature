@@ -223,7 +223,7 @@ LatticeKrig &   $\surd$     &   $\times$    &   $\times$    \\
 \hline
 Whittle’s approximation &   $\times$      &   $\times$    &    $\times$   \\
 \hline
-\end{tabular}  
+\end{tabular}
   \label{table:Scope}
 \end{table}
 
@@ -335,7 +335,7 @@ LatticeKrig (LK, \href{https://chenyw68.github.io/Literature/[2015]A Multiresolu
 \end{itemize}
 
 \subsubsection{\href{http://www.r-inla.org/}{Gaussian Markov random field approximations by SPDE}}
-\href{https://chenyw68.github.io/Literature/[2005]Gaussian markov random fields theory and applications.pdf}{\citet{rue2005gaussian}} rigorously suggest to approximate \textcolor[rgb]{0.50,0.50,0.50}{Gaussian random fields} through \textcolor[rgb]{0.50,0.50,0.50}{Markov fields} with a huge increase in speed for the simulations, and then \href{https://chenyw68.github.io/Literature/[2011]An explicit link between GF and GMRFs the SPDE approach.pdf}{\citet{lindgren2011explicit}} show the construction of the corresponding GMRFs can be used to represent the Matérn field on a triangulated lattice (i.e. the finite element construction). 
+\href{https://chenyw68.github.io/Literature/[2005]Gaussian markov random fields theory and applications.pdf}{\citet{rue2005gaussian}} rigorously suggest to approximate \textcolor[rgb]{0.50,0.50,0.50}{Gaussian random fields} through \textcolor[rgb]{0.50,0.50,0.50}{Markov fields} with a huge increase in speed for the simulations, and then \href{https://chenyw68.github.io/Literature/[2011]An explicit link between GF and GMRFs the SPDE approach.pdf}{\citet{lindgren2011explicit}} show the construction of the corresponding GMRFs can be used to represent the Matérn field on a triangulated lattice (i.e. the finite element construction).
 
 Similar to FRK or LatticeKrig, the spatial process $w(s)$ in model (\ref{model}) is represented by the basis function,  this method
 use piecewise linear functions on a triangulation of the domain as basis functions $h(\cdot)$ in (\ref{FRK}), and then this yields sparse matrices $\boldsymbol{C}$ and $\boldsymbol{G}$ such that the appropriate precision matrix for the weights $\boldsymbol{w}^{\star}$ is given by (see \href{https://chenyw68.github.io/Literature/[2015]Spatial and Spatio temporal Bayesian Models with R INLA.pdf}{\citep{blangiardo2015spatial}})
@@ -363,9 +363,9 @@ using spatially varying parameters), Gaussian random fields with oscillating cor
 \subsubsection{\href{https://chenyw68.github.io/Literature[2020]spNNGP R package for Nearest Neighbor Gaussian Process models.pdf}{The nearest neighbor Gaussian process}}
 Similar to the pre-defined knots for Gaussian predictive processes, the starting point of nearest neighbor Gaussian process (NNGP) approach is to choose a fixed collection (e.g. $\boldsymbol{S}$) of distinct locations in $\boldsymbol{D}$, where $\boldsymbol{S}$ need not coincide with or be apart of the
 observed locations, so its size $k$ need not equal the size of the dataset $n$ (or \textcolor[rgb]{0.50,0.50,0.50}{even larger than the size $n$}). The set $\boldsymbol{S}$ is called as reference set by
-\href{https://chenyw68.github.io/Literature/[2016]Hierarchical nearest-neighbor Gaussian process models for large geostatistical datasets.pdf}{\cite{datta2016hierarchical}}. 
+\href{https://chenyw68.github.io/Literature/[2016]Hierarchical nearest-neighbor Gaussian process models for large geostatistical datasets.pdf}{\cite{datta2016hierarchical}}.
 
-A directed acyclic graph is defined on the reference set $\boldsymbol{S}$, and then the joint distribution of spatial process $w(s)$ from the reference set is represented by the product of conditional densities which is motivated by Vecchia’s approximation \citep{vecchia1988estimation} ideas, where a careful choice of suitable conditional sets is required, and this conditional set is constrained to be the $m$ nearest neighbors by the NNGP approach and thereby facilitating computation in estimation and prediction problem (for more details on those problems, see \href{https://chenyw68.github.io/Literature/[2017]Applying Nearest Neighbor Gaussian Processes to Massive Spatial Data Sets.pdf}{\citep{finley2017applying}} and \href{https://chenyw68.github.io/Literature/[2019]Efficient algorithms for bayesian nearest neighbor gaussian processes.pdf}{\cite{finley2019efficient}}
+A directed acyclic graph is defined on the reference set $\boldsymbol{S}$, and then the joint distribution of spatial process $w(s)$ from the reference set is represented by the product of conditional densities which is motivated by Vecchia’s approximation \citep{vecchia1988estimation} ideas, where a careful choice of suitable conditional sets is required, and this conditional set is constrained to be the $m$ nearest neighbors by the NNGP approach and thereby facilitating computation in estimation and prediction problem (for more details on those problems, see Its \href{https://chenyw68.github.io/Literature/[2016]Hierarchical nearest-neighbor Gaussian process models for large geostatistical datasets-Appdix.pdf}{Appendix} and \href{https://chenyw68.github.io/Literature/[2017]Applying Nearest Neighbor Gaussian Processes to Massive Spatial Data Sets.pdf}{\citep{finley2017applying}} and \href{https://chenyw68.github.io/Literature/[2019]Efficient algorithms for bayesian nearest neighbor gaussian processes.pdf}{\cite{finley2019efficient}}
 ). Based on these results, the NNGP can be well-defined.
 
 %is defined from the conditional specification of the joint distribution of spatial process $w(s)$ in (\ref{model}), i.e. the joint distribution is
@@ -378,6 +378,20 @@ A directed acyclic graph is defined on the reference set $\boldsymbol{S}$, and t
 \href{https://chenyw68.github.io/Literature/[2016]Nonseparable dynamic NNGP models for large spatio-temporal data.pdf}{\cite{datta2016nonseparable}}) and non-stationary process(\href{https://chenyw68.github.io/Literature/[2020]Computationally efficient nonstationary nearest-neighborGaussian process models using data-driven techniques.pdf}{\cite{konomi2019computationally}}), \href{https://chenyw68.github.io/Literature/[2020-formal]Bayesian inference for high dimensional nonstationary Gaussian processes.pdf}{\citep{risser2020bayesian}}.
 \end{itemize}
 
+Three distance criteria:
+\begin{align}
+D_{\mathrm{KL}}(\hat{\mathbf{\Sigma}}, \mathbf{\Sigma}) &=\frac{1}{2}\left[\operatorname{trace}\left(\hat{\mathbf{\Sigma}}^{-1} \mathbf{\Sigma}\right)- p +\log |\hat{\mathbf{\Sigma}}|-\log |\mathbf{\Sigma}|\right] \\
+D_{\mathrm{B}}(\hat{\mathbf{\Sigma}}, \mathbf{\Sigma}) &=\frac{1}{2} \log |\tilde{\mathbf{\Sigma}}|-\frac{1}{4}\log | \hat{\mathbf{\Sigma}} |-\frac{1}{4} \log | \mathbf{\Sigma} |, \quad \tilde{\mathbf{\Sigma}}=[\mathbf{\Sigma}+\hat{\mathbf{\Sigma}}] / 2 \\
+D_{\mathrm{F}}(\hat{\mathbf{\Sigma}}, \mathbf{\Sigma}) &=\sqrt{\operatorname{trace}\left[(\hat{\mathbf{\Sigma}}-\mathbf{\Sigma})(\hat{\mathbf{\Sigma}}-\mathbf{\Sigma})^{\prime}\right]}
+\end{align}
+
+\begin{figure}[H]
+{\includegraphics[width=8cm]{Figures/nnGP1.pdf} }
+{\includegraphics[width=8cm]{Figures/nnGP2.pdf} }
+\vspace{1em}
+\caption{The K-L distance, the Bhattacharyya distance and the Frobenius norm from the estimated covariance
+matrix to the true covariance matrix for the Matérn family with smoothness parameters $\nu = \frac{1}{2}$ and different spatial range parameters $\phi$ by NNGP.}\label{fig:nnGP1}
+\end{figure}
 %----------------------------------------------------------------------------------------
 %\bibliographystyle{achemso}
 \bibliography{summary_spatial}
