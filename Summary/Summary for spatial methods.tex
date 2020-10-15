@@ -28,20 +28,18 @@ headinclude,footinclude, % Extra spacing for the header and footer
 BCOR5mm, % Binding correction
 ]{scrartcl}
 \input{structure.tex} % Include the structure.tex file which specified the document structure and layout
-
-\hyphenation{Fortran hy-phen-ation} % Specify custom hyphenation points in words with dashes where you would like hyphenation to occur, or alternatively, don't put any dashes in a word to stop hyphenation altogether
+% Specify custom hyphenation points in words with dashes where you would like hyphenation to occur, or alternatively, don't put any dashes in a word to stop hyphenation altogether
 
 %----------------------------------------------------------------------------------------
 %	TITLE AND AUTHOR(S)
 %----------------------------------------------------------------------------------------
 
-\title{\normalfont\spacedallcaps{Understanding of spatial problem for Large Datasets}} % The article title
+\title{{A summary of some mainstream spatial statistical methods for large datasets}} % The article title \normalfont\spacedallcaps
 
 %\subtitle{Subtitle} % Uncomment to display a subtitle
-
 \author{{Yewen Chen}} %\spacedlowsmallcaps The article author(s) - author affiliations need to be specified in the AUTHOR AFFILIATIONS block
 
-{\small \time{}}
+\date{\normalsize{October 13, 2020}}
  % An optional date to appear under the author(s)
 
 %----------------------------------------------------------------------------------------
@@ -100,7 +98,6 @@ BCOR5mm, % Binding correction
 \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
 \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
 \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-
 
 \begin{document}
 \renewcommand{\UrlFont}{\small\tt}
@@ -187,10 +184,11 @@ Model:
 \href{https://chenyw68.github.io/Literature/[2016]On nearest neighbor Gaussian process models for massive spatial data.pdf}{2016b},
 \href{https://chenyw68.github.io/Literature/[2016]Nonseparable dynamic NNGP models for large spatio-temporal data.pdf}{2016c},
 \href{https://chenyw68.github.io/Literature/[2019]Efficient algorithms for bayesian nearest neighbor gaussian processes.pdf}{2019}) by conditional distributions;
-  \item [5)] Spectral method: \href{https://scholar.google.com/citations?user=xPuzEj8AAAAJ&hl=zh-CN}{Montserrat Fuentes} and \href{http://guinness.cals.cornell.edu/}{Joe Guinness}( Circulant embedding, \href{https://chenyw68.github.io/Literature/[2017]Circulant Embedding of Approximate Covariances for Inference From Gaussian Data on Large Lattices.pdf}{2017} and Periodic Embeddings,  \href{https://chenyw68.github.io/Literature/[2007]Approximate Likelihood for Large Irregularly Spaced Spatial Data.pdf}{2007},  \href{https://chenyw68.github.io/Literature/[2020]Spectral Density Estimation for Random Fields via Periodic Embeddings.pdf}{2019}).
+  \item [5)] Spectral method: \href{https://scholar.google.com/citations?user=xPuzEj8AAAAJ&hl=zh-CN}{Montserrat Fuentes} and \href{http://guinness.cals.cornell.edu/}{Joe Guinness}( Circulant embedding, \href{https://chenyw68.github.io/Literature/[2017]Circulant Embedding of Approximate Covariances for Inference From Gaussian Data.pdf}{2017} and Periodic Embeddings,  \href{https://chenyw68.github.io/Literature/[2007]Approximate Likelihood for Large Irregularly Spaced Spatial Data.pdf}{2007},  \href{https://chenyw68.github.io/Literature/[2020]Spectral Density Estimation for Random Fields via Periodic Embeddings.pdf}{2019}).
   \item [6)] Discrete process convolutions. \href{https://scholar.google.com/citations?user=0FDdexMAAAAJ&hl=zh-CN}{Dave Higdon}(\href{https://chenyw68.github.io/Literature/[2002]Space and Space-Time Modeling Using Process Convolutions.pdf}{2002});
       \href{https://users.soe.ucsc.edu/~bruno/}{Bruno Sansó}(\href{https://chenyw68.github.io/Literature/[2009]A Spatio Temporal Model for Mean Anomaly and Trend Fields of North Atlantic Sea Surface Temperature.pdf}{2009}); \href{https://scholar.google.com/citations?user=qKdSQUsAAAAJ&hl=en}{Francky Fouedjio}(\href{https://chenyw68.github.io/Literature/[2016]A generalized convolution model and estimation for non-stationary random functions.pdf}{2016}).
-  \item [7)] Vecchia’s approximation: \href{https://chenyw68.github.io/Literature/[2020]Vecchia laplace approximations of generalized gaussian processes.pdf}{\cite{zilber2019vecchia}}, \href{https://chenyw68.github.io/Literature/[2020]Vecchia Approximations of Gaussian-Process Predictions.pdf}{\cite{katzfuss2020vecchia}} and \href{https://chenyw68.github.io/Literature/[2020]Hierarchical sparse Cholesky decomposition with applications to high-dimensional spatio-temporal filtering.pdf}{\cite{jurek2020hierarchical}}.
+  \item [7)] \href{https://chenyw68.github.io/Literature/[2016]laGP.pdf}{Local approximate Gaussian processes}:  \href{https://bobby.gramacy.com/research/}{Robert B. Gramacy}, \href{https://chenyw68.github.io/Literature/[2014]Local Gaussian Process Approximation for Large Computer Experiments.pdf}{\citep{gramacy2015local}}
+  \item [8)] Vecchia’s approximation: \href{https://chenyw68.github.io/Literature/[2020]Vecchia laplace approximations of generalized gaussian processes.pdf}{\cite{zilber2019vecchia}}, \href{https://chenyw68.github.io/Literature/[2020]Vecchia Approximations of Gaussian-Process Predictions.pdf}{\cite{katzfuss2020vecchia}} and \href{https://chenyw68.github.io/Literature/[2020]Hierarchical sparse Cholesky decomposition with applications to spatio-temporal filtering.pdf}{\cite{jurek2020hierarchical}}.
 \end{itemize}
 
 
@@ -229,7 +227,6 @@ Whittle’s approximation &   $\times$      &   $\times$    &    $\times$   \\
 \end{table}
 
 Other scholars:\href{https://www.stat.missouri.edu/people/wikle}{Christopher K. Wikle},
-\href{https://bobby.gramacy.com/research/}{Robert B. Gramacy},
 \href{https://www.counterpointstat.com/bradleycarlin.html}{Bradley P. Carlin},
 \href{https://cemse.kaust.edu.sa/stochproc}{David Bolin},
 \href{https://gufaculty360.georgetown.edu/s/contact/00336000014SrlEAAS/jonathan-stroud}{Jonathan R. Stroud},
@@ -253,7 +250,7 @@ Other scholars:\href{https://www.stat.missouri.edu/people/wikle}{Christopher K. 
 %\textcolor[rgb]{1.00,0.00,1.00}{Comment:}
 The spectral methods are computationally efficient by avoiding the calculation of determinants and can be easily adapted to model nonstationary processes as a mixture of independent stationary processes.
 
-\href{https://chenyw68.github.io/Literature/[2007]Approximate Likelihood for Large Irregularly Spaced Spatial Data.pdf}{\cite{fuentes2007approximate}}, \href{https://chenyw68.github.io/Literature/[2020]Spectral Density Estimation for Random Fields via Periodic Embeddings.pdf}{\citep{guinness2019spectral}} and \href{https://chenyw68.github.io/Literature/[2017]Circulant Embedding of Approximate Covariances for Inference From Gaussian Data on Large Lattices.pdf}{\citep{guinness2017circulant}} propose the use of small domain expansions and imputing data in a periodic fashion on the expanded lattice and  presented a version of Whittle’s approximation to the Gaussian negative log-likelihood by introducing a lattice process which can be used to deal with irregularly spaced data. Additional computational savings were obtained by truncating the spectral representation of the lattice process. The calculation requires $O(m \log_2 m + n)$ operations where $m$ is lattice size. However, the flexibility of the spectral methods mentioned above are disputable in prediction with out of sample data, since the expanded lattice is pre-difined.
+\href{https://chenyw68.github.io/Literature/[2007]Approximate Likelihood for Large Irregularly Spaced Spatial Data.pdf}{\cite{fuentes2007approximate}}, \href{https://chenyw68.github.io/Literature/[2020]Spectral Density Estimation for Random Fields via Periodic Embeddings.pdf}{\citep{guinness2019spectral}} and \href{https://chenyw68.github.io/Literature/[2017]Circulant Embedding of Approximate Covariances for Inference From Gaussian Data.pdf}{\citep{guinness2017circulant}} propose the use of small domain expansions and imputing data in a periodic fashion on the expanded lattice and  presented a version of Whittle’s approximation to the Gaussian negative log-likelihood by introducing a lattice process which can be used to deal with irregularly spaced data. Additional computational savings were obtained by truncating the spectral representation of the lattice process. The calculation requires $O(m \log_2 m + n)$ operations where $m$ is lattice size. However, the flexibility of the spectral methods mentioned above are disputable in prediction with out of sample data, since the expanded lattice is pre-difined.
 %\href{https://chenyw68.github.io/Literature/[2020]Bayesian Inference for Big Spatial Data Using Non-stationary Spectral Simulation.pdf}{\citep{yang2020bayesian}}
 
 \section{Likelihood approximations in the spatial domain}
@@ -319,7 +316,7 @@ where $\boldsymbol{H}_d$ is a matrix of spatial basis function for subregions $d
  \item [1)] Notice that, in (\ref{model2}) each subregion shares common $\boldsymbol{\beta}$ and $\boldsymbol{w}$ parameters which allows smoothing across subregions in spite of the independence assumption. Further, the assumption of independence across subregions effectively creates a block-diagonal structure for $\boldsymbol{\Sigma}$ and allows the likelihood to be computed in parallel (with one node per subregion), thereby facilitating computation.
  \item [2)] The key to implementing the spatial partitioning approach is the choice of partition and the literature is replete with various options.
   A priori methods to define the spatial
-partitioning include partitioning the region into equal areas (\href{https://chenyw68.github.io/Literature/[2011]Covariance approximation for large multivariate spatial data sets.pdf}{\citep{sang2011covariance}}), partitioning based on centroid clustering (\href{https://chenyw68.github.io/Literature/[2005]Analyzing nonstationary spatial data using piecewise Gaussian processes.pdf}{\citep{kim2005analyzing}}), hierarchical clustering based on spatial gradients (\href{https://chenyw68.github.io/Literature/[2017]Nonstationary Gaussian Process Models Using Spatial Hierarchical Clustering from Finite Differences.pdf}{\citep{heaton2017nonstationary}}). Alternatively, model-based approaches to spatial partitioning include treed regression(\href{https://chenyw68.github.io/Literature/[2014]Adaptive Bayesian Nonstationary Modeling for Large Spatial Datasets Using Covariance Approximations.pdf}{\citep{konomi2014adaptive}}) and mixture modeling (\href{https://chenyw68.github.io/Literature/[2014]A multivariate spatial mixture model for areal data.pdf}{\citet{neelon2014multivariate}}), but these approaches typically require more computation.
+partitioning include partitioning the region into equal areas (\href{https://chenyw68.github.io/Literature/[2011]Covariance approximation for large multivariate spatial data sets.pdf}{\citep{sang2011covariance}}), partitioning based on centroid clustering (\href{https://chenyw68.github.io/Literature/[2005]Analyzing nonstationary spatial data using piecewise Gaussian processes.pdf}{\citep{kim2005analyzing}}), hierarchical clustering based on spatial gradients (\href{https://chenyw68.github.io/Literature/[2017]Nonstationary GP Models Using Spatial Hierarchical Clustering from Finite Differences.pdf}{\citep{heaton2017nonstationary}}). Alternatively, model-based approaches to spatial partitioning include treed regression(\href{https://chenyw68.github.io/Literature/[2014]Adaptive Bayesian Nonstationary Modeling for Large Spatial Datasets.pdf}{\citep{konomi2014adaptive}}) and mixture modeling (\href{https://chenyw68.github.io/Literature/[2014]A multivariate spatial mixture model for areal data.pdf}{\citet{neelon2014multivariate}}), but these approaches typically require more computation.
 \end{itemize}
 
 
@@ -379,7 +376,7 @@ A directed acyclic graph is defined on the reference set $\boldsymbol{S}$, and t
 \begin{itemize}
  \item [1)] Total operations is $O((n + k)m^3)$ where $m (\approx 20)$ is the size of conditioning set or neighbor set.
  \item [2)] NNGP can also be extended to large spatio-temporal data (
-\href{https://chenyw68.github.io/Literature/[2016]Nonseparable dynamic NNGP models for large spatio-temporal data.pdf}{\cite{datta2016nonseparable}}) and non-stationary process(\href{https://chenyw68.github.io/Literature/[2020]Computationally efficient nonstationary nearest-neighborGaussian process models using data-driven techniques.pdf}{\cite{konomi2019computationally}}), \href{https://chenyw68.github.io/Literature/[2020-formal]Bayesian inference for high dimensional nonstationary Gaussian processes.pdf}{\citep{risser2020bayesian}}.
+\href{https://chenyw68.github.io/Literature/[2016]Nonseparable dynamic NNGP models for large spatio-temporal data.pdf}{\cite{datta2016nonseparable}}) and non-stationary process(\href{https://chenyw68.github.io/Literature/[2020]Computationally efficient nonstationary NNGP models using data-driven techniques.pdf}{\cite{konomi2019computationally}}), \href{https://chenyw68.github.io/Literature/[2020-formal]Bayesian inference for high dimensional nonstationary Gaussian processes.pdf}{\citep{risser2020bayesian}}.
 \end{itemize}
 
 
