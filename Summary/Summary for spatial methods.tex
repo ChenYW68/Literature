@@ -39,9 +39,10 @@ BCOR5mm, % Binding correction
 
 %\subtitle{Subtitle} % Uncomment to display a subtitle
 
-\author{\spacedlowsmallcaps{Yewen Chen}} % The article author(s) - author affiliations need to be specified in the AUTHOR AFFILIATIONS block
+\author{{Yewen Chen}} %\spacedlowsmallcaps The article author(s) - author affiliations need to be specified in the AUTHOR AFFILIATIONS block
 
-\date{} % An optional date to appear under the author(s)
+{\small \time{}}
+ % An optional date to appear under the author(s)
 
 %----------------------------------------------------------------------------------------
 \usepackage[margin=0.8in]{geometry}
@@ -168,7 +169,7 @@ equation:
 \end{equation}
 where $\boldsymbol{S}_{s_0} = \left(\boldsymbol{\Sigma}(s_0, s_1), \dots, \boldsymbol{\Sigma}(s_0, s_n)\right)^\prime$.
 
-However, with large or massive data, direct implementation of these statistical process, including parameter etimation by (\ref{loglik}) and interpolation by (\ref{Kriging}), becomes computationally prohibitive, since evaluating the log-likelihood in (\ref{loglik}) and solving the kriging equation (\ref{Kriging}) involve the Cholesky factorization of an $n \times n$ covariance matrix for data of size $n$, which requires $O(n^3)$ operations and $O(n^2)$ memory in general(see \href{https://chenyw68.github.io/Literature/[2012]Advances and Challenges in Space-time Modelling of Natural Events.pdf}{\cite{porcu2012advances}}, \href{https://chenyw68.github.io/Literature/[2012]A full scale approximation of covariance functions for large spatial data sets.pdf}{\cite{sang2012full}}, \href{https://chenyw68.github.io/Literature/[2018]A case study competition among methods for analyzing large spatial data.pdf}{\cite{heaton2019case}}, \href{https://chenyw68.github.io/Literature/[2020]A Fused Gaussian Process Model for Very Large Spatial Data.pdf}{\cite{ma2020fused}}).
+However, with large or massive data, direct implementation of these statistical process, including parameter etimation by (\ref{loglik}) and interpolation by (\ref{Kriging}), becomes computationally prohibitive, since evaluating the log-likelihood in (\ref{loglik}) or solving the kriging equation (\ref{Kriging}) involve the Cholesky factorization of an $n \times n$ covariance matrix for data of size $n$, which requires $O(n^3)$ operations and $O(n^2)$ memory in general(see \href{https://chenyw68.github.io/Literature/[2012]Advances and Challenges in Space-time Modelling of Natural Events.pdf}{\cite{porcu2012advances}}, \href{https://chenyw68.github.io/Literature/[2012]A full scale approximation of covariance functions for large spatial data sets.pdf}{\cite{sang2012full}}, \href{https://chenyw68.github.io/Literature/[2018]A case study competition among methods for analyzing large spatial data.pdf}{\cite{heaton2019case}}, \href{https://chenyw68.github.io/Literature/[2020]A Fused Gaussian Process Model for Very Large Spatial Data.pdf}{\cite{ma2020fused}}).
 
 \section{Several approaches to overcome the computational problem}
 From an \textbf{approximation} point of view, the approximation of the likelihood in either the spatial or spectral domain is fundamental solution to overcome computational obstacles. These solutions focus on model development, the design of efficient and parallel algorithms, and the improvement and efficient use of modern computing platforms (e.g. Using \href{https://hpc.niasra.uow.edu.au/azm/Spatial_GPUs.html}{TensorFlow} and  \href{https://github.com/cdeterman/gpuR}{GPU}).
@@ -258,7 +259,7 @@ The spectral methods are computationally efficient by avoiding the calculation o
 \section{Likelihood approximations in the spatial domain}
 \subsection{Low rank methods}
 \textcolor[rgb]{1.00,0.00,1.00}{Comment:}
-The reduced rank based methods usually fail to accurately capture the local, small scale dependence structure \href{https://chenyw68.github.io/Literature/[2012]A full scale approximation of covariance functions for large spatial data sets.pdf}{\citep{sang2012full}}.
+The reduced rank based methods usually fail to accurately capture the local, small scale dependence structure (see \href{https://chenyw68.github.io/Literature/[2012]A full scale approximation of covariance functions for large spatial data sets.pdf}{\citep{sang2012full}}, \href{https://chenyw68.github.io/Literature/[2008]A modeling approach for large spatial datasets.pdf}{\citep{stein2008modeling}} and \href{https://chenyw68.github.io/Literature/[2009]Improving the performance of predictive process modeling for large datasets.pdf}{\citep{finley2009improving}}).
 %The subsequent multiresolution (MR) methods (e.g. LatticeKrig, Multiresolution Approximations) compensates for this problem to some extent.
 \subsubsection{\href{https://chenyw68.github.io/Literature/[2017]An R Package for Spatial and Spatio-Temporal Prediction with Large Datasets(FRK).pdf}{Fixed rank Kriging}}
 FRK (\href{https://chenyw68.github.io/Literature/[2006]Spatial prediction for massive datasets.pdf}{\citep{cressie2006spatial}}, \href{https://chenyw68.github.io/Literature/[2008]Fixed rank kriging for very large spatial data sets.pdf}{\citep{cressie2008fixed}}) aims to approximate the spatial process $w(s)$ in (\ref{model}) by a linear combination of $K$ ($\ll n$) \textbf{multi-resolution bisquare} basis functions: \begin{equation}
@@ -340,15 +341,18 @@ LatticeKrig (LK, \href{https://chenyw68.github.io/Literature/[2015]A Multiresolu
 Similar to FRK or LatticeKrig, the spatial process $w(s)$ in model (\ref{model}) is represented by the basis function,  this method
 use piecewise linear functions on a triangulation of the domain as basis functions $h(\cdot)$ in (\ref{FRK}), and then this yields sparse matrices $\boldsymbol{C}$ and $\boldsymbol{G}$ such that the appropriate precision matrix for the weights $\boldsymbol{w}^{\star}$ is given by (see \href{https://chenyw68.github.io/Literature/[2015]Spatial and Spatio temporal Bayesian Models with R INLA.pdf}{\citep{blangiardo2015spatial}})
 \begin{equation*}
-\boldsymbol{\Omega} = \tau^2(k^4\boldsymbol{C} + 2k^2\boldsymbol{G} + \boldsymbol{G}\boldsymbol{C}^{-1}\boldsymbol{G}).
+\boldsymbol{\Omega} = \tau^2(\kappa^4\boldsymbol{C} + 2\kappa^2\boldsymbol{G} + \boldsymbol{G}\boldsymbol{C}^{-1}\boldsymbol{G}).
 \end{equation*}
 One particular advantage of this approach is that
-assigning the Gaussian distribution $\boldsymbol{w}^{\star} \sim \texttt{N}(\boldsymbol{0}, \boldsymbol{\Omega}^{-1})$ can generate continuously defined functions $\mathcal{X}(s) = \sum_{k = 1}^{m}h_k(s)w_k^{\star} $ that are approximative solutions to the following SPDE ( in a stochastically weak sense):
+assigning the Gaussian distribution $\boldsymbol{w}^{\star} \sim \texttt{N}(\boldsymbol{0}, \boldsymbol{\Omega}^{-1})$ can generate continuously defined functions $\mathcal{X}(s) = \sum_{i = 1}^{m}h_i(s)w_k^{\star} $ that are approximative solutions to the following SPDE ( in a stochastically weak sense):
 \begin{equation*}
-  (\gamma^2 - \Delta)^{\alpha/2}\left(\tau(\mathcal{X}(s))\right) = \mathcal{W}, ~~~ s \in \boldsymbol{D},
+  (\kappa^2 - \Delta)^{\alpha/2}\left(\tau(\mathcal{X}(s))\right) = \mathcal{W}, ~~~ s \in \boldsymbol{D},
 \end{equation*}
-where $\Delta$ is the Laplacian, $\gamma$ is the spatial scale parameter, $\alpha$ controls the smoothness of the
-realisations, $\tau$ controls the variance. The right-hand side of the equation, $\mathcal{W}(s)$, is a Gaussian spatial white noise process. \textcolor[rgb]{0.50,0.50,0.50}{Note that the stationary solutions on $\mathcal{R}^d$ have Matern covariances}.
+where $\Delta$ is the Laplacian, $\kappa$ is the spatial scale parameter, $\alpha$ controls the smoothness of the
+realisations, $\tau$ controls the variance. The right-hand side of the equation, $\mathcal{W}(s)$, is a Gaussian spatial white noise process. Note that the stationary solutions on $\mathcal{R}^d$ is \textcolor[rgb]{0.50,0.50,0.50}{the stationary Gaussian field $\mathcal{X}(s)$ with Matern covariances function} given by
+\begin{equation}
+\operatorname{Cov}\left(\mathcal{X}\left(s_{i}\right), \mathcal{X}\left(s_{j}\right)\right)= \frac{\sigma^{2}}{\Gamma(\lambda) 2^{\lambda-1}}\left(\kappa\left\|s_{i}-s_{j}\right\|\right)^{\lambda} K_{\lambda}\left(\kappa\left\|s_{i}-s_{j}\right\|\right)
+\end{equation}
 
 The drawback of \href{https://chenyw68.github.io/Literature/[2011]An explicit link between GF and GMRFs the SPDE approach.pdf}{\citet{lindgren2011explicit}} is that we can only find the explicit form of GMRFs for those Gaussian random fields that have a Matérn covariance structure at certain integer smoothnesses. Subsequently, \href{https://chenyw68.github.io/Literature/https://chenyw68.github.io/Literature/[2020]The Rational SPDE Approach for Gaussian Random Fields With General Smoothness.pdf}{\cite{bolin2020rational}} extend this method to fractional order by the rational approximation.
 
@@ -378,6 +382,16 @@ A directed acyclic graph is defined on the reference set $\boldsymbol{S}$, and t
 \href{https://chenyw68.github.io/Literature/[2016]Nonseparable dynamic NNGP models for large spatio-temporal data.pdf}{\cite{datta2016nonseparable}}) and non-stationary process(\href{https://chenyw68.github.io/Literature/[2020]Computationally efficient nonstationary nearest-neighborGaussian process models using data-driven techniques.pdf}{\cite{konomi2019computationally}}), \href{https://chenyw68.github.io/Literature/[2020-formal]Bayesian inference for high dimensional nonstationary Gaussian processes.pdf}{\citep{risser2020bayesian}}.
 \end{itemize}
 
+
+\section{Two exploratory limitations of the NNGP approach}
+\subsection{Exploratory analysis }
+\begin{itemize}
+ \item [1)]Problem 1: Since when we use the product of conditional densities to represent the joint distribution of spatial process $w(s)$ from the reference set and those conditional sets are constrained to be the $m$ nearest neighbors, some \textbf{large scale dependence} maybe lost.
+ \item [2)]Problem 2: From an application point of view, the reference set $\boldsymbol{S}$ cannot be infinite because we need to solve neighbor set for every location, so the performance of the NNGP approximation depends on the size of the spatial dependence range relative to the spacing of the reference set, that maybe lead to the quality of the NNGP approximation gets worse when \textbf{the spatial dependence range gets shorter}.
+\end{itemize}
+
+We considered model (\ref{model}) with $\beta = 0, \sigma^2 = 5, \tau^2 = 1$, and the Matern correlation function for the spatial random effects , $\boldsymbol{w}$, with a constant smoothness parameter $\nu = 0.5$ and varying spatial range parameters.
+
 Three distance criteria:
 \begin{align}
 D_{\mathrm{KL}}(\hat{\mathbf{\Sigma}}, \mathbf{\Sigma}) &=\frac{1}{2}\left[\operatorname{trace}\left(\hat{\mathbf{\Sigma}}^{-1} \mathbf{\Sigma}\right)- p +\log |\hat{\mathbf{\Sigma}}|-\log |\mathbf{\Sigma}|\right] \\
@@ -390,8 +404,44 @@ D_{\mathrm{F}}(\hat{\mathbf{\Sigma}}, \mathbf{\Sigma}) &=\sqrt{\operatorname{tra
 {\includegraphics[width=8cm]{Figures/nnGP2.pdf} }
 \vspace{1em}
 \caption{The K-L distance, the Bhattacharyya distance and the Frobenius norm from the estimated covariance
-matrix to the true covariance matrix for the Matérn family with smoothness parameters $\nu = \frac{1}{2}$ and different spatial range parameters $\phi$ by NNGP.}\label{fig:nnGP1}
+matrix to the true covariance matrix for the Matérn family with smoothness parameters $\nu = \frac{1}{2}$ and different spatial range parameters $\phi$. And this true covariance matrix at $500$ random locations from $[0, 100] \times [0, 100]$ was estimated by the NNGP with $m = 20$.}\label{fig:nnGP}
 \end{figure}
+\textbf{Figure \ref{fig:nnGP} shows that the large-scale spatial dependencies can not be well-captured by the NNGP}.
+
+\subsection{Improvement project}
+\begin{itemize}
+ \item [1)] Ideas for Problem 1: A NNGP $w(s)$ used to capture the \textcolor[rgb]{0.50,0.50,0.50}{local, small scale dependence structure} plus a smooth NNGP $f(s)$ used to capture the \textcolor[rgb]{0.50,0.50,0.50}{large scale  dependence structure}.
+\begin{equation}
+\begin{aligned}
+y(s) = w(s) + f(s) + \epsilon(s)
+\end{aligned} \label{DP1}
+\end{equation}
+where $\boldsymbol{w} = \left(w(s_1), \cdots, w(s_n)\right)^\prime \sim NNGP\left(\boldsymbol{0}, \boldsymbol{\tilde{C}}_1(\cdot; \boldsymbol{\theta}_1)\right)$;
+$f(s) = \sum_{k = 1}^{K}h_{k}(s)w_{k}^{\star}$, and let $\boldsymbol{w}^{\star} = \left(w_1^{\star}, \cdots, w_K^{\star}\right)^\prime \sim NNGP\left(\boldsymbol{0}, \boldsymbol{\tilde{C}}_2(\cdot; \boldsymbol{\theta}_2)\right)$ and $h_{k}$ is \textbf{automatically chosen by a given covariance function}, i.e. $\tilde{c}^\prime(k, \mathcal{N}(k))\boldsymbol{\tilde{C}}_2^{-1}\left(\mathcal{N}(k), \mathcal{N}(k)\right)$; $\boldsymbol{\epsilon} = \left(\epsilon(s_1), \cdots, \epsilon(s_n)\right)^\prime \sim N(\boldsymbol{0}, \tau^2\boldsymbol{I})$. And thereby, we have
+\begin{equation}
+\begin{aligned}
+\boldsymbol{y} \sim GP\left(\boldsymbol{0}, \boldsymbol{\Sigma}(\cdot; \boldsymbol{\theta})\right)
+\end{aligned} \label{DP1}
+\end{equation}
+where $\boldsymbol{\Sigma}(\cdot; \boldsymbol{\theta}) = \boldsymbol{\tilde{C}}_1(\cdot; \boldsymbol{\theta}_1) +
+\boldsymbol{H}\boldsymbol{\tilde{C}}_2(\cdot; \boldsymbol{\theta}_1)\boldsymbol{H}^\prime + \tau^2\boldsymbol{I}.$
+ \item [2)] Ideas for Problem 2: Similar to \href{https://chenyw68.github.io/Literature/[2012]A full scale approximation of covariance functions for large spatial data sets.pdf}{\cite{sang2012full}},
+\begin{equation}
+    \begin{aligned}
+       y(s) = w_l(s) + w_s(s) + \epsilon(s)
+    \end{aligned} \label{DP1}
+\end{equation}
+where $w_l$ is a NNGP and $w_s$ is a residual process with covariance function constrained by tapered function.
+ \item [3)] A more thorough solution for both problems: Similar to LatticeKrig, a multiresolution NNGP approximation is  
+ \begin{equation}
+\begin{aligned}
+y(s) = \sum_{r = 1}^{R}\sum_{k = 1}^{K_r}h_{ri}(s)w_{rk}^{\star}  + \epsilon(s)
+\end{aligned} \label{DP1}
+\end{equation}
+where $\boldsymbol{w}_r^{\star} = \left(w_{r, 1}^{\star}, \cdots, w_{r, K_r}^{\star}\right)^\prime \sim NNGP\left(\boldsymbol{0}, \boldsymbol{\tilde{C}}_2(\cdot; \boldsymbol{\theta}_2)\right)$.
+\end{itemize}
+
+
 %----------------------------------------------------------------------------------------
 %\bibliographystyle{achemso}
 \bibliography{summary_spatial}

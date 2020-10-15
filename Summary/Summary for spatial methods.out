@@ -14,3 +14,6 @@
 \BOOKMARK [3][-]{subsubsection.4.3.1}{4.3.1 LatticeKrig}{subsection.4.3}% 14
 \BOOKMARK [3][-]{subsubsection.4.3.2}{4.3.2 Gaussian Markov random field approximations by SPDE}{subsection.4.3}% 15
 \BOOKMARK [3][-]{subsubsection.4.3.3}{4.3.3 The nearest neighbor Gaussian process}{subsection.4.3}% 16
+\BOOKMARK [1][-]{section.5}{5 Two exploratory limitations of the NNGP approach}{}% 17
+\BOOKMARK [2][-]{subsection.5.1}{5.1 Exploratory analysis }{section.5}% 18
+\BOOKMARK [2][-]{subsection.5.2}{5.2 Improvement project}{section.5}% 19

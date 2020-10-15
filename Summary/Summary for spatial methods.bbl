@@ -1,4 +1,4 @@
-\begin{thebibliography}{38}
+\begin{thebibliography}{40}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -86,6 +86,16 @@ A.~Datta, S.~Banerjee, A.~O. Finley, N.~A. Hamm, and M.~Schaap.
   1286, 2016{\natexlab{b}}.
 \newblock URL \url{https://chenyw68.github.io/Literature/[2016]Nonseparable
   dynamic NNGP models for large spatio-temporal data.pdf}.
+
+\bibitem[Finley et~al.(2009)Finley, Sang, Banerjee, and
+  Gelfand]{finley2009improving}
+A.~O. Finley, H.~Sang, S.~Banerjee, and A.~E. Gelfand.
+\newblock Improving the performance of predictive process modeling for large
+  datasets.
+\newblock \emph{Computational statistics \& data analysis}, 53\penalty0
+  (8):\penalty0 2873--2884, 2009.
+\newblock URL \url{https://chenyw68.github.io/Literature/[2009]Improving the
+  performance of predictive process modeling for large datasets.pdf}.
 
 \bibitem[Finley et~al.(2017)Finley, Datta, Cook, Morton, Andersen, and
   Banerjee]{finley2017applying}
@@ -334,6 +344,14 @@ H.~Sang, M.~Jun, and J.~Z. Huang.
 \newblock \emph{The Annals of Applied Statistics}, pages 2519--2548, 2011.
 \newblock URL \url{https://chenyw68.github.io/Literature/[2011]Covariance
   approximation for large multivariate spatial data sets.pdf}.
+
+\bibitem[Stein(2008)]{stein2008modeling}
+M.~L. Stein.
+\newblock A modeling approach for large spatial datasets.
+\newblock \emph{Journal of the Korean Statistical Society}, 37:\penalty0 3--10,
+  2008.
+\newblock URL \url{https://chenyw68.github.io/Literature/[2008]A modeling
+  approach for large spatial datasets.pdf}.
 
 \bibitem[Vecchia(1988)]{vecchia1988estimation}
 A.~V. Vecchia.
