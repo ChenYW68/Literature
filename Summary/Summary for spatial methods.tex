@@ -55,6 +55,7 @@ BCOR5mm, % Binding correction
 \usepackage{relsize}
 \usepackage{hyperref}
 \usepackage{url}
+\usepackage{bbm}
 \hypersetup{
     colorlinks=true,
     linkcolor=blue,
@@ -420,31 +421,66 @@ Figure \ref{fig:nnGP} shows that \textbf{the large-scale spatial dependencies ca
 y(s) = w(s) + f(s) + \epsilon(s)
 \end{aligned} \label{DP1}
 \end{equation}
-where $\boldsymbol{w} = \left(w(s_1), \cdots, w(s_n)\right)^\prime \sim NNGP\left(\boldsymbol{0}, \boldsymbol{\tilde{C}}_1(\cdot; \boldsymbol{\theta}_1)\right)$; by denoting $h_{k}, k = 1, \cdots, K$ as a sequence of fixed basis functions and
-let $f(s) = \sum_{k = 1}^{K}h_{k}(s)w_{k}^{\star}$ and the basis coefficients $\boldsymbol{w}^{\star} = \left(w_1^{\star}, \cdots, w_K^{\star}\right)^\prime \sim NNGP\left(\boldsymbol{0}, \boldsymbol{\tilde{C}}_2(\cdot; \boldsymbol{\theta}_2)\right)$,
-%\textbf{automatically chosen by a given covariance function}, i.e. $\tilde{c}^\prime(k, \mathcal{N}(k))\boldsymbol{\tilde{C}}_2^{-1}\left(\mathcal{N}(k), \mathcal{N}(k)\right)$; 
-$\boldsymbol{\epsilon} = \left(\epsilon(s_1), \cdots, \epsilon(s_n)\right)^\prime \sim N(\boldsymbol{0}, \tau^2\boldsymbol{I})$. And thereby, we have
+%where $\boldsymbol{w} = \left(w(s_1), \cdots, w(s_n)\right)^\prime \sim NNGP\left(\boldsymbol{0}, \boldsymbol{\tilde{C}}_1(\cdot; \boldsymbol{\theta}_1)\right)$; by denoting $h_{k}, k = 1, \cdots, K$ as a sequence of fixed basis functions and
+%let $f(s) = \sum_{k = 1}^{K}h_{k}(s)w_{k}^{\star}$ and the basis coefficients $\boldsymbol{w}^{\star} = \left(w_1^{\star}, \cdots, w_K^{\star}\right)^\prime \sim NNGP\left(\boldsymbol{0}, \boldsymbol{\tilde{C}}_2(\cdot; \boldsymbol{\theta}_2)\right)$,
+%%\textbf{automatically chosen by a given covariance function}, i.e. $\tilde{c}^\prime(k, \mathcal{N}(k))\boldsymbol{\tilde{C}}_2^{-1}\left(\mathcal{N}(k), \mathcal{N}(k)\right)$; 
+%$\boldsymbol{\epsilon} = \left(\epsilon(s_1), \cdots, \epsilon(s_n)\right)^\prime \sim N(\boldsymbol{0}, \tau^2\boldsymbol{I})$. And thereby, we have
+%\begin{equation}
+%\begin{aligned}
+%\boldsymbol{y} \sim GP\left(\boldsymbol{0}, \boldsymbol{\Sigma}(\cdot; \boldsymbol{\theta})\right)
+%\end{aligned} \label{DP1}
+%\end{equation}
+%where $\boldsymbol{\Sigma}(\cdot; \boldsymbol{\theta}) = \boldsymbol{\tilde{C}}_1(\cdot; \boldsymbol{\theta}_1) +
+%\boldsymbol{H}\boldsymbol{\tilde{C}}_2(\cdot; \boldsymbol{\theta}_1)\boldsymbol{H}^\prime + \tau^2\boldsymbol{I}.$
+%
+%Let $\boldsymbol{A} = \boldsymbol{\tilde{C}}_1 + \tau^2\boldsymbol{I}$, and by applying the Sherman-Woodbury-Morrison formula for inverse matrices, we obtain:
+%\begin{equation}
+%\begin{aligned}
+%  \boldsymbol{\Sigma}^{-1} = & \boldsymbol{A}^{-1} - \boldsymbol{A}^{-1}\boldsymbol{H}
+%  \left(\boldsymbol{\tilde{C}}_2^{-1} + \boldsymbol{H}^\prime\boldsymbol{A}^{-1}\boldsymbol{H}\right)^{-1}\boldsymbol{H}^\prime\boldsymbol{A}^{-1}.
+%\end{aligned}
+%\end{equation}
+%On the other hand, the determinant can be computed using
+%\begin{equation}
+%\begin{aligned}
+%  \text{det}\{\boldsymbol{\Sigma}\} = &  \text{det}\{\boldsymbol{\tilde{C}}_2^{-1} + + \boldsymbol{H}^\prime\boldsymbol{A}^{-1}\boldsymbol{H}\}\text{det}\{\boldsymbol{\tilde{C}}_2\}\text{det}\{\boldsymbol{A}\}.
+%\end{aligned}
+%\end{equation}
+Let the reference set $\boldsymbol{S} = \{s_j^{\star}: j = 1, \cdots, K\}$ determined through the grid of the domain, and respectively, denoting  
+$w(s_i)$ and $w^{\star}(s_j)$ as $w_i$ and $w^{\star}_j$. Assuming that $\boldsymbol{w}^{\star} = \left(w_1^{\star}, \cdots, w_K^{\star}\right)^\prime \sim NNGP\left(\boldsymbol{0}, \boldsymbol{\tilde{C}}(\cdot; \boldsymbol{\theta})\right)$ and 
+$$w(s_i) = \left(\mathbbm{1}\left(s_i=k\right) + \mathbbm{1}\left(s_i=k\right)\boldsymbol{c}_{s_i, N(s_i)}^\prime \boldsymbol{C}_{N(s_i)}^{-1}\right)w^{\star}_k  = d_iw^{\star}_k$$
+and then by denoting $h_{k}, k = 1, \cdots, K$ as a sequence of fixed basis functions and setting 
+$$f(s) = \sum_{k = 1}^{K}h_{k}(s)w_{k}^{\star}.$$
+
+Furthermore, 
+\begin{equation}
+\begin{aligned}
+\boldsymbol{y} = \left(\boldsymbol{D} + \boldsymbol{H}\right)\boldsymbol{w}^{\star} + \epsilon(s)
+\end{aligned} \label{DP12}
+\end{equation}
+where $\boldsymbol{D} = \text{diag}\left(d_1, \dots, d_n\right)$ and $\boldsymbol{H} = \left(h_{k}(s)\right)_{1 \leq k \leq K, 1 \leq s \leq n}$. And thereby, we have
 \begin{equation}
 \begin{aligned}
 \boldsymbol{y} \sim GP\left(\boldsymbol{0}, \boldsymbol{\Sigma}(\cdot; \boldsymbol{\theta})\right)
-\end{aligned} \label{DP1}
+\end{aligned} \label{DP13}
 \end{equation}
-where $\boldsymbol{\Sigma}(\cdot; \boldsymbol{\theta}) = \boldsymbol{\tilde{C}}_1(\cdot; \boldsymbol{\theta}_1) +
-\boldsymbol{H}\boldsymbol{\tilde{C}}_2(\cdot; \boldsymbol{\theta}_1)\boldsymbol{H}^\prime + \tau^2\boldsymbol{I}.$
+where $\boldsymbol{\Sigma}(\cdot; \boldsymbol{\theta}) = \left(\boldsymbol{D} + \boldsymbol{H}\right) \boldsymbol{\tilde{C}}(\cdot; \boldsymbol{\theta})\left(\boldsymbol{D} + \boldsymbol{H}\right)^\prime + \tau^2\boldsymbol{I}.$
 
-Let $\boldsymbol{A} = \boldsymbol{\tilde{C}}_1 + \tau^2\boldsymbol{I}$, and by applying the Sherman-Woodbury-Morrison formula for inverse matrices, we obtain:
+Let $\boldsymbol{U} = \boldsymbol{D} + \boldsymbol{H}$, and by applying the Sherman-Woodbury-Morrison formula for inverse matrices (as $n \gg K$), we obtain:
 \begin{equation}
 \begin{aligned}
-  \boldsymbol{\Sigma}^{-1} = & \boldsymbol{A}^{-1} - \boldsymbol{A}^{-1}\boldsymbol{H} 
-  \left(\boldsymbol{\tilde{C}}_2^{-1} + \boldsymbol{H}^\prime\boldsymbol{A}^{-1}\boldsymbol{H}\right)^{-1}\boldsymbol{H}^\prime\boldsymbol{A}^{-1}.
+  \boldsymbol{\Sigma}^{-1} = & \frac{1}{\tau^2}\boldsymbol{I} - \frac{1}{\tau^2}\boldsymbol{U}
+  \left(\boldsymbol{\tau^2\tilde{C}^{-1}} + \boldsymbol{U}^\prime\boldsymbol{U}\right)^{-1}\boldsymbol{U}^\prime.
 \end{aligned}
 \end{equation}
 On the other hand, the determinant can be computed using
 \begin{equation}
 \begin{aligned}
-  \text{det}\{\boldsymbol{\Sigma}\} = &  \text{det}\{\boldsymbol{\tilde{C}}_2^{-1} + + \boldsymbol{H}^\prime\boldsymbol{A}^{-1}\boldsymbol{H}\}\text{det}\{\boldsymbol{\tilde{C}}_2\}\text{det}\{\boldsymbol{A}\}.
+  \text{det}\{\boldsymbol{\Sigma}\} = &  \tau^{2(n - K)} \frac{\text{det}\{\tau^2\boldsymbol{\tilde{C}^{-1}} +  \boldsymbol{U}^\prime\boldsymbol{U}\}}{\text{det}\{\boldsymbol{\tilde{C}^{-1}}\}}.
 \end{aligned}
 \end{equation}
+
+
 
  \item [2)] Ideas for Problem 2: Similar to \href{https://chenyw68.github.io/Literature/[2012]A full scale approximation of covariance functions for large spatial data sets.pdf}{\cite{sang2012full}},
 \begin{equation}

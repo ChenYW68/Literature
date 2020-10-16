@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2020.9.12)  16 OCT 2020 15:59
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2020.9.12)  16 OCT 2020 21:53
 entering extended mode
 **Summary*for*spatial*methods.tex
 ("G:\Github\Literature\Summary\Summary for spatial methods.tex"
@@ -869,7 +869,14 @@ Style option: `fancyvrb' v2.7a, with DG/SPQR fixes, and firstline=lastline fix
 ) (D:\CTEX\MiKTeX\tex\latex\ltxmisc\relsize.sty
 Package: relsize 2003/07/04 ver 3.1
 )
-Package hyperref Info: Option `colorlinks' set `true' on input line 63.
+(D:\CTEX\MiKTeX\tex\latex\bbm\bbm.sty
+Package: bbm 1999/03/15 V 1.2 provides fonts for set symbols - TH
+LaTeX Font Info:    Overwriting math alphabet `\mathbbm' in version `bold'
+(Font)                  U/bbm/m/n --> U/bbm/bx/n on input line 33.
+LaTeX Font Info:    Overwriting math alphabet `\mathbbmss' in version `bold'
+(Font)                  U/bbmss/m/n --> U/bbmss/bx/n on input line 35.
+)
+Package hyperref Info: Option `colorlinks' set `true' on input line 64.
 
 (D:\CTEX\MiKTeX\tex\latex\framed\framed.sty
 Package: framed 2007/10/04 v 0.95: framed or shaded text with page breaks
@@ -885,30 +892,27 @@ LaTeX Warning: Label `DP1' multiply defined.
 
 LaTeX Warning: Label `DP1' multiply defined.
 
-
-LaTeX Warning: Label `DP1' multiply defined.
-
 )
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 102.
-LaTeX Font Info:    ... okay on input line 102.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 102.
-LaTeX Font Info:    ... okay on input line 102.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 102.
-LaTeX Font Info:    ... okay on input line 102.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 102.
-LaTeX Font Info:    ... okay on input line 102.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 102.
-LaTeX Font Info:    ... okay on input line 102.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 102.
-LaTeX Font Info:    ... okay on input line 102.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 102.
-LaTeX Font Info:    ... okay on input line 102.
-LaTeX Font Info:    Try loading font information for T1+qbk on input line 102.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 103.
+LaTeX Font Info:    ... okay on input line 103.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 103.
+LaTeX Font Info:    ... okay on input line 103.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 103.
+LaTeX Font Info:    ... okay on input line 103.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 103.
+LaTeX Font Info:    ... okay on input line 103.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 103.
+LaTeX Font Info:    ... okay on input line 103.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 103.
+LaTeX Font Info:    ... okay on input line 103.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 103.
+LaTeX Font Info:    ... okay on input line 103.
+LaTeX Font Info:    Try loading font information for T1+qbk on input line 103.
  (D:\CTEX\MiKTeX\tex\latex\tex-gyre\t1qbk.fd
 File: t1qbk.fd 2009/09/25 v1.2 font definition file for T1/qbk
 )
 \AtBeginShipoutBox=\box34
-Package hyperref Info: Link coloring ON on input line 102.
+Package hyperref Info: Link coloring ON on input line 103.
 
 (D:\CTEX\MiKTeX\tex\latex\hyperref\nameref.sty
 Package: nameref 2010/04/30 v2.40 Cross-referencing by name of section
@@ -919,14 +923,14 @@ Package: gettitlestring 2010/12/03 v1.4 Cleanup title references (HO)
 \c@section@level=\count145
 LaTeX Info: Redefining \Ref on input line 498.
 )
-LaTeX Info: Redefining \ref on input line 102.
-LaTeX Info: Redefining \pageref on input line 102.
-LaTeX Info: Redefining \nameref on input line 102.
+LaTeX Info: Redefining \ref on input line 103.
+LaTeX Info: Redefining \pageref on input line 103.
+LaTeX Info: Redefining \nameref on input line 103.
 
 ("G:\Github\Literature\Summary\Summary for spatial methods.out")
 ("G:\Github\Literature\Summary\Summary for spatial methods.out")
 \@outlinefile=\write4
-LaTeX Info: Redefining \Ref on input line 102.
+LaTeX Info: Redefining \Ref on input line 103.
 
 (D:\CTEX\MiKTeX\tex\context\base\supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
@@ -942,7 +946,7 @@ LaTeX Info: Redefining \Ref on input line 102.
 \makeMPintoPDFobject=\count151
 \everyMPtoPDFconversion=\toks36
 )
-LaTeX Info: Redefining \microtypecontext on input line 102.
+LaTeX Info: Redefining \microtypecontext on input line 103.
 Package microtype Info: Generating PDF output.
 Package microtype Info: Character protrusion enabled (level 2).
 Package microtype Info: Using default protrusion set `alltext'.
@@ -989,12 +993,12 @@ Package caption Info: End \AtBeginDocument code.
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-LaTeX Font Info:    Try loading font information for T1+iwona on input line 123
+LaTeX Font Info:    Try loading font information for T1+iwona on input line 124
 .
 (D:\CTEX\MiKTeX\tex\latex\iwona\t1iwona.fd
 File: t1iwona.fd 2008/07/22 v0.995 font definition file for T1/iwona (MW)
 )
-LaTeX Font Info:    Try loading font information for OT1+pplj on input line 123
+LaTeX Font Info:    Try loading font information for OT1+pplj on input line 124
 .
 
 (D:\CTEX\MiKTeX\tex\latex\psnfss\ot1pplj.fd
@@ -1003,7 +1007,7 @@ File: ot1pplj.fd 2004/09/06 font definitions for OT1/pplj.
 (D:\CTEX\MiKTeX\tex\latex\microtype\mt-ppl.cfg
 File: mt-ppl.cfg 2005/11/16 v1.6 microtype config. file: Palatino (RS)
 )
-LaTeX Font Info:    Try loading font information for U+zeur on input line 123.
+LaTeX Font Info:    Try loading font information for U+zeur on input line 124.
 
 (D:\CTEX\MiKTeX\tex\latex\eulervm\uzeur.fd
 File: uzeur.fd 2005/01/11 v4.0 (WaS)
@@ -1011,7 +1015,7 @@ File: uzeur.fd 2005/01/11 v4.0 (WaS)
 (D:\CTEX\MiKTeX\tex\latex\microtype\mt-eur.cfg
 File: mt-eur.cfg 2006/07/31 v1.1 microtype config. file: AMS Euler Roman (RS)
 )
-LaTeX Font Info:    Try loading font information for U+zeus on input line 123.
+LaTeX Font Info:    Try loading font information for U+zeus on input line 124.
 
 (D:\CTEX\MiKTeX\tex\latex\eulervm\uzeus.fd
 File: uzeus.fd 2005/01/11 v4.0 (WaS)
@@ -1019,13 +1023,13 @@ File: uzeus.fd 2005/01/11 v4.0 (WaS)
 (D:\CTEX\MiKTeX\tex\latex\microtype\mt-eus.cfg
 File: mt-eus.cfg 2006/07/28 v1.2 microtype config. file: AMS Euler Script (RS)
 )
-LaTeX Font Info:    Try loading font information for U+zeuex on input line 123.
+LaTeX Font Info:    Try loading font information for U+zeuex on input line 124.
 
 
 (D:\CTEX\MiKTeX\tex\latex\eulervm\uzeuex.fd
 File: uzeuex.fd 2005/01/11 v4.0 (WaS)
 )
-LaTeX Font Info:    Try loading font information for OT1+zplm on input line 123
+LaTeX Font Info:    Try loading font information for OT1+zplm on input line 124
 .
 
 (D:\CTEX\MiKTeX\tex\latex\psnfss\ot1zplm.fd
@@ -1038,7 +1042,7 @@ File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
 File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 )
 Package tocbasic Info: character protrusion at toc deactivated on input line 12
-6.
+7.
 
 ("G:\Github\Literature\Summary\Summary for spatial methods.toc"
 Package microtype Info: Character `029' is missing
@@ -1047,12 +1051,12 @@ Package microtype Info: Character `029' is missing
 )
 \tf@toc=\write5
 Package tocbasic Info: character protrusion at lof deactivated on input line 12
-8.
+9.
 
 ("G:\Github\Literature\Summary\Summary for spatial methods.lof")
 \tf@lof=\write6
 Package tocbasic Info: character protrusion at lot deactivated on input line 13
-0.
+1.
 
 ("G:\Github\Literature\Summary\Summary for spatial methods.lot")
 \tf@lot=\write7
@@ -1069,14 +1073,14 @@ Package microtype Info: Character `029' is missing
 (microtype)             Ignoring protrusion settings for this character.
  [5]
 [6] [7]
-LaTeX Font Info:    Try loading font information for T1+fvm on input line 350.
+LaTeX Font Info:    Try loading font information for T1+fvm on input line 351.
  (D:\CTEX\MiKTeX\tex\latex\bera\t1fvm.fd
 File: t1fvm.fd 2004/09/07 scalable font definitions for T1/fvm.
 )
 LaTeX Font Info:    Font shape `T1/fvm/m/n' will be
-(Font)              scaled to size 10.20007pt on input line 350.
+(Font)              scaled to size 10.20007pt on input line 351.
  [8] [9]
-Overfull \hbox (0.42256pt too wide) in paragraph at lines 390--390
+Overfull \hbox (0.42256pt too wide) in paragraph at lines 391--391
  |[]\T1/iwona/m/sc/17.28/80ls two ex-plorato-ry lim-i-ta-tion-s of the n-ng-p a
 p-proach|  
  []
@@ -1084,17 +1088,21 @@ p-proach|
 <Figures/nnGP1.pdf, id=452, 867.24pt x 578.16pt>
 File: Figures/nnGP1.pdf Graphic file (type pdf)
  <use Figures/nnGP1.pdf>
-Package pdftex.def Info: Figures/nnGP1.pdf used on input line 407.
+Package pdftex.def Info: Figures/nnGP1.pdf used on input line 408.
 (pdftex.def)             Requested size: 227.62204pt x 151.74721pt.
 
 <Figures/nnGP2.pdf, id=453, 867.24pt x 578.16pt>
 File: Figures/nnGP2.pdf Graphic file (type pdf)
  <use Figures/nnGP2.pdf>
-Package pdftex.def Info: Figures/nnGP2.pdf used on input line 408.
+Package pdftex.def Info: Figures/nnGP2.pdf used on input line 409.
 (pdftex.def)             Requested size: 227.62204pt x 151.74721pt.
 
 [10 <G:/Github/Literature/Summary/Figures/nnGP1.pdf> <G:/Github/Literature/Summ
 ary/Figures/nnGP2.pdf>]
+LaTeX Font Info:    Try loading font information for U+bbm on input line 451.
+ (D:\CTEX\MiKTeX\tex\latex\bbm\ubbm.fd
+File: ubbm.fd 1999/03/15 V 1.2 Font definition for bbm font - TH
+)
 ("G:\Github\Literature\Summary\Summary for spatial methods.bbl"
 LaTeX Font Info:    Font shape `T1/fvm/m/n' will be
 (Font)              scaled to size 9.30756pt on input line 15.
@@ -1122,7 +1130,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 70--78
 henyw68 . github . io / Literature / [2016 ]
  []
 
-
+[12]
 Underfull \hbox (badness 5726) in paragraph at lines 112--120
 []\T1/qbk/m/n/12 A. O. Fin-ley, A. Dat-ta, B. D. Cook, D. C. Mor-ton, H. E. An-
 der-sen,
@@ -1146,7 +1154,7 @@ Underfull \hbox (badness 6220) in paragraph at lines 112--120
 0.95 https : / / chenyw68 . github . io / Literature / [2019 ]
  []
 
-[12]
+
 Underfull \hbox (badness 10000) in paragraph at lines 122--128
 []\T1/qbk/m/n/12 M. Fuentes.  Ap-prox-i-mate like-li-hood for large ir-reg-u-la
 r-ly s-paced s-
@@ -1212,7 +1220,7 @@ Overfull \hbox (2.22089pt too wide) in paragraph at lines 192--199
 aldifferentialequations .
  []
 
-
+[13]
 Underfull \hbox (badness 2435) in paragraph at lines 201--208
 \T1/qbk/m/n/12 ap-pli-ca-tion-s to high-dimensional spatio-temporal fil-ter-ing
 .  \T1/qbk/m/it/12 arX-iv preprint
@@ -1230,7 +1238,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 201--208
 io-[]temporalfiltering .
  []
 
-[13]
+
 Underfull \hbox (badness 10000) in paragraph at lines 210--216
 []\T1/qbk/m/n/12 M. Katz-fuss.  A multi-resolution ap-prox-i-ma-tion for mas-si
 ve s-pa-
@@ -1314,7 +1322,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 264--271
 yw68 . github . io / Literature / [2014 ]
  []
 
-
+[14]
 Underfull \hbox (badness 7631) in paragraph at lines 283--289
 []\T1/qbk/m/n/12 P. Ma and E. L. Kang.  A fused gaus-sian pro-cess mod-el for v
 ery
@@ -1332,7 +1340,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 283--289
 5 https : / / chenyw68 . github . io / Literature / [2020 ]
  []
 
-[14]
+
 Underfull \hbox (badness 1014) in paragraph at lines 292--299
 []\T1/qbk/m/n/12 B. Neelon, A. E. Gelfand, and M. L. Mi-ran-da.  A mul-ti-vari-
 ate s-pa-tial mix-
@@ -1405,12 +1413,12 @@ field-s: the-o-ry and ap-pli-
  []
 
 [15])
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 468.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 504.
  [16]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 468.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 504.
  ("G:\Github\Literature\Summary\Summary for spatial methods.aux")
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 468.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 468.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 504.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 504.
 Package rerunfilecheck Info: File `Summary*for*spatial*methods.out' has not cha
 nged.
 (rerunfilecheck)             Checksum: <no file>.
@@ -1420,34 +1428,36 @@ LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 14741 strings out of 495354
- 222059 string characters out of 3183859
- 470654 words of memory out of 3000000
- 17486 multiletter control sequences out of 15000+200000
- 114821 words of font info for 161 fonts, out of 3000000 for 9000
+ 14808 strings out of 495354
+ 223223 string characters out of 3183859
+ 470881 words of memory out of 3000000
+ 17533 multiletter control sequences out of 15000+200000
+ 116934 words of font info for 172 fonts, out of 3000000 for 9000
  14 hyphenation exceptions out of 8191
  52i,14n,52p,1338b,519s stack positions out of 5000i,500n,10000p,200000b,50000s
-{D:/CTEX/MiKTeX/fonts/enc/dvips/tex-gyre/q-ec.enc}{D:/CTEX/MiKTeX/fonts/enc/d
-vips/fontname/8r.enc}{D:/CTEX/MiKTeX/fonts/enc/dvips/iwona/ec-iwona.enc}{D:/CTE
-X/MiKTeX/fonts/enc/dvips/tex-gyre/q-ec-sc.enc}{D:/CTEX/MiKTeX/fonts/enc/dvips/i
-wona/ec-iwona-sc.enc}<D:/CTEX/MiKTeX/fonts/type1/public/amsfonts/cm/cmex10.pfb>
-<D:/CTEX/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><D:/CTEX/MiKTeX/fonts
-/type1/public/amsfonts/cm/cmmi7.pfb><D:/CTEX/MiKTeX/fonts/type1/public/amsfonts
-/cm/cmsy10.pfb><D:/CTEX/MiKTeX/fonts/type1/public/amsfonts/euler/euex10.pfb><D:
-/CTEX/MiKTeX/fonts/type1/public/amsfonts/euler/eufm10.pfb><D:/CTEX/MiKTeX/fonts
-/type1/public/amsfonts/euler/eurb10.pfb><D:/CTEX/MiKTeX/fonts/type1/public/amsf
-onts/euler/eurm10.pfb><D:/CTEX/MiKTeX/fonts/type1/public/amsfonts/euler/eurm7.p
-fb><D:/CTEX/MiKTeX/fonts/type1/public/amsfonts/euler/eusm10.pfb><D:/CTEX/MiKTeX
-/fonts/type1/public/mathpazo/fplmb.pfb><D:/CTEX/MiKTeX/fonts/type1/bera/fvmr8a.
-pfb><D:/CTEX/MiKTeX/fonts/type1/nowacki/iwona/iwonab.pfb><D:/CTEX/MiKTeX/fonts/
-type1/nowacki/iwona/iwonar.pfb><D:/CTEX/MiKTeX/fonts/type1/nowacki/iwona/iwonar
-i.pfb><D:/CTEX/MiKTeX/fonts/type1/public/tex-gyre/qbkb.pfb><D:/CTEX/MiKTeX/font
-s/type1/public/tex-gyre/qbkr.pfb><D:/CTEX/MiKTeX/fonts/type1/public/tex-gyre/qb
-kri.pfb><D:/CTEX/MiKTeX/fonts/type1/urw/palatino/uplb8a.pfb><D:/CTEX/MiKTeX/fon
-ts/type1/urw/palatino/uplr8a.pfb>
-Output written on "Summary for spatial methods.pdf" (16 pages, 454348 bytes).
+{D:/CTEX/MiKTeX/fonts/enc/dvips/tex-gyre/q-ec.enc} <D:\CTEX\UserData\fonts\pk
+\ljfour\public\bbm\dpi600\bbm12.pk>{D:/CTEX/MiKTeX/fonts/enc/dvips/fontname/8r.
+enc}{D:/CTEX/MiKTeX/fonts/enc/dvips/iwona/ec-iwona.enc}{D:/CTEX/MiKTeX/fonts/en
+c/dvips/tex-gyre/q-ec-sc.enc}{D:/CTEX/MiKTeX/fonts/enc/dvips/iwona/ec-iwona-sc.
+enc}<D:/CTEX/MiKTeX/fonts/type1/public/amsfonts/cm/cmex10.pfb><D:/CTEX/MiKTeX/f
+onts/type1/public/amsfonts/cm/cmmi10.pfb><D:/CTEX/MiKTeX/fonts/type1/public/ams
+fonts/cm/cmmi7.pfb><D:/CTEX/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><D
+:/CTEX/MiKTeX/fonts/type1/public/amsfonts/euler/euex10.pfb><D:/CTEX/MiKTeX/font
+s/type1/public/amsfonts/euler/eufb10.pfb><D:/CTEX/MiKTeX/fonts/type1/public/ams
+fonts/euler/eufm10.pfb><D:/CTEX/MiKTeX/fonts/type1/public/amsfonts/euler/eurb10
+.pfb><D:/CTEX/MiKTeX/fonts/type1/public/amsfonts/euler/eurm10.pfb><D:/CTEX/MiKT
+eX/fonts/type1/public/amsfonts/euler/eurm7.pfb><D:/CTEX/MiKTeX/fonts/type1/publ
+ic/amsfonts/euler/eusm10.pfb><D:/CTEX/MiKTeX/fonts/type1/public/mathpazo/fplmb.
+pfb><D:/CTEX/MiKTeX/fonts/type1/bera/fvmr8a.pfb><D:/CTEX/MiKTeX/fonts/type1/now
+acki/iwona/iwonab.pfb><D:/CTEX/MiKTeX/fonts/type1/nowacki/iwona/iwonar.pfb><D:/
+CTEX/MiKTeX/fonts/type1/nowacki/iwona/iwonari.pfb><D:/CTEX/MiKTeX/fonts/type1/p
+ublic/amsfonts/symbols/msam10.pfb><D:/CTEX/MiKTeX/fonts/type1/public/tex-gyre/q
+bkb.pfb><D:/CTEX/MiKTeX/fonts/type1/public/tex-gyre/qbkr.pfb><D:/CTEX/MiKTeX/fo
+nts/type1/public/tex-gyre/qbkri.pfb><D:/CTEX/MiKTeX/fonts/type1/urw/palatino/up
+lb8a.pfb><D:/CTEX/MiKTeX/fonts/type1/urw/palatino/uplr8a.pfb>
+Output written on "Summary for spatial methods.pdf" (16 pages, 472179 bytes).
 PDF statistics:
- 687 PDF objects out of 1000 (max. 8388607)
- 95 named destinations out of 1000 (max. 500000)
+ 701 PDF objects out of 1000 (max. 8388607)
+ 96 named destinations out of 1000 (max. 500000)
  25763 words of extra memory for PDF output out of 29859 (max. 10000000)
 
