@@ -466,7 +466,7 @@ where $\boldsymbol{D} = \text{diag}\left(d_1, \dots, d_n\right)$ and $\boldsymbo
 \end{equation}
 where $\boldsymbol{\Sigma}(\cdot; \boldsymbol{\theta}) = \left(\boldsymbol{D} + \boldsymbol{H}\right) \boldsymbol{\tilde{C}}(\cdot; \boldsymbol{\theta})\left(\boldsymbol{D} + \boldsymbol{H}\right)^\prime + \tau^2\boldsymbol{I}.$
 
-Let $\boldsymbol{U} = \boldsymbol{D} + \boldsymbol{H}$, and by applying the Sherman-Woodbury-Morrison formula for inverse matrices (as $n \gg K$), we obtain:
+Note that $\tilde{C}^{-1}$ is a sparse precision matrix with at most $Km(m + 1)/2$ nonzero entries, let $\boldsymbol{U} = \boldsymbol{D} + \boldsymbol{H}$, and by applying the Sherman-Woodbury-Morrison formula for inverse matrices (as $n \gg K$), we obtain:
 \begin{equation}
 \begin{aligned}
   \boldsymbol{\Sigma}^{-1} = & \frac{1}{\tau^2}\boldsymbol{I} - \frac{1}{\tau^2}\boldsymbol{U}
@@ -479,8 +479,6 @@ On the other hand, the determinant can be computed using
   \text{det}\{\boldsymbol{\Sigma}\} = &  \tau^{2(n - K)} \frac{\text{det}\{\tau^2\boldsymbol{\tilde{C}^{-1}} +  \boldsymbol{U}^\prime\boldsymbol{U}\}}{\text{det}\{\boldsymbol{\tilde{C}^{-1}}\}}.
 \end{aligned}
 \end{equation}
-
-
 
  \item [2)] Ideas for Problem 2: Similar to \href{https://chenyw68.github.io/Literature/[2012]A full scale approximation of covariance functions for large spatial data sets.pdf}{\cite{sang2012full}},
 \begin{equation}

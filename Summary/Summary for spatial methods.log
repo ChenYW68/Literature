@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2020.9.12)  16 OCT 2020 21:53
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2020.9.12)  16 OCT 2020 22:00
 entering extended mode
 **Summary*for*spatial*methods.tex
 ("G:\Github\Literature\Summary\Summary for spatial methods.tex"
@@ -1413,12 +1413,12 @@ field-s: the-o-ry and ap-pli-
  []
 
 [15])
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 504.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 502.
  [16]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 504.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 502.
  ("G:\Github\Literature\Summary\Summary for spatial methods.aux")
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 504.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 504.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 502.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 502.
 Package rerunfilecheck Info: File `Summary*for*spatial*methods.out' has not cha
 nged.
 (rerunfilecheck)             Checksum: <no file>.
@@ -1455,7 +1455,7 @@ ublic/amsfonts/symbols/msam10.pfb><D:/CTEX/MiKTeX/fonts/type1/public/tex-gyre/q
 bkb.pfb><D:/CTEX/MiKTeX/fonts/type1/public/tex-gyre/qbkr.pfb><D:/CTEX/MiKTeX/fo
 nts/type1/public/tex-gyre/qbkri.pfb><D:/CTEX/MiKTeX/fonts/type1/urw/palatino/up
 lb8a.pfb><D:/CTEX/MiKTeX/fonts/type1/urw/palatino/uplr8a.pfb>
-Output written on "Summary for spatial methods.pdf" (16 pages, 472179 bytes).
+Output written on "Summary for spatial methods.pdf" (16 pages, 472330 bytes).
 PDF statistics:
  701 PDF objects out of 1000 (max. 8388607)
  96 named destinations out of 1000 (max. 500000)
