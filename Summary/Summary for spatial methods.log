@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2020.9.12)  17 OCT 2020 12:11
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2020.9.12)  17 OCT 2020 21:34
 entering extended mode
 **Summary*for*spatial*methods.tex
 ("G:\Github\Literature\Summary\Summary for spatial methods.tex"
@@ -1055,15 +1055,16 @@ Package tocbasic Info: character protrusion at lof deactivated on input line 12
 
 ("G:\Github\Literature\Summary\Summary for spatial methods.lof")
 \tf@lof=\write6
+ [1
+
+
+{D:/CTEX/UserData/pdftex/config/pdftex.map{Unicode.sfd}{UGBK.sfd}}]
 Package tocbasic Info: character protrusion at lot deactivated on input line 13
 1.
 
 ("G:\Github\Literature\Summary\Summary for spatial methods.lot")
 \tf@lot=\write7
- [1
-
-
-{D:/CTEX/UserData/pdftex/config/pdftex.map{Unicode.sfd}{UGBK.sfd}}] [2]
+ [2]
 Package microtype Info: Character `029' is missing
 (microtype)             in font `T1/iwona/m/sc/17.28'.
 (microtype)             Ignoring protrusion settings for this character.
@@ -1079,35 +1080,78 @@ Package microtype Info: Character `029' is missing
 (microtype)             in font `T1/iwona/m/sc/12'.
 (microtype)             Ignoring protrusion settings for this character.
  [5] [6] [7] [8] [9]
-Overfull \hbox (0.42256pt too wide) in paragraph at lines 398--398
+Overfull \hbox (0.42256pt too wide) in paragraph at lines 400--400
  |[]\T1/iwona/m/sc/17.28/80ls two ex-plorato-ry lim-i-ta-tion-s of the n-ng-p a
 p-proach|  
  []
 
-<Figures/nnGP1.pdf, id=455, 867.24pt x 578.16pt>
+<Figures/datta_NNGP.png, id=471, 1204.5pt x 1204.5pt>
+File: Figures/datta_NNGP.png Graphic file (type png)
+
+<use Figures/datta_NNGP.png>
+Package pdftex.def Info: Figures/datta_NNGP.png used on input line 409.
+(pdftex.def)             Requested size: 455.24408pt x 455.25195pt.
+ [10]
+<Figures/nnGP1.pdf, id=487, 867.24pt x 578.16pt>
 File: Figures/nnGP1.pdf Graphic file (type pdf)
  <use Figures/nnGP1.pdf>
-Package pdftex.def Info: Figures/nnGP1.pdf used on input line 415.
+Package pdftex.def Info: Figures/nnGP1.pdf used on input line 425.
 (pdftex.def)             Requested size: 227.62204pt x 151.74721pt.
 
-<Figures/nnGP2.pdf, id=456, 867.24pt x 578.16pt>
+<Figures/nnGP2.pdf, id=488, 867.24pt x 578.16pt>
 File: Figures/nnGP2.pdf Graphic file (type pdf)
  <use Figures/nnGP2.pdf>
-Package pdftex.def Info: Figures/nnGP2.pdf used on input line 416.
+Package pdftex.def Info: Figures/nnGP2.pdf used on input line 426.
 (pdftex.def)             Requested size: 227.62204pt x 151.74721pt.
 
-[10 <G:/Github/Literature/Summary/Figures/nnGP1.pdf> <G:/Github/Literature/Summ
-ary/Figures/nnGP2.pdf>]
-Overfull \hbox (4.56783pt too wide) in paragraph at lines 430--457
+<Figures/nnGP3.pdf, id=489, 867.24pt x 578.16pt>
+File: Figures/nnGP3.pdf Graphic file (type pdf)
+ <use Figures/nnGP3.pdf>
+Package pdftex.def Info: Figures/nnGP3.pdf used on input line 427.
+(pdftex.def)             Requested size: 227.62204pt x 151.74721pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 425--430
+[][]  []
+ []
+
+[11 <G:/Github/Literature/Summary/Figures/datta_NNGP.png (PNG copy)>]
+<Figures/nnGP_Cov1.pdf, id=498, 1156.32pt x 578.16pt>
+File: Figures/nnGP_Cov1.pdf Graphic file (type pdf)
+
+<use Figures/nnGP_Cov1.pdf>
+Package pdftex.def Info: Figures/nnGP_Cov1.pdf used on input line 434.
+(pdftex.def)             Requested size: 512.1496pt x 256.06737pt.
+
+<Figures/nnGP_Cov2.pdf, id=499, 1156.32pt x 578.16pt>
+File: Figures/nnGP_Cov2.pdf Graphic file (type pdf)
+
+<use Figures/nnGP_Cov2.pdf>
+Package pdftex.def Info: Figures/nnGP_Cov2.pdf used on input line 435.
+(pdftex.def)             Requested size: 512.1496pt x 256.06737pt.
+
+Overfull \hbox (30.27414pt too wide) in paragraph at lines 434--437
+[][]
+ []
+
+
+Overfull \hbox (30.27414pt too wide) in paragraph at lines 434--437
+[]
+ []
+
+[12 <G:/Github/Literature/Summary/Figures/nnGP1.pdf> <G:/Github/Literature/Summ
+ary/Figures/nnGP2.pdf> <G:/Github/Literature/Summary/Figures/nnGP3.pdf>]
+[13 <G:/Github/Literature/Summary/Figures/nnGP_Cov1.pdf> <G:/Github/Literature/
+Summary/Figures/nnGP_Cov2.pdf>]
+Overfull \hbox (4.56783pt too wide) in paragraph at lines 449--476
 \T1/qbk/m/n/12 the do-main and $\U/zeur/m/n/12 w[]\U/zeus/m/n/12 ¨\U/zeur/m/n/1
 2 s[]\U/zeus/m/n/12 ©$ \T1/qbk/m/n/12 as $\U/zeur/m/n/12 w[]$\T1/qbk/m/n/12 . A
 s-sume that $[][] \U/zeus/m/n/12 ½ [][]  \U/zeur/m/n/12 NNGP []$
  []
 
-LaTeX Font Info:    Try loading font information for U+bbm on input line 457.
+LaTeX Font Info:    Try loading font information for U+bbm on input line 491.
 (D:\CTEX\MiKTeX\tex\latex\bbm\ubbm.fd
 File: ubbm.fd 1999/03/15 V 1.2 Font definition for bbm font - TH
-) [11]
+) [14]
 ("G:\Github\Literature\Summary\Summary for spatial methods.bbl"
 LaTeX Font Info:    Font shape `T1/fvm/m/n' will be
 (Font)              scaled to size 9.30756pt on input line 15.
@@ -1135,7 +1179,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 70--78
 henyw68 . github . io / Literature / [2016 ]
  []
 
-[12]
+[15]
 Underfull \hbox (badness 5726) in paragraph at lines 112--120
 []\T1/qbk/m/n/12 A. O. Fin-ley, A. Dat-ta, B. D. Cook, D. C. Mor-ton, H. E. An-
 der-sen,
@@ -1183,7 +1227,7 @@ Underfull \hbox (badness 2237) in paragraph at lines 138--144
 m-pu-ta-tion-al and Graph-i-cal S-
  []
 
-
+[16]
 Underfull \hbox (badness 2277) in paragraph at lines 173--181
 \T1/qbk/m/n/12 gi, F. Ger-ber, R. B. Gra-ma-cy, D. Ham-mer-ling, M. Katz-fuss, 
 et al.  A
@@ -1207,7 +1251,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 173--181
 yw68 . github . io / Literature / [2018 ]
  []
 
-[13]
+
 Underfull \hbox (badness 1442) in paragraph at lines 183--190
 []\T1/qbk/m/n/12 X. Hu and I. Steins-land.  S-pa-tial mod-el-ing with sys-tem o
 f s-tochas-tic par-
@@ -1303,7 +1347,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 237--244
 68 . github . io / Literature / [2008 ]
  []
 
-[14]
+[17]
 Underfull \hbox (badness 5417) in paragraph at lines 264--271
 []\T1/qbk/m/n/12 B. A. Kono-mi, H. Sang, and B. K. Mallick.  Adap-tive bayesian
  non-
@@ -1417,13 +1461,13 @@ Underfull \hbox (badness 2005) in paragraph at lines 329--334
 field-s: the-o-ry and ap-pli-
  []
 
-[15])
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 509.
- [16]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 509.
+[18])
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 547.
+ [19]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 547.
  ("G:\Github\Literature\Summary\Summary for spatial methods.aux")
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 509.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 509.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 547.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 547.
 Package rerunfilecheck Info: File `Summary*for*spatial*methods.out' has not cha
 nged.
 (rerunfilecheck)             Checksum: <no file>.
@@ -1433,35 +1477,36 @@ LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 14813 strings out of 495354
- 223263 string characters out of 3183859
- 472213 words of memory out of 3000000
- 17536 multiletter control sequences out of 15000+200000
- 117233 words of font info for 173 fonts, out of 3000000 for 9000
+ 14849 strings out of 495354
+ 223858 string characters out of 3183859
+ 472764 words of memory out of 3000000
+ 17557 multiletter control sequences out of 15000+200000
+ 117663 words of font info for 175 fonts, out of 3000000 for 9000
  14 hyphenation exceptions out of 8191
- 52i,18n,52p,1338b,513s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 52i,18n,55p,1281b,511s stack positions out of 5000i,500n,10000p,200000b,50000s
 {D:/CTEX/MiKTeX/fonts/enc/dvips/tex-gyre/q-ec.enc} <D:\CTEX\UserData\fonts\pk
 \ljfour\public\bbm\dpi600\bbm12.pk>{D:/CTEX/MiKTeX/fonts/enc/dvips/fontname/8r.
 enc}{D:/CTEX/MiKTeX/fonts/enc/dvips/iwona/ec-iwona.enc}{D:/CTEX/MiKTeX/fonts/en
 c/dvips/tex-gyre/q-ec-sc.enc}{D:/CTEX/MiKTeX/fonts/enc/dvips/iwona/ec-iwona-sc.
-enc}<D:/CTEX/MiKTeX/fonts/type1/public/amsfonts/cm/cmex10.pfb><D:/CTEX/MiKTeX/f
-onts/type1/public/amsfonts/cm/cmmi10.pfb><D:/CTEX/MiKTeX/fonts/type1/public/ams
-fonts/cm/cmmi7.pfb><D:/CTEX/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><D
-:/CTEX/MiKTeX/fonts/type1/public/amsfonts/euler/euex10.pfb><D:/CTEX/MiKTeX/font
-s/type1/public/amsfonts/euler/eufb10.pfb><D:/CTEX/MiKTeX/fonts/type1/public/ams
-fonts/euler/eufm10.pfb><D:/CTEX/MiKTeX/fonts/type1/public/amsfonts/euler/eurb10
-.pfb><D:/CTEX/MiKTeX/fonts/type1/public/amsfonts/euler/eurm10.pfb><D:/CTEX/MiKT
-eX/fonts/type1/public/amsfonts/euler/eurm7.pfb><D:/CTEX/MiKTeX/fonts/type1/publ
-ic/amsfonts/euler/eusm10.pfb><D:/CTEX/MiKTeX/fonts/type1/public/mathpazo/fplmb.
-pfb><D:/CTEX/MiKTeX/fonts/type1/bera/fvmr8a.pfb><D:/CTEX/MiKTeX/fonts/type1/now
-acki/iwona/iwonab.pfb><D:/CTEX/MiKTeX/fonts/type1/nowacki/iwona/iwonar.pfb><D:/
-CTEX/MiKTeX/fonts/type1/nowacki/iwona/iwonari.pfb><D:/CTEX/MiKTeX/fonts/type1/p
-ublic/tex-gyre/qbkb.pfb><D:/CTEX/MiKTeX/fonts/type1/public/tex-gyre/qbkr.pfb><D
-:/CTEX/MiKTeX/fonts/type1/public/tex-gyre/qbkri.pfb><D:/CTEX/MiKTeX/fonts/type1
-/urw/palatino/uplb8a.pfb><D:/CTEX/MiKTeX/fonts/type1/urw/palatino/uplr8a.pfb>
-Output written on "Summary for spatial methods.pdf" (16 pages, 468193 bytes).
+enc}<D:/CTEX/MiKTeX/fonts/type1/public/amsfonts/cm/cmbsy10.pfb><D:/CTEX/MiKTeX/
+fonts/type1/public/amsfonts/cm/cmex10.pfb><D:/CTEX/MiKTeX/fonts/type1/public/am
+sfonts/cm/cmmi10.pfb><D:/CTEX/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi7.pfb><
+D:/CTEX/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><D:/CTEX/MiKTeX/fonts/
+type1/public/amsfonts/euler/euex10.pfb><D:/CTEX/MiKTeX/fonts/type1/public/amsfo
+nts/euler/eufb10.pfb><D:/CTEX/MiKTeX/fonts/type1/public/amsfonts/euler/eufm10.p
+fb><D:/CTEX/MiKTeX/fonts/type1/public/amsfonts/euler/eurb10.pfb><D:/CTEX/MiKTeX
+/fonts/type1/public/amsfonts/euler/eurm10.pfb><D:/CTEX/MiKTeX/fonts/type1/publi
+c/amsfonts/euler/eurm7.pfb><D:/CTEX/MiKTeX/fonts/type1/public/amsfonts/euler/eu
+sm10.pfb><D:/CTEX/MiKTeX/fonts/type1/public/mathpazo/fplmb.pfb><D:/CTEX/MiKTeX/
+fonts/type1/bera/fvmr8a.pfb><D:/CTEX/MiKTeX/fonts/type1/nowacki/iwona/iwonab.pf
+b><D:/CTEX/MiKTeX/fonts/type1/nowacki/iwona/iwonar.pfb><D:/CTEX/MiKTeX/fonts/ty
+pe1/nowacki/iwona/iwonari.pfb><D:/CTEX/MiKTeX/fonts/type1/public/tex-gyre/qbkb.
+pfb><D:/CTEX/MiKTeX/fonts/type1/public/tex-gyre/qbkr.pfb><D:/CTEX/MiKTeX/fonts/
+type1/public/tex-gyre/qbkri.pfb><D:/CTEX/MiKTeX/fonts/type1/urw/palatino/uplb8a
+.pfb><D:/CTEX/MiKTeX/fonts/type1/urw/palatino/uplr8a.pfb>
+Output written on "Summary for spatial methods.pdf" (19 pages, 2129946 bytes).
 PDF statistics:
- 703 PDF objects out of 1000 (max. 8388607)
- 97 named destinations out of 1000 (max. 500000)
- 25763 words of extra memory for PDF output out of 29859 (max. 10000000)
+ 769 PDF objects out of 1000 (max. 8388607)
+ 105 named destinations out of 1000 (max. 500000)
+ 25783 words of extra memory for PDF output out of 29859 (max. 10000000)
 
