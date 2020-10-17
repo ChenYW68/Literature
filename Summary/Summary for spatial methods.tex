@@ -149,23 +149,30 @@ The nugget effect $\epsilon(s)$ is often assumed to follow a normal distribution
 The most common specification for $w(s)$ is $w(s) \sim GP(0, \boldsymbol{C}(\cdot, \cdot))$, a zero-mean Gaussian process with a valid covariance function $\boldsymbol{C}(s, s^\prime)$. It is often reasonable to assume a constant process variance and thus we specify \
 $\boldsymbol{C}(s, s^\prime) = \sigma^2 \rho (s, s^\prime; \boldsymbol{\theta})$, where $\rho (s, s^\prime; \boldsymbol{\theta})$ is a correlation function and $\boldsymbol{\theta}$ is a vector of correlation parameters which needs to be estimated from a finite number of observations, $\boldsymbol{Y} = \left(y(s_1). \cdots, y(s_n)\right)^\prime$.
 
-According to the above assumptions, $y(s)$ follows a spatial Gaussian process, and thus we have the log-likelihood function for $(\boldsymbol{\beta}, \tau^2, \sigma^2, \boldsymbol{\theta}):$
+According to the above assumptions, $y(s)$ follows a spatial Gaussian process, and thus we have the log-likelihood function for $\Theta = (\boldsymbol{\beta}, \tau^2, \sigma^2, \boldsymbol{\theta}):$
 \begin{equation}
 \begin{aligned}
-l(\boldsymbol{\beta}, \tau^2, \sigma^2, \boldsymbol{\theta}) \propto  - \frac{1}{2}\log |\boldsymbol{\Sigma}| - \frac{1}{2}\left(\boldsymbol{Y} - \boldsymbol{\beta}\boldsymbol{X}\right)^\prime \boldsymbol{\Sigma}^{- 1}\left(\boldsymbol{Y} - \boldsymbol{\beta}\boldsymbol{X}\right)
+l(\Theta) \propto  - \frac{1}{2}\log |\boldsymbol{\Sigma}| - \frac{1}{2}\left(\boldsymbol{y} - \boldsymbol{\beta}\boldsymbol{X}\right)^\prime \boldsymbol{\Sigma}^{- 1}\left(\boldsymbol{y} - \boldsymbol{\beta}\boldsymbol{X}\right)
 \end{aligned} \label{loglik}
 \end{equation}
-where $\boldsymbol{\Sigma} = \boldsymbol{C} + \tau^2\boldsymbol{I}.$
-Then best linear unbiased prediction (BLUP) at an unobserved location $s_0$ can be obtained by the \textbf{Kriging
+where $\boldsymbol{\Sigma} = \boldsymbol{C} + \tau^2\boldsymbol{I}.$ From Bayesian point of view, the posterior distributions of the parameter $\Theta$ are derived by
+\begin{equation}
+\begin{aligned}
+p(\Theta|\boldsymbol{y}) \propto \overbrace{p(\boldsymbol{y}|\boldsymbol{w}, \boldsymbol{\beta}, \tau^2)}^{\texttt{data model}} \underbrace{p(\boldsymbol{w}|\theta)}_{\texttt{process model}}\pi\left(\Theta\right)
+\end{aligned} \label{posloglik}
+\end{equation}
+From (\ref{posloglik}), the real challenge lies in the process model $p(\boldsymbol{w}|\theta)$ rather than the data model $p(\boldsymbol{y}|\boldsymbol{w}, \boldsymbol{\beta}, \tau^2)$ in terms of computation, that is because covariance matrix of the process model, typically, is dense while it is just a diagonal matrix for the data model. Therefore, we turn to study $\boldsymbol{w}$ in the process model.
+
+As we all know, the best linear unbiased prediction (BLUP) $\hat{w}(s_0)$ at an unobserved location $s_0$ can be obtained by the \textbf{Kriging
 equation}:
 \begin{equation}
 \begin{aligned}
-\hat{y}(s_0) = \boldsymbol{\beta}\boldsymbol{X}(s_0) + \boldsymbol{c}_{s_0}^\prime\boldsymbol{\Sigma}^{- 1}\left(\boldsymbol{Y} - \boldsymbol{\beta}\boldsymbol{X}\right)
+\hat{w}(s_0) = \boldsymbol{c}_{s_0}^\prime\boldsymbol{C}^{- 1}\boldsymbol{w}
 \end{aligned} \label{Kriging}
 \end{equation}
 where $\boldsymbol{c}_{s_0} = \left(\boldsymbol{C}(s_0, s_1), \dots, \boldsymbol{C}(s_0, s_n)\right)^\prime$.
 
-However, with large or massive data (e.g., $n = 10^5$ or more), direct implementation of these statistical process, including parameter etimation by (\ref{loglik}) and interpolation by (\ref{Kriging}), becomes computationally prohibitive, since evaluating the log-likelihood in (\ref{loglik}) or solving the Kriging equation (\ref{Kriging}) involve the Cholesky factorization of an $n \times n$ covariance matrix for data of size $n$, which requires $O(n^3)$ operations and $O(n^2)$ memory in general (see, e.g., \href{https://chenyw68.github.io/Literature/[2012]Advances and Challenges in Space-time Modelling of Natural Events.pdf}{\cite{porcu2012advances}}, \href{https://chenyw68.github.io/Literature/[2012]A full scale approximation of covariance functions for large spatial data sets.pdf}{\cite{sang2012full}}, \href{https://chenyw68.github.io/Literature/[2018]A case study competition among methods for analyzing large spatial data.pdf}{\cite{heaton2019case}}, \href{https://chenyw68.github.io/Literature/[2020]A Fused Gaussian Process Model for Very Large Spatial Data.pdf}{\cite{ma2020fused}}).
+However, with large or massive data (e.g., $n = 10^5$ or more), direct implementation of these statistical process, including parameter etimation by (\ref{loglik}) or (\ref{posloglik}) and interpolation by (\ref{Kriging}), becomes computationally prohibitive, since evaluation of the likelihood of the process model in (\ref{posloglik}) (or the likelihood in (\ref{loglik})) or solution of the Kriging equation (\ref{Kriging}) involve the Cholesky factorization of an $n \times n$ covariance matrix for data of size $n$, which requires $O(n^3)$ operations and $O(n^2)$ memory in general (see, e.g., \href{https://chenyw68.github.io/Literature/[2012]Advances and Challenges in Space-time Modelling of Natural Events.pdf}{\cite{porcu2012advances}}, \href{https://chenyw68.github.io/Literature/[2012]A full scale approximation of covariance functions for large spatial data sets.pdf}{\cite{sang2012full}}, \href{https://chenyw68.github.io/Literature/[2018]A case study competition among methods for analyzing large spatial data.pdf}{\cite{heaton2019case}}, \href{https://chenyw68.github.io/Literature/[2020]A Fused Gaussian Process Model for Very Large Spatial Data.pdf}{\cite{ma2020fused}}).
 
 \section{Several approaches to overcome the computational problem}
 The \textcolor[rgb]{0.50,0.50,0.50}{approximation of the likelihood in either the spatial or spectral domain} and the \textcolor[rgb]{0.50,0.50,0.50}{lower-dimensional representation} are fundamental solutions to overcome computational obstacles. These solutions focus on model development, the design of efficient and parallel algorithms, and the improvement and efficient use of modern computing platforms (e.g., Using \href{https://hpc.niasra.uow.edu.au/azm/Spatial_GPUs.html}{TensorFlow} and \href{https://github.com/cdeterman/gpuR}{GPU}).
@@ -198,7 +205,7 @@ The \textcolor[rgb]{0.50,0.50,0.50}{approximation of the likelihood in either th
   \item [3)] TensorFlow: \href{https://niasra.uow.edu.au/cei/people/UOW202823.html}{Andrew Zammit-Mangion}.
 \end{itemize}
 \begin{table}[H]
-	\caption{Scope of application}
+	\caption{Application situations for different models}
 \begin{tabular}{|l|c|c|c|}
 \hline
 {\bf Model} & {\bf non-stationary} & {\bf space-time} & {\bf multivariate data} \\
@@ -409,13 +416,13 @@ D_{\mathrm{F}}(\hat{\mathbf{\Sigma}}, \mathbf{\Sigma}) &=\sqrt{\operatorname{tra
 {\includegraphics[width=8cm]{Figures/nnGP2.pdf} }
 \vspace{1em}
 \caption{The K-L distance, the Bhattacharyya distance and the Frobenius norm from the estimated covariance
-matrix to the true covariance matrix for the Matérn family with smoothness parameters $\nu = \frac{1}{2}$ and different spatial range parameters $\phi$. And this true covariance matrix at $500$ random locations from $[0, 100] \times [0, 100]$ was estimated by the NNGP with $m = 20$.}\label{fig:nnGP}
+matrix to the true covariance matrix for the Matérn family with smoothness parameters $\nu = \frac{1}{2}$ and different spatial range parameters $\phi$. And this true covariance matrix at $500$ random locations from $[0, 100] \times [0, 100]$ was estimated by the NNGP model with $m = 20$  for 50 simulations.}\label{fig:nnGP}
 \end{figure}
-Figure \ref{fig:nnGP} shows that \textbf{the large-scale spatial dependencies can not be well-captured} by the NNGP.
+Figure \ref{fig:nnGP} suggests that \textbf{the large-scale spatial dependencies can not be well-captured} when for a larger domain by the NNGP.
 
-\subsection{Improvement project}
+\subsection{\textcolor[rgb]{1.00,0.00,0.50}{Improvement project}}
 \begin{itemize}
- \item [1)] Ideas for Problem 1: A NNGP $w(s)$ used to capture the \textcolor[rgb]{0.50,0.50,0.50}{local, small scale dependence structure} plus a smooth NNGP $f(s)$ used to capture the \textcolor[rgb]{0.50,0.50,0.50}{large scale dependence structure}.
+ \item [1)] Ideas for Problem 1: Combing a NNGP $w(s)$ used to capture the \textcolor[rgb]{0.50,0.50,0.50}{local, small scale dependence structure} with its spatial smooth version $f(s)$ used to capture the \textcolor[rgb]{0.50,0.50,0.50}{large scale dependence structure}.
 \begin{equation}
 \begin{aligned}
 y(s) = w(s) + f(s) + \epsilon(s)
@@ -446,19 +453,18 @@ y(s) = w(s) + f(s) + \epsilon(s)
 %  \text{det}\{\boldsymbol{\Sigma}\} = &  \text{det}\{\boldsymbol{\tilde{C}}_2^{-1} + + \boldsymbol{H}^\prime\boldsymbol{A}^{-1}\boldsymbol{H}\}\text{det}\{\boldsymbol{\tilde{C}}_2\}\text{det}\{\boldsymbol{A}\}.
 %\end{aligned}
 %\end{equation}
-Let the reference set $\boldsymbol{S} = \{s_j^{\star}: j = 1, \cdots, K\}$ determined through the grid of the domain, and respectively, denoting  
-$w(s_i)$ and $w^{\star}(s_j)$ as $w_i$ and $w^{\star}_j$. Assuming that $\boldsymbol{w}^{\star} = \left(w_1^{\star}, \cdots, w_K^{\star}\right)^\prime \sim NNGP\left(\boldsymbol{0}, \boldsymbol{\tilde{C}}(\cdot; \boldsymbol{\theta})\right)$ and 
-$$w(s_i) = \left(\mathbbm{1}\left(s_i=k\right) + \mathbbm{1}\left(s_i=k\right)\boldsymbol{c}_{s_i, N(s_i)}^\prime \boldsymbol{C}_{N(s_i)}^{-1}\right)w^{\star}_k  = d_iw^{\star}_k$$
-and then by denoting $h_{k}, k = 1, \cdots, K$ as a sequence of fixed basis functions and setting 
+Denote the reference set as $\boldsymbol{S} = \{s_j^{\star}: j = 1, \cdots, K\}$ determined through the grid of the domain and $w^{\star}(s_j)$ as $w^{\star}_j$. Assume that $\boldsymbol{w}^{\star} = \left(w_1^{\star}, \cdots, w_K^{\star}\right)^\prime \sim NNGP\left(\boldsymbol{0}, \boldsymbol{\tilde{C}}(\cdot; \boldsymbol{\theta})\right)$ and $h_{k}, k = 1, \cdots, K$ is a sequence of fixed basis functions, and the $w(s)$ and $f(s)$ are then constructed as follows:
+$$w(s) = \left(\mathbbm{1}\left(s=k\right) + \mathbbm{1}\left(s \neq k\right)\boldsymbol{c}_{s, N(s)}^\prime \boldsymbol{C}_{N(s)}^{-1}\right)w^{\star}_k  = d_s w^{\star}_k$$
+and 
 $$f(s) = \sum_{k = 1}^{K}h_{k}(s)w_{k}^{\star}.$$
 
-Furthermore, 
+In terms of matrix-vector representation, obtaining 
 \begin{equation}
 \begin{aligned}
 \boldsymbol{y} = \left(\boldsymbol{D} + \boldsymbol{H}\right)\boldsymbol{w}^{\star} + \epsilon(s)
 \end{aligned} \label{DP12}
 \end{equation}
-where $\boldsymbol{D} = \text{diag}\left(d_1, \dots, d_n\right)$ and $\boldsymbol{H} = \left(h_{k}(s)\right)_{1 \leq k \leq K, 1 \leq s \leq n}$. And thereby, we have
+where $\boldsymbol{D} = \text{diag}\left(d_1, \dots, d_n\right)$ and $\boldsymbol{H}_{n \times K} = \left(h_{k}(s)\right)_{s = 1:n, k = 1:K}$. And according to the assumptions previously mentioned in the model, we know that
 \begin{equation}
 \begin{aligned}
 \boldsymbol{y} \sim GP\left(\boldsymbol{0}, \boldsymbol{\Sigma}(\cdot; \boldsymbol{\theta})\right)
@@ -466,20 +472,21 @@ where $\boldsymbol{D} = \text{diag}\left(d_1, \dots, d_n\right)$ and $\boldsymbo
 \end{equation}
 where $\boldsymbol{\Sigma}(\cdot; \boldsymbol{\theta}) = \left(\boldsymbol{D} + \boldsymbol{H}\right) \boldsymbol{\tilde{C}}(\cdot; \boldsymbol{\theta})\left(\boldsymbol{D} + \boldsymbol{H}\right)^\prime + \tau^2\boldsymbol{I}.$
 
-Note that $\tilde{C}^{-1}$ is a sparse precision matrix with at most $Km(m + 1)/2$ nonzero entries, let $\boldsymbol{U} = \boldsymbol{D} + \boldsymbol{H}$, and by applying the Sherman-Woodbury-Morrison formula for inverse matrices (as $n \gg K$), we obtain:
+Let $\boldsymbol{U} = \boldsymbol{D} + \boldsymbol{H}$, and by applying the Sherman-Woodbury-Morrison formula for inverse matrices (as $n \gg K$), we have
 \begin{equation}
 \begin{aligned}
   \boldsymbol{\Sigma}^{-1} = & \frac{1}{\tau^2}\boldsymbol{I} - \frac{1}{\tau^2}\boldsymbol{U}
-  \left(\boldsymbol{\tau^2\tilde{C}^{-1}} + \boldsymbol{U}^\prime\boldsymbol{U}\right)^{-1}\boldsymbol{U}^\prime.
-\end{aligned}
+  \left(\tau^2\boldsymbol{\tilde{C}^{-1}} + \boldsymbol{U}^\prime\boldsymbol{U}\right)^{-1}\boldsymbol{U}^\prime.
+\end{aligned} \label{Sov}
 \end{equation}
+
 On the other hand, the determinant can be computed using
 \begin{equation}
 \begin{aligned}
   \text{det}\{\boldsymbol{\Sigma}\} = &  \tau^{2(n - K)} \frac{\text{det}\{\tau^2\boldsymbol{\tilde{C}^{-1}} +  \boldsymbol{U}^\prime\boldsymbol{U}\}}{\text{det}\{\boldsymbol{\tilde{C}^{-1}}\}}.
-\end{aligned}
+\end{aligned}\label{Det}
 \end{equation}
-
+Recall that $\boldsymbol{\tilde{C}^{-1}}$ is a sparse precision matrix with at most $Km(m + 1)/2$ nonzero entries, thereby, (\ref{Sov}) and (\ref{Det}) can facilitate computations.
  \item [2)] Ideas for Problem 2: Similar to \href{https://chenyw68.github.io/Literature/[2012]A full scale approximation of covariance functions for large spatial data sets.pdf}{\cite{sang2012full}},
 \begin{equation}
     \begin{aligned}
@@ -487,7 +494,7 @@ On the other hand, the determinant can be computed using
     \end{aligned} \label{DP1}
 \end{equation}
 where $w_l$ is a NNGP and $w_s$ is a residual process with covariance function constrained by tapered function.
- \item [3)] A more thorough solution for both problems: Similar to LatticeKrig, a multiresolution NNGP approximation is
+ \item [3)] A more thorough solution for both problems: Similar to LatticeKrig, to build a multi-resolution NNGP approximation, i.e.,
  \begin{equation}
 \begin{aligned}
 y(s) = \sum_{r = 1}^{R}\sum_{k = 1}^{K_r}h_{ri}(s)w_{rk}^{\star}  + \epsilon(s)
