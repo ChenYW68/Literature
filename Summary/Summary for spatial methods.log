@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2020.9.12)  17 OCT 2020 21:34
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2020.9.12)  18 OCT 2020 16:59
 entering extended mode
 **Summary*for*spatial*methods.tex
 ("G:\Github\Literature\Summary\Summary for spatial methods.tex"
@@ -1142,10 +1142,10 @@ Overfull \hbox (30.27414pt too wide) in paragraph at lines 434--437
 ary/Figures/nnGP2.pdf> <G:/Github/Literature/Summary/Figures/nnGP3.pdf>]
 [13 <G:/Github/Literature/Summary/Figures/nnGP_Cov1.pdf> <G:/Github/Literature/
 Summary/Figures/nnGP_Cov2.pdf>]
-Overfull \hbox (4.56783pt too wide) in paragraph at lines 449--476
-\T1/qbk/m/n/12 the do-main and $\U/zeur/m/n/12 w[]\U/zeus/m/n/12 ¨\U/zeur/m/n/1
-2 s[]\U/zeus/m/n/12 ©$ \T1/qbk/m/n/12 as $\U/zeur/m/n/12 w[]$\T1/qbk/m/n/12 . A
-s-sume that $[][] \U/zeus/m/n/12 ½ [][]  \U/zeur/m/n/12 NNGP []$
+Overfull \hbox (1.07983pt too wide) in paragraph at lines 449--476
+\T1/qbk/m/n/12 the do-main and $\U/zeur/m/n/12 w\U/zeus/m/n/12 ¨\U/zeur/m/n/12 
+s[]\U/zeus/m/n/12 ©$ \T1/qbk/m/n/12 as $\U/zeur/m/n/12 w[]$\T1/qbk/m/n/12 . As-
+sume that $[][] \U/zeus/m/n/12 ½ [][]  \U/zeur/m/n/12 NNGP []$
  []
 
 LaTeX Font Info:    Try loading font information for U+bbm on input line 491.
@@ -1504,7 +1504,7 @@ pe1/nowacki/iwona/iwonari.pfb><D:/CTEX/MiKTeX/fonts/type1/public/tex-gyre/qbkb.
 pfb><D:/CTEX/MiKTeX/fonts/type1/public/tex-gyre/qbkr.pfb><D:/CTEX/MiKTeX/fonts/
 type1/public/tex-gyre/qbkri.pfb><D:/CTEX/MiKTeX/fonts/type1/urw/palatino/uplb8a
 .pfb><D:/CTEX/MiKTeX/fonts/type1/urw/palatino/uplr8a.pfb>
-Output written on "Summary for spatial methods.pdf" (19 pages, 2129946 bytes).
+Output written on "Summary for spatial methods.pdf" (19 pages, 2129921 bytes).
 PDF statistics:
  769 PDF objects out of 1000 (max. 8388607)
  105 named destinations out of 1000 (max. 500000)
