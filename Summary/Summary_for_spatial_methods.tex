@@ -550,41 +550,75 @@ where \begin{equation}
 \caption{Representation of several sets.}\label{fig:set}
 \end{figure}
 
- \item [\textbf{Step2}] 
+ \item [\textbf{Step2}] \textbf{Dependent sit.}
+ 
 Set \(\pi(\boldsymbol{w})=N\left(0, \boldsymbol{C}\left(\cdot; \boldsymbol{\theta}\right)\right).\)
 
-then \(p(w_i | y\left(s_i\right), \boldsymbol{x}\left(s_i\right)\boldsymbol{\beta}, \boldsymbol{\theta})\) is
+then \(p(w_i | y\left(s_i\right), \boldsymbol{\beta}, \boldsymbol{w}^{\star}, \boldsymbol{\theta})\) is
 again of the form \(N(\sigma_i^2 \eta_i, \sigma_i^2),\)
 
 \textcolor[rgb]{0.60,0.80,0.20}{For $i \in \boldsymbol{U}$}, $i = r, \cdots, n$, where
 \begin{equation}
-\sigma_i^2 = \left(\frac{1}{\tau^2} + \frac{1}{v_i^2} \right)^{-1} ; 
+\sigma_i^2 = \left(\frac{1}{\tau^2} + \frac{1}{v_i^2} \right)^{-1} ;
 \eta_i = \frac{y\left(s_i\right) - \boldsymbol{x}\left(s_i\right)\boldsymbol{\beta} - \boldsymbol{H}\boldsymbol{w}^{\star}}{\tau^{2}} +  \frac{c_{s_i} \boldsymbol{w}^{\star}_{N(s_i)}}{v_i^2}
  \label{Eq:Post_W_Dis}
 \end{equation}
 
-\textcolor[rgb]{0.60,0.80,0.20}{For $i \in \boldsymbol{S}$}, $i = 1, \cdots, K$,  let $U(s_i) = \{j \in \boldsymbol{S} \cup \boldsymbol{T}\mid s_i \in N(j)\},$ $\boldsymbol{c}_{s_i} = \boldsymbol{c}_{\left(s_i, N(s_i)\right)}\boldsymbol{C}_{N(s_i)}^{-1}$, $v_i^2 = c(s_i, s_i) - \boldsymbol{c}_{\left(s_i, N(s_i)\right)}\boldsymbol{C}_{N(s_i)}^{-1}\boldsymbol{c}_{\left(N(s_i), s_i\right)}$ and $\boldsymbol{S}^{o}$ represents set of some knots with observed values. 
+\textcolor[rgb]{0.60,0.80,0.20}{For $i \in \boldsymbol{S}$}, $i = 1, \cdots, K$,  let $U(s_i) = \{j \in \boldsymbol{S} \cup \boldsymbol{T}\mid s_i \in N(j)\},$ $\boldsymbol{c}_{s_i} = \boldsymbol{c}_{\left(s_i, N(s_i)\right)}\boldsymbol{C}_{N(s_i)}^{-1}$, $v_i^2 = c(s_i, s_i) - \boldsymbol{c}_{\left(s_i, N(s_i)\right)}\boldsymbol{C}_{N(s_i)}^{-1}\boldsymbol{c}_{\left(N(s_i), s_i\right)}$ and $\boldsymbol{S}^{o}$ represents set of some knots with observed values.
 
 For every $j \in U(s_i)$, define $a_{j}(s_i) = \left(w_j - \sum_{s \in N(j), s \neq s_i}{c_{j}(s)w^{\star}(s)}\right)$, where $c_{j}(s)$  is the element from $\boldsymbol{c}_{j}$ that corresponds to the knot $s$.
 Consider $\boldsymbol{p\left[y_i\mid w_i, \cdot\right]p\left[w_i\mid w_{N(i)}\right]p\left[w_j\mid w_{N(j), i \in N(j)}\right]}$, we have
 \begin{equation}
 \begin{aligned}
-&\sigma_i^2 = \left(\frac{\left(1 + h_i(s_i)\right)^2}{\tau^2}\mathbbm{1}\left(s_i \in \boldsymbol{S}^{o}\right) + \frac{1}{v_i^2} + 
+&\sigma_i^2 = \left(\frac{\left(1 + h_i(s_i)\right)^2}{\tau^2}\mathbbm{1}\left(s_i \in \boldsymbol{S}^{o}\right) + \frac{1}{v_i^2} +
 \sum_{j \in U(s_i)}\frac{c_{j}^2(s_i)}{v_j^2} \right)^{-1}, \\&
 \eta_i = \frac{\left(1 + h_i(s_i)\right)\left(y\left(s_i\right) - \boldsymbol{x}\left(s_i\right)\boldsymbol{\beta} - \sum_{k \neq i}^{K}h_k(s_i)w_k^{\star}\right)}{\tau^{2}}\mathbbm{1}\left(s_i \in \boldsymbol{S}^{o}\right)\\& ~~~~~~~ + \frac{c_{s_i} \boldsymbol{w}_{N(s_i)}^{\star}}{v_i^2} + \sum_{j \in U(s_i)}\frac{a_{j}(s_i)c_j(s_i)}{v_j^2}.
 \end{aligned}
  \label{Eq:Post_W_Dis}
 \end{equation}
 
+\textbf{Independent sit.}
+\begin{equation}
+\begin{aligned}
+& \prod_{i=1}^{n} N\left(\mathbf{y}\left({s}_{i}\right) \mid \mathbf{x}\left({s}_{i}\right) \boldsymbol{\beta}+
+w^{\star}\left(s_i\right) + \mathbf{h}^\prime(s_i)\mathbf{w}^{\star\star}\right) \times N\left(\boldsymbol{w}_{U} \mid \mathbf{b}_{U}\mathbf{w}^{\star}, \boldsymbol{V}_{U}\right) \times \\ & 
+N\left(\mathbf{w}^{\star} \mid \boldsymbol{0}, {\mathbf{C}}^{\star}\right) \times N\left(\mathbf{w}^{\star\star} \mid \boldsymbol{0}, {\mathbf{C}}^{\star\star}\right) \times N\left(\boldsymbol{\beta} \mid \boldsymbol{\mu}_{\beta}, \mathbf{V}_{\beta}\right) \times  \prod_{j=1}^{l} I G\left(\tau_{j}^{2} \mid a_{\tau_{j}}, b_{\tau_{j}}\right) \times p(\boldsymbol{\theta})
+\end{aligned}
+\end{equation}
+we have 
+\begin{equation}
+\begin{aligned}
+& p\left(\mathbf{w}^{\star}|\cdot\right) \sim N\left(\boldsymbol{D}^{\star}_w \boldsymbol{\eta}^{\star}_w, \boldsymbol{D}^{\star}_w\right)
+\end{aligned}
+\end{equation}
+where 
+\begin{equation*}
+\boldsymbol{D}^{\star}_w=\left(\frac{1}{\tau^{2}}+\boldsymbol{C}_{w}^{\star -1}\right)^{-1} ; \boldsymbol{\eta}^{\star}_w = \frac{\left(\boldsymbol{y} - \boldsymbol{X}\boldsymbol{\beta} -  \boldsymbol{H}\boldsymbol{w}^{\star\star}\right)}{\tau^{2}} \label{Eq:gibbs_block_w1}
+\end{equation*}
+and
+\begin{equation}
+\begin{aligned}
+& p\left(\mathbf{w}^{\star\star}|\cdot\right) \sim N\left(\boldsymbol{D}^{\star\star}_w \boldsymbol{\eta}^{\star\star}_w, \boldsymbol{D}^{\star\star}_w\right)
+\end{aligned}
+\end{equation}
+where
+\begin{equation*}
+\boldsymbol{D}^{\star\star}_w=\left(\frac{\boldsymbol{H}^\prime\boldsymbol{H}}{\tau^{2}}+\boldsymbol{C}_{w}^{\star\star -1}\right)^{-1} ; \boldsymbol{\eta}^{\star\star}_w = \frac{\boldsymbol{H}^\prime\left(\boldsymbol{y} - \boldsymbol{X}\boldsymbol{\beta} - \boldsymbol{w}^{\star}\right)}{\tau^{2}} \label{Eq:gibbs_block_w2}
+\end{equation*}
+
+
 \item [\textbf{Step3}] Furthermore, set
 \(\pi\left(\tau^{2}\right)=I G\left(a_{\tau}, b_{\tau}\right), \pi\left(\sigma^{2}\right)=I G\left(a_{\sigma}, b_{\sigma}\right),\)
 respectively, then \begin{equation}
-p\left(\tau^{2} | \boldsymbol{y}, \boldsymbol{X}, \boldsymbol{\beta}, \boldsymbol{w}\right)=I G\left(a_{\tau}+\frac{n}{2}, b_{\tau}+\frac{(\boldsymbol{y}-\boldsymbol{X} \boldsymbol{\beta}-\boldsymbol{w})^{\prime}(\boldsymbol{y}-\boldsymbol{X} \boldsymbol{\beta}-\boldsymbol{w})}{2}\right)
+p\left(\tau^{2} | \boldsymbol{y}, \boldsymbol{X}, \boldsymbol{\beta}, \boldsymbol{w}^{\star}, \boldsymbol{w}^{\star\star}\right)=I G\left(a_{\tau}+\frac{n}{2}, b_{\tau}+\frac{(\boldsymbol{y}-\boldsymbol{X} \boldsymbol{\beta}-\boldsymbol{w}^{\star} -  \boldsymbol{H}\boldsymbol{w}^{\star\star})^{\prime}(\boldsymbol{y}-\boldsymbol{X} \boldsymbol{\beta}-\boldsymbol{w}^{\star}-  \boldsymbol{H}\boldsymbol{w}^{\star\star})}{2}\right)
 \end{equation}
 
 \begin{equation}
-p\left(\sigma^{2} | \phi, \boldsymbol{w}\right)=I G\left(a_{\sigma}+\frac{n}{2}, b_{\sigma}+\frac{\boldsymbol{w}^{\prime} \boldsymbol{H}^{-1}(\phi) \boldsymbol{w}}{2}\right)
+p\left(\sigma^{2}_{\star} | \theta_{\star}, \boldsymbol{w}^{\star}\right)=I G\left(a_{\sigma}+\frac{n}{2}, b_{\sigma}+\frac{\boldsymbol{w}^{\star \prime} \boldsymbol{\tilde{C}}^{\star -1} \boldsymbol{w}^{\star}}{2}\right)
 \end{equation}
+where $\boldsymbol{C}^{\star -1} = \frac{ \boldsymbol{\tilde{C}}^{\star -1}}{\sigma^2}  = \left(\boldsymbol{I} - \boldsymbol{B}^{\star}\right)^\prime\boldsymbol{V}^{\star - 1}\left(\boldsymbol{I} - \boldsymbol{B}^{\star}\right)$ and $\boldsymbol{V}^{\star - 1} = \frac{\boldsymbol{\tilde{V}}^{\star - 1}}{\sigma^2}.$
+
+
 
  \item [\textbf{Step4}] However, no closed form is available for
 \(p\left(\phi | \boldsymbol{w}, \sigma^{2}\right)\) as follow
