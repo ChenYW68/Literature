@@ -1,4 +1,4 @@
-\begin{thebibliography}{41}
+\begin{thebibliography}{42}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -315,6 +315,16 @@ E.~Porcu, J.-M. Montero, and M.~Schlather.
 \newblock Springer Science \& Business Media, 2012.
 \newblock URL \url{https://chenyw68.github.io/Literature/[2012]Advances and
   Challenges in Space-time Modelling of Natural Events.pdf}.
+
+\bibitem[Ren and Banerjee(2013)]{ren2013hierarchical}
+Q.~Ren and S.~Banerjee.
+\newblock Hierarchical factor models for large spatially misaligned data: A
+  low-rank predictive process approach.
+\newblock \emph{Biometrics}, 69\penalty0 (1):\penalty0 19--30, 2013.
+\newblock URL
+  \url{https://chenyw68.github.io/Literature/[2013]identifiability)hierarchical
+  factor models for large spatially misaligned data_ a low-rank predictive
+  process approach.pdf}.
 
 \bibitem[Risser and Turek(2020)]{risser2020bayesian}
 M.~D. Risser and D.~Turek.

@@ -606,6 +606,17 @@ where
 \boldsymbol{D}^{\star\star}_w=\left(\frac{\boldsymbol{H}^\prime\boldsymbol{H}}{\tau^{2}}+\boldsymbol{C}_{w}^{\star\star -1}\right)^{-1} ; \boldsymbol{\eta}^{\star\star}_w = \frac{\boldsymbol{H}^\prime\left(\boldsymbol{y} - \boldsymbol{X}\boldsymbol{\beta} - \boldsymbol{w}^{\star}\right)}{\tau^{2}} \label{Eq:gibbs_block_w2}
 \end{equation*}
 
+\textbf{sequential update method:}
+Consider $\boldsymbol{p\left[y_i\mid w_i, \cdot\right]p\left[w_i\mid w_{N(i)}\right]p\left[w_j\mid w_{N(j), i \in N(j)}\right]}$, we have
+\begin{equation}
+\begin{aligned}
+&\sigma_i^2 = \left(\frac{\sum_{l = 1}^{n}h_i^2(s_l)}{\tau^2} + \frac{1}{v_i^2} +
+\sum_{j \in U(s_i)}\frac{c_{j}^2(s_i)}{v_j^2} \right)^{-1}, \\&
+\eta_i = \frac{\sum_{l = 1}^{n}h_i(s_l)\left(y\left(s_l\right) - \boldsymbol{x}\left(s_l\right)\boldsymbol{\beta} - \sum_{k \neq i}^{K}h_k(s_l)w_k^{\star}\right)}{\tau^{2}}\\& ~~~~~~~ + \frac{c_{s_i} \boldsymbol{w}_{N(s_i)}^{\star}}{v_i^2} + \sum_{j \in U(s_i)}\frac{a_{j}(s_i)c_j(s_i)}{v_j^2}.
+\end{aligned}
+ \label{Eq:Post_W_Dis}
+\end{equation}
+
 
 \item [\textbf{Step3}] Furthermore, set
 \(\pi\left(\tau^{2}\right)=I G\left(a_{\tau}, b_{\tau}\right), \pi\left(\sigma^{2}\right)=I G\left(a_{\sigma}, b_{\sigma}\right),\)
