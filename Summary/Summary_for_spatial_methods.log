@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2020.9.12)  31 OCT 2020 19:48
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2020.9.12)  2 NOV 2020 22:14
 entering extended mode
 **Summary_for_spatial_methods.tex
 (G:\Github\Literature\Summary\Summary_for_spatial_methods.tex
@@ -1119,7 +1119,7 @@ LaTeX Font Info:    Try loading font information for U+bbm on input line 491.
 (D:\CTEX\MiKTeX\tex\latex\bbm\ubbm.fd
 File: ubbm.fd 1999/03/15 V 1.2 Font definition for bbm font - TH
 ) [10]
-<Figures/Set.jpg, id=485, 228.855pt x 193.47281pt>
+<Figures/Set.jpg, id=486, 228.855pt x 193.47281pt>
 File: Figures/Set.jpg Graphic file (type jpg)
  <use Figures/Set.jpg>
 Package pdftex.def Info: Figures/Set.jpg used on input line 548.
@@ -1469,12 +1469,12 @@ field-s: the-o-ry and ap-pli-
  []
 
 )
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 667.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 668.
  [17]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 667.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 668.
  (G:\Github\Literature\Summary\Summary_for_spatial_methods.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 667.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 667.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 668.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 668.
 Package rerunfilecheck Info: File `Summary_for_spatial_methods.out' has not cha
 nged.
 (rerunfilecheck)             Checksum: DF52CAF91C33D83CBFFA174541103273;1631.
@@ -1493,7 +1493,7 @@ Here is how much of TeX's memory you used:
  17547 multiletter control sequences out of 15000+200000
  114329 words of font info for 165 fonts, out of 3000000 for 9000
  14 hyphenation exceptions out of 8191
- 52i,18n,52p,1281b,556s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 52i,18n,52p,1433b,556s stack positions out of 5000i,500n,10000p,200000b,50000s
 {D:/CTEX/MiKTeX/fonts/enc/dvips/tex-gyre/q-ec.enc} <D:\CTEX\UserData\fonts\pk
 \ljfour\public\bbm\dpi600\bbm12.pk>{D:/CTEX/MiKTeX/fonts/enc/dvips/fontname/8r.
 enc}{D:/CTEX/MiKTeX/fonts/enc/dvips/iwona/ec-iwona.enc}{D:/CTEX/MiKTeX/fonts/en
@@ -1517,9 +1517,9 @@ owacki/iwona/iwonab.pfb><D:/CTEX/MiKTeX/fonts/type1/nowacki/iwona/iwonar.pfb><D
 <D:/CTEX/MiKTeX/fonts/type1/public/tex-gyre/qbkri.pfb><D:/CTEX/MiKTeX/fonts/typ
 e1/urw/palatino/uplb8a.pfb><D:/CTEX/MiKTeX/fonts/type1/urw/palatino/uplr8a.pfb>
 
-Output written on Summary_for_spatial_methods.pdf (17 pages, 556566 bytes).
+Output written on Summary_for_spatial_methods.pdf (17 pages, 556947 bytes).
 PDF statistics:
- 738 PDF objects out of 1000 (max. 8388607)
+ 739 PDF objects out of 1000 (max. 8388607)
  113 named destinations out of 1000 (max. 500000)
  25758 words of extra memory for PDF output out of 29859 (max. 10000000)
 
