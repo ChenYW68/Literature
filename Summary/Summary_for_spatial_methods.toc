@@ -17,3 +17,4 @@
 \contentsline {section}{\numberline {5}Two exploratory limitations of the NNGP approach}{9}{section.5}
 \contentsline {subsection}{\numberline {5.1}Exploratory analysis }{9}{subsection.5.1}
 \contentsline {subsection}{\numberline {5.2}\leavevmode {\color [rgb]{1.00,0.00,0.50}Improvement project}}{10}{subsection.5.2}
+\contentsline {section}{\numberline {6}Machine Learning}{13}{section.6}
