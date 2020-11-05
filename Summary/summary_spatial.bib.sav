@@ -1,3 +1,4 @@
+% Encoding: UTF-8
 @article{cressie2008fixed,
   title={Fixed rank kriging for very large spatial data sets},
   author={Cressie, Noel and Johannesson, Gardar},
@@ -457,31 +458,5 @@
   publisher={MIT press},
   url ={https://chenyw68.github.io/Literature/[2012]Machine Learning A Probabilistic Perspective.pdf}
 }
-@article{wang2003generalized,
-  title={Generalized common spatial factor model},
-  author={Wang, Fujun and Wall, Melanie M},
-  journal={Biostatistics},
-  volume={4},
-  number={4},
-  pages={569--582},
-  year={2003},
-  publisher={Oxford University Press},
-  url ={https://chenyw68.github.io/Literature/[2003] Generalized common spatial factor model.pdf}
-}
-@article{wiens2020modeling,
-  title={Modeling spatial data using local likelihood estimation and a Mat$\backslash$'ern to SAR translation},
-  author={Wiens, Ashton and Nychka, Douglas and Kleibe, William},
-  journal={arXiv preprint arXiv:2002.01124},
-  year={2020},
-  url ={https://chenyw68.github.io/Literature/[2020]Modeling spatial data using local likelihood estimation and a Matern to SAR translation.pdf}
-}
 
-
-
-
-
-
-
-
-
-
+@Comment{jabref-meta: databaseType:bibtex;}
