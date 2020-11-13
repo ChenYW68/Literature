@@ -1,0 +1,268 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Arsclassica Article
+% LaTeX Template
+% Version 1.1 (1/8/17)
+%
+% This template has been downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% Original author:
+% Lorenzo Pantieri (http://www.lorenzopantieri.net) with extensive modifications by:
+% Vel (vel@latextemplates.com)
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[
+12pt, % Main document font size
+a4paper, % Paper type, use 'letterpaper' for US Letter paper
+oneside, % One page layout (no page indentation)
+%twoside, % Two page layout (page indentation for binding and different headers)
+headinclude,footinclude, % Extra spacing for the header and footer
+BCOR5mm, % Binding correction
+]{scrartcl}
+\input{structure.tex} % Include the structure.tex file which specified the document structure and layout
+% Specify custom hyphenation points in words with dashes where you would like hyphenation to occur, or alternatively, don't put any dashes in a word to stop hyphenation altogether
+
+%----------------------------------------------------------------------------------------
+%	TITLE AND AUTHOR(S)
+%----------------------------------------------------------------------------------------
+
+\title{{A fused nearest neighbor Gaussian process model for large datasets}} % The article title \normalfont\spacedallcaps
+
+%\subtitle{Subtitle} % Uncomment to display a subtitle
+\author{{Yewen Chen}} %\spacedlowsmallcaps The article author(s) - author affiliations need to be specified in the AUTHOR AFFILIATIONS block
+
+\date{\normalsize{October 13, 2020}}
+ % An optional date to appear under the author(s)
+
+%----------------------------------------------------------------------------------------
+\usepackage[margin=0.8in]{geometry}
+\usepackage{tgbonum}
+\usepackage{amsmath}
+\usepackage{natbib}
+\usepackage{float}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{color}
+\usepackage{fancyvrb}
+\usepackage{relsize}
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{bbm}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,
+    urlcolor=cyan,
+}
+
+\urlstyle{same}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+
+\begin{document}
+\renewcommand{\UrlFont}{\small\tt}
+\bibliographystyle{abbrvnat}
+\setlength{\abovecaptionskip}{0pt}
+\setlength{\belowcaptionskip}{10pt}
+%----------------------------------------------------------------------------------------
+%	HEADERS
+%----------------------------------------------------------------------------------------
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}  % Use Input in the format of Algorithm
+\renewcommand{\algorithmicensure}{\textbf{Update step:}} % Use Output in the format of Algorithm
+\renewcommand{\sectionmark}[1]{\markright{\spacedlowsmallcaps{#1}}} % The header for all pages (oneside) or for even pages (twoside)
+%\renewcommand{\subsectionmark}[1]{\markright{\thesubsection~#1}} % Uncomment when using the twoside option - this modifies the header on odd pages
+\lehead{\mbox{\llap{\small\thepage\kern1em\color{halfgray} \vline}\color{halfgray}\hspace{0.5em}\rightmark\hfil}} % The header style
+
+\pagestyle{scrheadings} % Enable the headers specified in this block
+
+%----------------------------------------------------------------------------------------
+%	TABLE OF CONTENTS & LISTS OF FIGURES AND TABLES
+%----------------------------------------------------------------------------------------
+
+\maketitle % Print the title/author/date block
+
+\setcounter{tocdepth}{4} % Set the depth of the table of contents to show sections and subsections only
+
+\tableofcontents % Print the table of contents
+
+\listoffigures % Print the list of figures
+
+\listoftables % Print the list of tables
+
+%----------------------------------------------------------------------------------------
+%	ABSTRACT
+%----------------------------------------------------------------------------------------
+\newpage
+\section{\href{https://chenyw68.github.io/Literature[2020]spNNGP R package for Nearest Neighbor Gaussian Process models.pdf}{The nearest neighbor Gaussian process}}
+Similar to the pre-defined knots for Gaussian predictive processes, the starting point of nearest neighbor Gaussian process (NNGP) approach is to choose a fixed collection (e.g.,  $\boldsymbol{S}$) of distinct locations in $\boldsymbol{D}$, where $\boldsymbol{S}$ need not coincide with or be apart of the
+observed locations, so its size $k$ need not equal the size of the dataset $n$ (or \textcolor[rgb]{0.50,0.50,0.50}{even larger than the size $n$}). The set $\boldsymbol{S}$ is called as reference set by
+\href{https://chenyw68.github.io/Literature/[2016]Hierarchical nearest-neighbor Gaussian process models for large geostatistical datasets.pdf}{\cite{datta2016hierarchical}}.
+
+A directed acyclic graph is defined on the reference set $\boldsymbol{S}$, and then the joint distribution of spatial process $w(s)$ from the reference set is represented by the product of conditional densities which is motivated by Vecchia’s approximation \citep{vecchia1988estimation} ideas, where a careful choice of suitable conditional sets is required, and this conditional set is constrained to be the $m$-nearest neighbors by the NNGP approach, thereby facilitating computation in estimation and prediction problem (for more details on those problems, see  \href{https://chenyw68.github.io/Literature/[2016]Hierarchical nearest-neighbor Gaussian process models for large geostatistical datasets-Appdix.pdf}{Appendix} of \href{https://chenyw68.github.io/Literature/[2016]Hierarchical nearest-neighbor Gaussian process models for large geostatistical datasets.pdf}{\cite{datta2016hierarchical}} and \href{https://chenyw68.github.io/Literature/[2017]Applying Nearest Neighbor Gaussian Processes to Massive Spatial Data Sets.pdf}{\citep{finley2017applying}} and \href{https://chenyw68.github.io/Literature/[2019]Efficient algorithms for bayesian nearest neighbor gaussian processes.pdf}{\cite{finley2019efficient}}); \href{https://chenyw68.github.io/Literature/[2019]Distributed Implementation of Nearest-Neighbor Gaussian process.pdf}{the distributed Implementation}.
+
+Based on these results above, a NNGP can be well-defined from a parent Gaussian process $GP(\boldsymbol{0}, \boldsymbol{C\left(\cdot; \boldsymbol{\theta}\right)})$.
+
+%is defined from the conditional specification of the joint distribution of spatial process $w(s)$ in (\ref{model}), i.e. the joint distribution is
+%represented by the product of conditional densities which is motivated by \citet{vecchia1988estimation} ideas, where a careful choice of suitable conditional sets is required.
+
+%\textcolor[rgb]{1.00,0.00,1.00}{Comment:}
+\begin{itemize}
+ \item [1)] Total operations is $O((n + k)m^3)$ where $m (\approx 20)$ is the size of conditioning set or neighbor set, and several processes can run in parallel (e.g, computations of weights in Kriging equation (\ref{Kriging})).
+ \item [2)] The other major advantage is that the precision matrix of the NNGP is sparse with at most $km(m + 1)/2$ nonzero entries.
+ \item [3)] NNGP can also be extended to large spatio-temporal data (
+\href{https://chenyw68.github.io/Literature/[2016]Nonseparable dynamic NNGP models for large spatio-temporal data.pdf}{\cite{datta2016nonseparable}}) and non-stationary process(\href{https://chenyw68.github.io/Literature/[2020]Computationally efficient nonstationary NNGP models using data-driven techniques.pdf}{\cite{konomi2019computationally}}), \href{https://chenyw68.github.io/Literature/[2020-formal]Bayesian inference for high dimensional nonstationary Gaussian processes.pdf}{\citep{risser2020bayesian}}.
+\end{itemize}
+
+
+\section{Two exploratory limitations of the NNGP approach}
+\subsection{Exploratory analysis }
+\begin{itemize}
+ \item [1)]Problem 1: Since the joint distribution of spatial process $w(s)$ from the reference set is represented by using the product of conditional densities and those conditional sets are constrained to be the $m$-nearest neighbors, so $m$-nearest neighbors may fail to capture all the information about the covariance parameters when there is a true \textbf{large scale dependence} in the dataset.
+ \item [2)]Problem 2: From an application point of view, the reference set $\boldsymbol{S}$ cannot be infinite because we need to solve neighbor set for every location, so the performance of the NNGP approximation depends on the size of the spatial dependence range relative to the spacing of the reference set, that maybe lead to the quality of the NNGP approximation gets worse when \textbf{the spatial dependence range gets shorter}.
+\end{itemize}
+
+%With regard to Problem 1, some simulation results were given by \href{https://chenyw68.github.io/Literature/[2016]Hierarchical nearest-neighbor Gaussian process models for large geostatistical datasets.pdf}{\cite{datta2016hierarchical}} where they generated datasets of size 2500 in a unit square domain and considered estimation cases of different range parameters. Those results can be found in Figure \ref{fig:datta}.  Figure \ref{fig:datta} suggests that the NNGP model deliver inference similar to that of a full GP even for slow decaying covariance functions. However, Figure \ref{fig:datta} shows also that the NNGP obviously tends to underestimate the estimate of range parameter $\phi$ with the increase of spatial range $\phi$.
+%\begin{figure}[H]
+%{\includegraphics[width=16cm]{Figures/datta_NNGP.png} }
+%\vspace{1em}
+%\caption{Simulation results of \href{https://chenyw68.github.io/Literature/[2016]Hierarchical nearest-neighbor Gaussian process models for large geostatistical datasets.pdf}{\cite{datta2016hierarchical}}.}\label{fig:datta}
+%\end{figure}
+
+
+%We considered model (\ref{model}) with $\boldsymbol{\beta X} = 0.1\boldsymbol{I}, \sigma^2 = 5, \tau^2 = 1$, and the Matern correlation function for the spatial random effects $\boldsymbol{w}$, with a constant smoothness parameter $\nu = 0.5$ and varying spatial range parameters.
+%
+%Three distance criteria:
+%\begin{align}
+%D_{\mathrm{KL}}(\hat{\mathbf{\Sigma}}, \mathbf{\Sigma}) &=\frac{1}{2}\left[\operatorname{trace}\left(\hat{\mathbf{\Sigma}}^{-1} \mathbf{\Sigma}\right)- p +\log |\hat{\mathbf{\Sigma}}|-\log |\mathbf{\Sigma}|\right] \\
+%D_{\mathrm{B}}(\hat{\mathbf{\Sigma}}, \mathbf{\Sigma}) &=\frac{1}{2} \log |\tilde{\mathbf{\Sigma}}|-\frac{1}{4}\log | \hat{\mathbf{\Sigma}} |-\frac{1}{4} \log | \mathbf{\Sigma} |, \quad \tilde{\mathbf{\Sigma}}=[\mathbf{\Sigma}+\hat{\mathbf{\Sigma}}] / 2 \\
+%D_{\mathrm{F}}(\hat{\mathbf{\Sigma}}, \mathbf{\Sigma}) &=\sqrt{\operatorname{trace}\left[(\hat{\mathbf{\Sigma}}-\mathbf{\Sigma})(\hat{\mathbf{\Sigma}}-\mathbf{\Sigma})^{\prime}\right]}
+%\end{align}
+
+%\begin{figure}[H]
+%{\includegraphics[width=8cm]{Figures/nnGP1.pdf} }
+%{\includegraphics[width=8cm]{Figures/nnGP2.pdf} }
+%{\includegraphics[width=8cm]{Figures/nnGP3.pdf} }
+%\vspace{1em}
+%\caption{The K-L distance, the Bhattacharyya distance and the Frobenius norm from the estimated covariance
+%matrix to the true covariance matrix for the Matérn family with smoothness parameters $\nu = \frac{1}{2}$ and different spatial range parameters $\phi$. And this true covariance matrix at $500$ random locations from $[0, 100] \times [0, 100]$ was estimated by the NNGP model with $m = 20$  for 50 simulations.}\label{fig:nnGP1}
+%\end{figure}
+%
+%\begin{figure}[H]
+%{\includegraphics[width=18cm]{Figures/nnGP_Cov1.pdf} }
+%{\includegraphics[width=18cm]{Figures/nnGP_Cov2.pdf} }
+%\vspace{1em}
+%\caption{Estimation results of covariance function corresponding to Figure \ref{fig:nnGP1}.}\label{fig:nnGP2}
+%\end{figure}
+
+%Figure \ref{fig:nnGP1} and \ref{fig:nnGP2} suggest that \textbf{the large-scale spatial dependencies for a larger domain can not be well-captured} by the NNGP, and at the same time, the top two panel of Figure \ref{fig:nnGP1} show that as with predictive process model, the NNGP may also \textbf{fail to capture some local information}, that may be related to the selection of reference set.
+Combing a NNGP $w(s)$ used to capture the \textcolor[rgb]{0.50,0.50,0.50}{local, small scale dependence structure} with its spatial smooth version $f(s)$ used to capture the \textcolor[rgb]{0.50,0.50,0.50}{large scale dependence structure}.
+
+\subsection{\textcolor[rgb]{1.00,0.00,0.50}{Model specification}}
+\begin{equation}
+\begin{aligned}
+  y(s) = \boldsymbol{x}(s)\boldsymbol{\beta} + w(s) + \epsilon(s).
+\end{aligned} \label{model1}
+\end{equation}
+
+Furthermore, by decomposing $\boldsymbol{w}$ into $\boldsymbol{v}$ and $\boldsymbol{f}$, then 
+\begin{equation}
+\begin{aligned}
+  y(s) = \boldsymbol{x}(s)\boldsymbol{\beta} + v(s) + f(s) + \epsilon(s).
+\end{aligned} \label{DP1}
+\end{equation}
+\subsubsection{NNGP Component in $\boldsymbol{v}$ on observed level}
+Denote the reference set as $\boldsymbol{S}^{\star} = \{s_i^{\star}: i = 1, \cdots, n\}$ which coincides with the observed locations, and denote $v(s_j)$ as $v_j$. 
+And then assume that $\boldsymbol{v}^{\star} = \left(v_1^{\star}, \cdots, v_n^{\star}\right)^\prime \sim NNGP\left(\boldsymbol{0}, \boldsymbol{\tilde{C}^{\star}}(\cdot; \boldsymbol{\theta}^{\star})\right)$ derived from a parent Gaussian process $\boldsymbol{w} \sim GP\left(\boldsymbol{0}, \boldsymbol{{C}^{\star}}(\cdot; \boldsymbol{\theta}^{\star})\right)$.
+
+\subsubsection{NNGP Component in $\boldsymbol{f}$ on grid level}
+Denote the other reference set as $\boldsymbol{S}^{\star\star} = \{s_j^{\star\star}: j = 1, \cdots, k\}$ was determined through the grid of the domain, and 
+let $h_{k}, k = 1, \cdots, K$ be a sequence of fixed basis functions and $f(s) = \sum_{k = 1}^{K}h_{k}(s)\lambda_{k}$ where $\lambda_{k}^{\star\star} \equiv \lambda(s_k^{\star\star})$. Furthermore, the basis coefficients $\boldsymbol{\lambda}^{\star\star} = \left(\lambda_1^{\star\star}, \cdots, \lambda_K^{\star\star}\right)^\prime \sim NNGP\left(\boldsymbol{0}, \boldsymbol{\tilde{C}}^{\star\star}(\cdot; \boldsymbol{\theta}^{\star\star})\right)$ derived from a parent Gaussian process $\boldsymbol{\lambda} \sim GP\left(\boldsymbol{0}, \boldsymbol{{C}^{\star\star}}(\cdot; \boldsymbol{\theta}^{\star\star})\right)$.
+
+Let 
+$\boldsymbol{\epsilon} = \left(\epsilon(s_1), \cdots, \epsilon(s_n)\right)^\prime \sim N(\boldsymbol{0}, \tau^2\boldsymbol{I})$, according to the normal properties, we have
+\begin{equation}
+\begin{aligned}
+\boldsymbol{y} \sim GP\left(\boldsymbol{0}, \boldsymbol{\Sigma}(\cdot; \boldsymbol{\theta})\right)
+\end{aligned} \label{DP1}
+\end{equation}
+where $\boldsymbol{\Sigma}(\cdot; \boldsymbol{\theta}, \tau^2) = \boldsymbol{\tilde{C}}^{\star}(\cdot; \boldsymbol{\theta}^{\star}) +
+\boldsymbol{H}\boldsymbol{\tilde{C}}^{\star\star}(\cdot; \boldsymbol{\theta}^{\star\star})\boldsymbol{H}^\prime + \tau^2\boldsymbol{I}.$
+
+\subsubsection{Inference}
+With customary prior specifications, we obtain the joint distribution:%\left(\mathbf{D + H}\right)\left({s}_{i}\right)\mathbf{w}, \tau^2\right)
+\begin{equation}
+\begin{aligned}
+& \prod_{i=1}^{n} N\left(\mathbf{y}\left({s}_{i}\right) \mid \mathbf{x}\left({s}_{i}\right) \boldsymbol{\beta}+
+v\left(s_i\right) + \mathbf{h}^\prime(s_i)\boldsymbol{\lambda}^{\star\star}\right) \times N\left(v_{(s_i)} \mid \mathbf{c}_{s_i}^{\star\prime}\mathbf{v}^{\star}, \xi_{i}\right) \times \\ &
+N\left(\mathbf{v}^{\star} \mid \boldsymbol{0}, {\tilde{\mathbf{C}}_1}\right) \times N\left(\boldsymbol{\lambda}^{\star\star} \mid \boldsymbol{0}, \tilde{\mathbf{C}}_2\right) \times N\left(\boldsymbol{\beta} \mid \boldsymbol{\mu}_{\beta}, \mathbf{V}_{\beta}\right) \times  \prod_{j=1}^{l} I G\left(\tau_{j}^{2} \mid a_{\tau_{j}}, b_{\tau_{j}}\right) \times p(\boldsymbol{\theta})
+\end{aligned}
+\end{equation}
+where  $\mathbf{c}_{s_i}^{\star\prime} = \mathbf{c}_{s_i, \mathcal{N}(i)}^{\star}\boldsymbol{C}_{ \mathcal{N}(i)}^{\star -1}$ and $\xi_{i} = c^{\star}(s_i, s_i) - \mathbf{c}_{i}^{\star\prime} \mathbf{c}_{\mathcal{N}(i), s_i}^{\star}$.
+
+\subsubsection{Computational complexity}
+
+
+\subsubsection{ Robustness under stationary covariance families}
+1.Matérn:
+$$C(d) = \sigma^2 \frac{2^{1 - \nu}}{\Gamma(\nu)}\left(\sqrt{2\nu}\frac{d}{\phi}\right)\mathcal{K}_{\nu}\left(\sqrt{2\nu}\frac{d}{\phi}\right)$$
+2.Spherical:
+$$C(d) = \sigma^2\left\{1 - 1.5\left(\frac{d}{\phi}\right) + 0.5\left(\frac{d}{\phi}\right)^3\right\}\mathbf{I}(d < \phi)$$
+
+
+\subsubsection{Non-stationary performance}
+A deterministic function $g$ is used to generate $\boldsymbol{w}$ by defining $w(s) = -10g(x_1)g(x_2)$, where 
+\begin{equation}
+\begin{aligned}
+  g(s) = \exp\left\{-\left(s/750 - 1\right)^2\right\} + \exp\left\{-0.8\left(s/750 + 1\right)^2\right\} - 0.05\sin\left(8(s/750 + 0.1)\right),
+\end{aligned} \label{DP1}
+\end{equation}
+adapted from \citep{guhaniyogi2017divide}.
+
+
+
+
+%----------------------------------------------------------------------------------------
+%\bibliographystyle{achemso}
+\bibliography{summary_spatial}
+\end{document} 

@@ -1,7 +1,7 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2020.9.12)  13 NOV 2020 21:49
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2020.9.12)  10 NOV 2020 14:55
 entering extended mode
-**Summary_for_spatial_methods.tex
-(G:\Github\Literature\Summary\Summary_for_spatial_methods.tex
+**Fused_NNGP_model.tex
+(G:\Github\Literature\Summary\Fused_NNGP_model.tex
 LaTeX2e <2011/06/27>
 Babel <v3.8m> and hyphenation patterns for loaded.
 (D:\CTEX\MiKTeX\tex\latex\koma-script\scrartcl.cls
@@ -885,13 +885,7 @@ Package: framed 2007/10/04 v 0.95: framed or shaded text with page breaks
 \FrameRule=\dimen154
 \FrameSep=\dimen155
 )
-(G:\Github\Literature\Summary\Summary_for_spatial_methods.aux
-
-LaTeX Warning: Label `Eq:Post_W_Dis' multiply defined.
-
-
-LaTeX Warning: Label `Eq:Post_W_Dis' multiply defined.
-
+(G:\Github\Literature\Summary\Fused_NNGP_model.aux
 
 LaTeX Warning: Label `DP1' multiply defined.
 
@@ -933,8 +927,8 @@ LaTeX Info: Redefining \ref on input line 103.
 LaTeX Info: Redefining \pageref on input line 103.
 LaTeX Info: Redefining \nameref on input line 103.
 
-(G:\Github\Literature\Summary\Summary_for_spatial_methods.out)
-(G:\Github\Literature\Summary\Summary_for_spatial_methods.out)
+(G:\Github\Literature\Summary\Fused_NNGP_model.out)
+(G:\Github\Literature\Summary\Fused_NNGP_model.out)
 \@outlinefile=\write4
 LaTeX Info: Redefining \Ref on input line 103.
 
@@ -1050,7 +1044,7 @@ File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 Package tocbasic Info: character protrusion at toc deactivated on input line 12
 7.
 
-(G:\Github\Literature\Summary\Summary_for_spatial_methods.toc
+(G:\Github\Literature\Summary\Fused_NNGP_model.toc
 Package microtype Info: Character `029' is missing
 (microtype)             in font `T1/qbk/m/sc/12'.
 (microtype)             Ignoring protrusion settings for this character.
@@ -1059,453 +1053,523 @@ Package microtype Info: Character `029' is missing
 Package tocbasic Info: character protrusion at lof deactivated on input line 12
 9.
 
-(G:\Github\Literature\Summary\Summary_for_spatial_methods.lof)
+(G:\Github\Literature\Summary\Fused_NNGP_model.lof)
 \tf@lof=\write6
 Package tocbasic Info: character protrusion at lot deactivated on input line 13
 1.
 
-(G:\Github\Literature\Summary\Summary_for_spatial_methods.lot)
+(G:\Github\Literature\Summary\Fused_NNGP_model.lot)
 \tf@lot=\write7
  [1
 
 
-{D:/CTEX/UserData/pdftex/config/pdftex.map{Unicode.sfd}{UGBK.sfd}}] [2]
+{D:/CTEX/UserData/pdftex/config/pdftex.map{Unicode.sfd}{UGBK.sfd}}]
 Package microtype Info: Character `029' is missing
 (microtype)             in font `T1/iwona/m/sc/17.28'.
 (microtype)             Ignoring protrusion settings for this character.
-LaTeX Font Info:    Try loading font information for T1+fvm on input line 161.
+
+
+LaTeX Warning: Reference `Kriging' on page 2 undefined on input line 151.
+
+
+Overfull \hbox (0.42256pt too wide) in paragraph at lines 158--158
+ |[]\T1/iwona/m/sc/17.28/80ls two ex-plorato-ry lim-i-ta-tion-s of the n-ng-p a
+p-proach|  
+ []
+
+Package microtype Info: Character `029' is missing
+(microtype)             in font `T1/iwona/m/sc/12'.
+(microtype)             Ignoring protrusion settings for this character.
+[2]
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 214.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\begingroup' on input line 214.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\<let>-command' on input line 214.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\@nomath' on input line 214.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\begingroup' on input line 214.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\setbox' on input line 214.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\z@' on input line 214.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\hbox' on input line 214.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\thinmuskip' on input line 214.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\medmuskip' on input line 214.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\m@ne' on input line 214.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\thickmuskip' on input line 214.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\@ne' on input line 214.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\setbox' on input line 214.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\tw@' on input line 214.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\hbox' on input line 214.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 214.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\mathsurround' on input line 214.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\z@' on input line 214.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 214.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 214.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\mathsurround' on input line 214.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\z@' on input line 214.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 214.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\<def>-command' on input line 214.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\@tempa' on input line 214.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\mathchoice' on input line 214.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\hbox' on input line 214.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 214.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\mathsurround' on input line 214.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\z@' on input line 214.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\displaystyle' on input line 214.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 214.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\hbox' on input line 214.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 214.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\mathsurround' on input line 214.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\z@' on input line 214.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\textstyle' on input line 214.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 214.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\hbox' on input line 214.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 214.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\mathsurround' on input line 214.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\z@' on input line 214.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\scriptstyle' on input line 214.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 214.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\hbox' on input line 214.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 214.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\mathsurround' on input line 214.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\z@' on input line 214.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\scriptscriptstyle' on input line 214.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 214.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\endgroup' on input line 214.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 214.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 218.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\begingroup' on input line 218.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\<let>-command' on input line 218.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\@nomath' on input line 218.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\begingroup' on input line 218.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\setbox' on input line 218.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\z@' on input line 218.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\hbox' on input line 218.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\thinmuskip' on input line 218.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\medmuskip' on input line 218.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\m@ne' on input line 218.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\thickmuskip' on input line 218.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\@ne' on input line 218.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\setbox' on input line 218.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\tw@' on input line 218.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\hbox' on input line 218.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 218.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\mathsurround' on input line 218.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\z@' on input line 218.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 218.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 218.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\mathsurround' on input line 218.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\z@' on input line 218.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 218.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\<def>-command' on input line 218.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\@tempa' on input line 218.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\mathchoice' on input line 218.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\hbox' on input line 218.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 218.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\mathsurround' on input line 218.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\z@' on input line 218.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\displaystyle' on input line 218.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 218.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\hbox' on input line 218.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 218.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\mathsurround' on input line 218.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\z@' on input line 218.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\textstyle' on input line 218.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 218.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\hbox' on input line 218.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 218.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\mathsurround' on input line 218.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\z@' on input line 218.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\scriptstyle' on input line 218.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 218.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\hbox' on input line 218.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 218.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\mathsurround' on input line 218.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\z@' on input line 218.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\scriptscriptstyle' on input line 218.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 218.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\endgroup' on input line 218.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 218.
+
+[3] (G:\Github\Literature\Summary\Fused_NNGP_model.bbl
+LaTeX Font Info:    Try loading font information for T1+fvm on input line 17.
 
 (D:\CTEX\MiKTeX\tex\latex\bera\t1fvm.fd
 File: t1fvm.fd 2004/09/07 scalable font definitions for T1/fvm.
 )
 LaTeX Font Info:    Font shape `T1/fvm/m/n' will be
-(Font)              scaled to size 10.20007pt on input line 161.
- [3] [4]
-Package microtype Info: Character `029' is missing
-(microtype)             in font `T1/iwona/m/sc/12'.
-(microtype)             Ignoring protrusion settings for this character.
- [5] [6] [7] [8] [9]
-Overfull \hbox (0.42256pt too wide) in paragraph at lines 404--404
- |[]\T1/iwona/m/sc/17.28/80ls two ex-plorato-ry lim-i-ta-tion-s of the n-ng-p a
-p-proach|  
- []
+(Font)              scaled to size 9.30756pt on input line 17.
 
-
-LaTeX Warning: Reference `fig:datta' on page 10 undefined on input line 411.
-
-
-LaTeX Warning: Reference `fig:datta' on page 10 undefined on input line 411.
-
-
-LaTeX Warning: Reference `fig:datta' on page 10 undefined on input line 411.
-
-
-LaTeX Warning: Reference `fig:nnGP1' on page 10 undefined on input line 444.
-
-
-LaTeX Warning: Reference `fig:nnGP2' on page 10 undefined on input line 444.
-
-
-LaTeX Warning: Reference `fig:nnGP1' on page 10 undefined on input line 444.
-
-[10]
-Overfull \hbox (5.09882pt too wide) in paragraph at lines 453--480
-\T1/qbk/m/n/12 the do-main and $\U/zeur/m/n/12 w\U/zeus/m/n/12 ¨\U/zeur/m/n/12 
-s[]\U/zeus/m/n/12 ©$ \T1/qbk/m/n/12 as $\U/zeur/m/n/12 w[]$\T1/qbk/m/n/12 . As-
-sume that $[][] \U/zeus/m/n/12 ½ [][]  \U/zeur/m/n/12 NNGP []$
- []
-
-LaTeX Font Info:    Try loading font information for U+bbm on input line 495.
-(D:\CTEX\MiKTeX\tex\latex\bbm\ubbm.fd
-File: ubbm.fd 1999/03/15 V 1.2 Font definition for bbm font - TH
-) [11]
-<Figures/Set.jpg, id=506, 228.855pt x 193.47281pt>
-File: Figures/Set.jpg Graphic file (type jpg)
- <use Figures/Set.jpg>
-Package pdftex.def Info: Figures/Set.jpg used on input line 552.
-(pdftex.def)             Requested size: 113.81102pt x 96.21362pt.
-
-[12 <G:/Github/Literature/Summary/Figures/Set.jpg>]
-Overfull \hbox (47.77899pt too wide) in paragraph at lines 613--615
-[]\T1/qbk/b/n/12 sequential up-date method: \T1/qbk/m/n/12 Con-sid-er $[]$,
- []
-
-
-Overfull \hbox (59.83073pt too wide) detected at line 629
-\U/zeur/m/n/12 p [] \U/zeus/m/n/12 ½ \U/zeur/m/n/12 IG []
- []
-
-[13]
-
-Package natbib Warning: Citation `hefley2017bayesian' on page 14 undefined on i
-nput line 677.
-
-
-Package natbib Warning: Citation `al2019semiparametric' on page 14 undefined on
- input line 678.
-
-
-Package natbib Warning: Citation `antonelli2020estimating' on page 14 undefined
- on input line 678.
-
-(G:\Github\Literature\Summary\Summary_for_spatial_methods.bbl
-LaTeX Font Info:    Font shape `T1/fvm/m/n' will be
-(Font)              scaled to size 9.30756pt on input line 15.
- [14]
-Underfull \hbox (badness 6204) in paragraph at lines 70--78
+Underfull \hbox (badness 6204) in paragraph at lines 10--18
 []\T1/qbk/m/n/12 A. Dat-ta, S. Baner-jee, A. O. Fin-ley, and A. E. Gelfand.  Hi
 -er-ar-chi-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 70--78
+Underfull \hbox (badness 10000) in paragraph at lines 10--18
 \T1/qbk/m/n/12 cal nearest-neighbor gaus-sian pro-cess mod-el-s for large geo-s
 ta-tis-ti-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 70--78
+Underfull \hbox (badness 10000) in paragraph at lines 10--18
 \T1/qbk/m/n/12 cal dataset-s.  \T1/qbk/m/it/12 Jour-nal of the Amer-i-can S-ta-
 tis-ti-cal As-so-ci-a-tion\T1/qbk/m/n/12 , 111
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 70--78
+Underfull \hbox (badness 10000) in paragraph at lines 10--18
 \T1/qbk/m/n/12 (514):800--812, 2016a.  URL [][]$\T1/fvm/m/n/10.95 https : / / c
 henyw68 . github . io / Literature / [2016 ]$
  []
 
-[15]
-Underfull \hbox (badness 5726) in paragraph at lines 112--120
+
+Underfull \hbox (badness 5726) in paragraph at lines 42--50
 []\T1/qbk/m/n/12 A. O. Fin-ley, A. Dat-ta, B. D. Cook, D. C. Mor-ton, H. E. An-
 der-sen,
  []
 
 
-Underfull \hbox (badness 5817) in paragraph at lines 112--120
+Underfull \hbox (badness 5817) in paragraph at lines 42--50
 \T1/qbk/m/n/12 and S. Baner-jee.  Ef-fi-cien-t al-go-rithm-s for bayesian n-ear
 -est neigh-bor
  []
 
 
-Underfull \hbox (badness 5893) in paragraph at lines 112--120
+Underfull \hbox (badness 5893) in paragraph at lines 42--50
 \T1/qbk/m/n/12 gaus-sian pro-cess-es.  \T1/qbk/m/it/12 Jour-nal of Com-pu-ta-ti
 on-al and Graph-i-cal S-tatis-tic-
  []
 
 
-Underfull \hbox (badness 6220) in paragraph at lines 112--120
+Underfull \hbox (badness 6220) in paragraph at lines 42--50
 \T1/qbk/m/it/12 s\T1/qbk/m/n/12 , 28(2):401--414, 2019.  URL [][]$\T1/fvm/m/n/1
 0.95 https : / / chenyw68 . github . io / Literature / [2019 ]$
  []
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 122--128
-[]\T1/qbk/m/n/12 M. Fuentes.  Ap-prox-i-mate like-li-hood for large ir-reg-u-la
-r-ly s-paced s-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 122--128
-\T1/qbk/m/n/12 pa-tial da-ta.  \T1/qbk/m/it/12 Jour-nal of the Amer-i-can S-ta-
-tis-ti-cal As-so-ci-a-tion\T1/qbk/m/n/12 , 102
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 122--128
-\T1/qbk/m/n/12 (477):321--331, 2007.  URL [][]$\T1/fvm/m/n/10.95 https : / / ch
-enyw68 . github . io / Literature / [2007 ]$
- []
-
-
-Underfull \hbox (badness 2237) in paragraph at lines 138--144
-\T1/qbk/m/n/12 large com-put-er ex-per-i-ments.  \T1/qbk/m/it/12 Jour-nal of Co
-m-pu-ta-tion-al and Graph-i-cal S-
- []
-
-
-Underfull \hbox (badness 2277) in paragraph at lines 173--181
-\T1/qbk/m/n/12 gi, F. Ger-ber, R. B. Gra-ma-cy, D. Ham-mer-ling, M. Katz-fuss, 
-et al.  A
- []
-
-
-Underfull \hbox (badness 4967) in paragraph at lines 173--181
-\T1/qbk/m/n/12 case s-tudy com-pe-ti-tion a-mong meth-od-s for an-a-lyz-ing lar
-ge s-pa-tial da-
- []
-
-
-Underfull \hbox (badness 4378) in paragraph at lines 173--181
-\T1/qbk/m/n/12 ta.  \T1/qbk/m/it/12 Jour-nal of A-gri-cul-tur-al, Bi-o-log-i-ca
-l and En-vi-ron-men-tal S-tatis-tic-s\T1/qbk/m/n/12 , 24
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 173--181
-\T1/qbk/m/n/12 (3):398--425, 2019.  URL [][]$\T1/fvm/m/n/10.95 https : / / chen
-yw68 . github . io / Literature / [2018 ]$
- []
-
-
-Underfull \hbox (badness 1442) in paragraph at lines 183--190
-[]\T1/qbk/m/n/12 X. Hu and I. Steins-land.  S-pa-tial mod-el-ing with sys-tem o
-f s-tochas-tic par-
- []
-
-
-Underfull \hbox (badness 1237) in paragraph at lines 192--199
-[]\T1/qbk/m/n/12 X. Hu, D. Simp-son, F. Lind-gren, and H. Rue.  Mul-ti-vari-ate
- gaus-sian ran-
- []
-
-
-Overfull \hbox (2.22089pt too wide) in paragraph at lines 192--199
-$\T1/fvm/m/n/10.95 MultivariateGaussianrandomfieldsusingsystemsofstochasticpart
-ialdifferentialequations .$
- []
-
-[16]
-Underfull \hbox (badness 2435) in paragraph at lines 201--208
-\T1/qbk/m/n/12 ap-pli-ca-tion-s to high-dimensional spatio-temporal fil-ter-ing
-.  \T1/qbk/m/it/12 arX-iv preprint
- []
-
-
-Underfull \hbox (badness 7963) in paragraph at lines 201--208
-\T1/qbk/m/it/12 arX-iv:2006.16901\T1/qbk/m/n/12 , 2020.  URL [][]$\T1/fvm/m/n/1
-0.95 https : / / chenyw68 . github . io / Literature / [2020 ]$
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 201--208
-$\T1/fvm/m/n/10.95 HierarchicalsparseCholeskydecompositionwithapplicationstospa
-tio-[]temporalfiltering .$
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 210--216
-[]\T1/qbk/m/n/12 M. Katz-fuss.  A multi-resolution ap-prox-i-ma-tion for mas-si
-ve s-pa-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 210--216
-\T1/qbk/m/n/12 tial dataset-s.  \T1/qbk/m/it/12 Jour-nal of the Amer-i-can S-ta
--tis-ti-cal As-so-ci-a-tion\T1/qbk/m/n/12 , 112
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 210--216
-\T1/qbk/m/n/12 (517):201--214, 2017.  URL [][]$\T1/fvm/m/n/10.95 https : / / ch
-enyw68 . github . io / Literature / [2017 ]$
- []
-
-
-Underfull \hbox (badness 1881) in paragraph at lines 218--225
-[]\T1/qbk/m/n/12 M. Katz-fuss and D. Ham-mer-ling.  Par-al-lel in-fer-ence for 
-mas-sive dis-tribut-
- []
-
-
-Underfull \hbox (badness 3646) in paragraph at lines 218--225
-\T1/qbk/m/n/12 ed s-pa-tial da-ta us-ing low-rank mod-el-s.  \T1/qbk/m/it/12 S-
-tatis-tic-s and Com-put-ing\T1/qbk/m/n/12 , 27
- []
-
-
-Underfull \hbox (badness 5862) in paragraph at lines 218--225
-\T1/qbk/m/n/12 (2):363--375, 2017.  URL [][]$\T1/fvm/m/n/10.95 https : / / chen
-yw68 . github . io / Literature / [2017-[]formal ]$
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 237--244
-[]\T1/qbk/m/n/12 C. G. Kauf-man, M. J. Schervish, and D. W. Ny-ch-ka.  Co-vari-
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 237--244
-\T1/qbk/m/n/12 ance ta-per-ing for likelihood-based es-ti-ma-tion in large s-pa
--tial da-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 237--244
-\T1/qbk/m/n/12 ta set-s.  \T1/qbk/m/it/12 Jour-nal of the Amer-i-can S-ta-tis-t
-i-cal As-so-ci-a-tion\T1/qbk/m/n/12 , 103(484):
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 237--244
-\T1/qbk/m/n/12 1545--1555, 2008.  URL [][]$\T1/fvm/m/n/10.95 https : / / chenyw
-68 . github . io / Literature / [2008 ]$
- []
-
-
-Underfull \hbox (badness 5417) in paragraph at lines 264--271
-[]\T1/qbk/m/n/12 B. A. Kono-mi, H. Sang, and B. K. Mallick.  Adap-tive bayesian
- non-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 264--271
-\T1/qbk/m/n/12 sta-tion-ary mod-el-ing for large s-pa-tial dataset-s us-ing co-
-vari-ance ap-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 264--271
-\T1/qbk/m/n/12 prox-i-ma-tion-s.  \T1/qbk/m/it/12 Jour-nal of Com-pu-ta-tion-al
- and Graph-i-cal S-tatis-tic-s\T1/qbk/m/n/12 , 23
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 264--271
-\T1/qbk/m/n/12 (3):802--829, 2014.  URL [][]$\T1/fvm/m/n/10.95 https : / / chen
-yw68 . github . io / Literature / [2014 ]$
- []
-
-[17]
-Underfull \hbox (badness 7631) in paragraph at lines 283--289
-[]\T1/qbk/m/n/12 P. Ma and E. L. Kang.  A fused gaus-sian pro-cess mod-el for v
-ery
- []
-
-
-Underfull \hbox (badness 6944) in paragraph at lines 283--289
-\T1/qbk/m/n/12 large s-pa-tial da-ta.  \T1/qbk/m/it/12 Jour-nal of Com-pu-ta-ti
-on-al and Graph-i-cal S-tatis-tic-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 283--289
-\T1/qbk/m/it/12 s\T1/qbk/m/n/12 , pages 1--11, 2020.  URL [][]$\T1/fvm/m/n/10.9
-5 https : / / chenyw68 . github . io / Literature / [2020 ]$
- []
-
-
-Underfull \hbox (badness 1014) in paragraph at lines 299--306
-[]\T1/qbk/m/n/12 B. Neelon, A. E. Gelfand, and M. L. Mi-ran-da.  A mul-ti-vari-
-ate s-pa-tial mix-
- []
-
-
-Underfull \hbox (badness 1028) in paragraph at lines 299--306
-\T1/qbk/m/n/12 ture mod-el for are-al da-ta: ex-am-in-ing re-gion-al d-if-fer-e
-nces in s-tan-dard-ized
- []
-
-
-Underfull \hbox (badness 1661) in paragraph at lines 299--306
-\T1/qbk/m/n/12 test s-cores.  \T1/qbk/m/it/12 Jour-nal of the Roy-al S-ta-tis-t
-i-cal So-ci-ety. Se-ries C, Ap-plied s-
- []
-
-
-Underfull \hbox (badness 3250) in paragraph at lines 299--306
-\T1/qbk/m/it/12 tatis-tic-s\T1/qbk/m/n/12 , 63(5):737, 2014.  URL [][]$\T1/fvm/
-m/n/10.95 https : / / chenyw68 . github . io / Literature / [2014 ]$
- []
-
-
-Underfull \hbox (badness 2088) in paragraph at lines 309--317
-[]\T1/qbk/m/n/12 D. Ny-ch-ka, S. Bandy-opad-hyay, D. Ham-mer-ling, F. Lind-gren
-, and S. Sain.
- []
-
-
-Underfull \hbox (badness 5274) in paragraph at lines 309--317
-\T1/qbk/m/n/12 A mul-tires-o-lu-tion gaus-sian pro-cess mod-el for the anal-y-s
-is of large s-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 309--317
-\T1/qbk/m/n/12 pa-tial dataset-s.  \T1/qbk/m/it/12 Jour-nal of Com-pu-ta-tion-a
-l and Graph-i-cal S-tatis-tic-s\T1/qbk/m/n/12 ,
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 309--317
-\T1/qbk/m/n/12 24(2):579--599, 2015.  URL [][]$\T1/fvm/m/n/10.95 https : / / ch
-enyw68 . github . io / Literature / [2015 ]$
- []
-
-
-Underfull \hbox (badness 1931) in paragraph at lines 319--325
-[]\T1/qbk/m/n/12 E. Por-cu, J.-M. Mon-tero, and M. Schlather.  \T1/qbk/m/it/12 
-Ad-vances and chal-lenges in
- []
-
-
-Underfull \hbox (badness 3942) in paragraph at lines 319--325
-\T1/qbk/m/it/12 space-time mod-elling of nat-u-ral events\T1/qbk/m/n/12 , vol-u
-me 207.  Springer Sci-ence
- []
-
-
-Underfull \hbox (badness 2680) in paragraph at lines 319--325
-\T1/qbk/m/n/12 & Busi-ness Me-di-a, 2012.  URL [][]$\T1/fvm/m/n/10.95 https : /
- / chenyw68 . github . io / Literature / [2012 ]$
- []
-
-
-Underfull \hbox (badness 4832) in paragraph at lines 327--335
-[]\T1/qbk/m/n/12 Q. Ren and S. Baner-jee.  Hi-er-ar-chi-cal fac-tor mod-el-s fo
-r large s-pa-tial-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 327--335
-\T1/qbk/m/n/12 ly mis-aligned da-ta: A low-rank pre-dic-tive pro-cess ap-proach
-.  \T1/qbk/m/it/12 Bio-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 327--335
-\T1/qbk/m/it/12 met-ric-s\T1/qbk/m/n/12 , 69(1):19--30, 2013.  URL [][]$\T1/fvm
-/m/n/10.95 https : / / chenyw68 . github . io / Literature /$
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 327--335
-$\T1/fvm/m/n/10.95 [2013 ] identifiability ) hierarchicalfactormodelsforlargesp
-atiallymisaligneddata _$
- []
-
-
-Underfull \hbox (badness 2005) in paragraph at lines 346--351
-[]\T1/qbk/m/n/12 H. Rue and L. Held.  \T1/qbk/m/it/12 Gaus-sian Markov ran-dom 
-field-s: the-o-ry and ap-pli-
- []
-
-[18]
-Underfull \hbox (badness 3646) in paragraph at lines 391--397
-[]\T1/qbk/m/n/12 A. Wien-s, D. Ny-ch-ka, and W. K-leibe.  Mod-el-ing s-pa-tial 
-da-ta us-ing lo-
- []
-
-
-Underfull \hbox (badness 7759) in paragraph at lines 391--397
-\T1/qbk/m/n/12 cal like-li-hood es-ti-ma-tion and a mat$\U/zeus/m/n/12 n$\T1/qb
-k/m/n/12 'ern to sar trans-la-tion.  \T1/qbk/m/it/12 arX-iv
- []
-
 )
-
-Package natbib Warning: There were undefined citations.
-
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 687.
-[19]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 687.
- (G:\Github\Literature\Summary\Summary_for_spatial_methods.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 687.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 687.
-Package rerunfilecheck Info: File `Summary_for_spatial_methods.out' has not cha
-nged.
-(rerunfilecheck)             Checksum: 090A8F02DA23AAA177C20AEB7809E999;1731.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 268.
+ [4]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 268.
+ (G:\Github\Literature\Summary\Fused_NNGP_model.aux)
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 268.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 268.
+Package rerunfilecheck Info: File `Fused_NNGP_model.out' has not changed.
+(rerunfilecheck)             Checksum: C72B50F26153E28791B6E39CA9DA6007;990.
 
 
 LaTeX Warning: There were undefined references.
@@ -1515,39 +1579,35 @@ LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 14855 strings out of 495354
- 223994 string characters out of 3183859
- 477557 words of memory out of 3000000
- 17561 multiletter control sequences out of 15000+200000
- 114329 words of font info for 165 fonts, out of 3000000 for 9000
+ 14542 strings out of 495354
+ 217560 string characters out of 3183859
+ 469021 words of memory out of 3000000
+ 17364 multiletter control sequences out of 15000+200000
+ 100230 words of font info for 144 fonts, out of 3000000 for 9000
  14 hyphenation exceptions out of 8191
- 52i,18n,52p,1433b,556s stack positions out of 5000i,500n,10000p,200000b,50000s
-{D:/CTEX/MiKTeX/fonts/enc/dvips/tex-gyre/q-ec.enc} <D:\CTEX\UserData\fonts\pk
-\ljfour\public\bbm\dpi600\bbm12.pk>{D:/CTEX/MiKTeX/fonts/enc/dvips/fontname/8r.
-enc}{D:/CTEX/MiKTeX/fonts/enc/dvips/iwona/ec-iwona.enc}{D:/CTEX/MiKTeX/fonts/en
-c/dvips/tex-gyre/q-ec-sc.enc}{D:/CTEX/MiKTeX/fonts/enc/dvips/iwona/ec-iwona-sc.
-enc}<D:/CTEX/MiKTeX/fonts/type1/public/amsfonts/cm/cmbsy10.pfb><D:/CTEX/MiKTeX/
-fonts/type1/public/amsfonts/cm/cmex10.pfb><D:/CTEX/MiKTeX/fonts/type1/public/am
-sfonts/cm/cmmi10.pfb><D:/CTEX/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi7.pfb><
-D:/CTEX/MiKTeX/fonts/type1/public/amsfonts/cm/cmmib10.pfb><D:/CTEX/MiKTeX/fonts
-/type1/public/amsfonts/cm/cmsy10.pfb><D:/CTEX/MiKTeX/fonts/type1/public/amsfont
-s/euler/euex10.pfb><D:/CTEX/MiKTeX/fonts/type1/public/amsfonts/euler/eufb10.pfb
-><D:/CTEX/MiKTeX/fonts/type1/public/amsfonts/euler/eufm10.pfb><D:/CTEX/MiKTeX/f
-onts/type1/public/amsfonts/euler/eufm7.pfb><D:/CTEX/MiKTeX/fonts/type1/public/a
-msfonts/euler/eurb10.pfb><D:/CTEX/MiKTeX/fonts/type1/public/amsfonts/euler/eurm
-10.pfb><D:/CTEX/MiKTeX/fonts/type1/public/amsfonts/euler/eurm7.pfb><D:/CTEX/MiK
-TeX/fonts/type1/public/amsfonts/euler/eusb10.pfb><D:/CTEX/MiKTeX/fonts/type1/pu
-blic/amsfonts/euler/eusm10.pfb><D:/CTEX/MiKTeX/fonts/type1/public/mathpazo/fplm
-b.pfb><D:/CTEX/MiKTeX/fonts/type1/bera/fvmr8a.pfb><D:/CTEX/MiKTeX/fonts/type1/n
-owacki/iwona/iwonab.pfb><D:/CTEX/MiKTeX/fonts/type1/nowacki/iwona/iwonar.pfb><D
-:/CTEX/MiKTeX/fonts/type1/nowacki/iwona/iwonari.pfb><D:/CTEX/MiKTeX/fonts/type1
-/public/tex-gyre/qbkb.pfb><D:/CTEX/MiKTeX/fonts/type1/public/tex-gyre/qbkr.pfb>
-<D:/CTEX/MiKTeX/fonts/type1/public/tex-gyre/qbkri.pfb><D:/CTEX/MiKTeX/fonts/typ
-e1/urw/palatino/uplb8a.pfb><D:/CTEX/MiKTeX/fonts/type1/urw/palatino/uplr8a.pfb>
-
-Output written on Summary_for_spatial_methods.pdf (19 pages, 567413 bytes).
+ 52i,14n,52p,1422b,418s stack positions out of 5000i,500n,10000p,200000b,50000s
+{D:/CTEX/MiKTeX/fonts/enc/dvips/fontname/8r.enc}{D:/CTEX/MiKTeX/fonts/enc/dvi
+ps/tex-gyre/q-ec.enc}{D:/CTEX/MiKTeX/fonts/enc/dvips/iwona/ec-iwona.enc}{D:/CTE
+X/MiKTeX/fonts/enc/dvips/tex-gyre/q-ec-sc.enc}{D:/CTEX/MiKTeX/fonts/enc/dvips/i
+wona/ec-iwona-sc.enc}<D:/CTEX/MiKTeX/fonts/type1/public/amsfonts/cm/cmbsy10.pfb
+><D:/CTEX/MiKTeX/fonts/type1/public/amsfonts/cm/cmex10.pfb><D:/CTEX/MiKTeX/font
+s/type1/public/amsfonts/cm/cmmi10.pfb><D:/CTEX/MiKTeX/fonts/type1/public/amsfon
+ts/cm/cmmib10.pfb><D:/CTEX/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><D:
+/CTEX/MiKTeX/fonts/type1/public/amsfonts/euler/euex10.pfb><D:/CTEX/MiKTeX/fonts
+/type1/public/amsfonts/euler/eufb10.pfb><D:/CTEX/MiKTeX/fonts/type1/public/amsf
+onts/euler/eufm10.pfb><D:/CTEX/MiKTeX/fonts/type1/public/amsfonts/euler/eurb10.
+pfb><D:/CTEX/MiKTeX/fonts/type1/public/amsfonts/euler/eurm10.pfb><D:/CTEX/MiKTe
+X/fonts/type1/public/amsfonts/euler/eurm7.pfb><D:/CTEX/MiKTeX/fonts/type1/publi
+c/amsfonts/euler/eusm10.pfb><D:/CTEX/MiKTeX/fonts/type1/bera/fvmr8a.pfb><D:/CTE
+X/MiKTeX/fonts/type1/nowacki/iwona/iwonab.pfb><D:/CTEX/MiKTeX/fonts/type1/nowac
+ki/iwona/iwonar.pfb><D:/CTEX/MiKTeX/fonts/type1/nowacki/iwona/iwonari.pfb><D:/C
+TEX/MiKTeX/fonts/type1/public/tex-gyre/qbkb.pfb><D:/CTEX/MiKTeX/fonts/type1/pub
+lic/tex-gyre/qbkr.pfb><D:/CTEX/MiKTeX/fonts/type1/public/tex-gyre/qbkri.pfb><D:
+/CTEX/MiKTeX/fonts/type1/urw/palatino/uplb8a.pfb><D:/CTEX/MiKTeX/fonts/type1/ur
+w/palatino/uplr8a.pfb>
+Output written on Fused_NNGP_model.pdf (4 pages, 323108 bytes).
 PDF statistics:
- 783 PDF objects out of 1000 (max. 8388607)
- 120 named destinations out of 1000 (max. 500000)
- 25774 words of extra memory for PDF output out of 29859 (max. 10000000)
+ 228 PDF objects out of 1000 (max. 8388607)
+ 28 named destinations out of 1000 (max. 500000)
+ 22609 words of extra memory for PDF output out of 24883 (max. 10000000)
 
