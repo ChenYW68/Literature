@@ -260,7 +260,12 @@ A deterministic function $g$ is used to generate $\boldsymbol{w}$ by defining $w
 adapted from \citep{guhaniyogi2017divide}.
 
 
+\subsection{Non-stationary performance}
+The spatial effects are each assigned a different prior distribution $F(s)$, the prior for $F(s)$ is the potentially infinite mixture, i.e. 
+$$f(s) \sim F(s) \overset{d}{=} \sum_{l = 1}^{nGrid}p_l(s)\delta(c_l)$$ 
+where $p_1(s) = U_1(s), p_l(s) = U_l(s)\prod_{j = 1}^{l - 1}\left(1 - U_j(s)\right)$ for $i >1$ and $U_l(s) = \mathcal{K}_l(s)u_l$, and $u_l$ is given the priors $u_l \sim Beta(a, b)$, each independent across $l$; and $\boldsymbol{c} \sim N(\boldsymbol{0}, \boldsymbol{\tilde{C}}^{\star\star})$.
 
+ However, the distributions vary spatially according to the kernel functions $\mathcal{K}_l(s)$, which are  centered at some lattice knots and restricted to the interval $[0,1]$.
 
 %----------------------------------------------------------------------------------------
 %\bibliographystyle{achemso}

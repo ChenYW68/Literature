@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2020.9.12)  10 NOV 2020 14:55
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2020.9.12)  14 NOV 2020 16:34
 entering extended mode
 **Fused_NNGP_model.tex
 (G:\Github\Literature\Summary\Fused_NNGP_model.tex
@@ -1561,15 +1561,15 @@ Underfull \hbox (badness 6220) in paragraph at lines 42--50
 0.95 https : / / chenyw68 . github . io / Literature / [2019 ]$
  []
 
-)
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 268.
- [4]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 268.
+[4])
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 273.
+ [5]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 273.
  (G:\Github\Literature\Summary\Fused_NNGP_model.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 268.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 268.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 273.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 273.
 Package rerunfilecheck Info: File `Fused_NNGP_model.out' has not changed.
-(rerunfilecheck)             Checksum: C72B50F26153E28791B6E39CA9DA6007;990.
+(rerunfilecheck)             Checksum: 5A8F5CB82675ACE03FADE8493C0CD1F8;1071.
 
 
 LaTeX Warning: There were undefined references.
@@ -1579,13 +1579,13 @@ LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 14542 strings out of 495354
- 217560 string characters out of 3183859
+ 14545 strings out of 495354
+ 217596 string characters out of 3183859
  469021 words of memory out of 3000000
- 17364 multiletter control sequences out of 15000+200000
+ 17365 multiletter control sequences out of 15000+200000
  100230 words of font info for 144 fonts, out of 3000000 for 9000
  14 hyphenation exceptions out of 8191
- 52i,14n,52p,1422b,418s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 52i,14n,52p,1422b,449s stack positions out of 5000i,500n,10000p,200000b,50000s
 {D:/CTEX/MiKTeX/fonts/enc/dvips/fontname/8r.enc}{D:/CTEX/MiKTeX/fonts/enc/dvi
 ps/tex-gyre/q-ec.enc}{D:/CTEX/MiKTeX/fonts/enc/dvips/iwona/ec-iwona.enc}{D:/CTE
 X/MiKTeX/fonts/enc/dvips/tex-gyre/q-ec-sc.enc}{D:/CTEX/MiKTeX/fonts/enc/dvips/i
@@ -1605,9 +1605,9 @@ TEX/MiKTeX/fonts/type1/public/tex-gyre/qbkb.pfb><D:/CTEX/MiKTeX/fonts/type1/pub
 lic/tex-gyre/qbkr.pfb><D:/CTEX/MiKTeX/fonts/type1/public/tex-gyre/qbkri.pfb><D:
 /CTEX/MiKTeX/fonts/type1/urw/palatino/uplb8a.pfb><D:/CTEX/MiKTeX/fonts/type1/ur
 w/palatino/uplr8a.pfb>
-Output written on Fused_NNGP_model.pdf (4 pages, 323108 bytes).
+Output written on Fused_NNGP_model.pdf (5 pages, 328948 bytes).
 PDF statistics:
- 228 PDF objects out of 1000 (max. 8388607)
- 28 named destinations out of 1000 (max. 500000)
- 22609 words of extra memory for PDF output out of 24883 (max. 10000000)
+ 237 PDF objects out of 1000 (max. 8388607)
+ 30 named destinations out of 1000 (max. 500000)
+ 22617 words of extra memory for PDF output out of 24883 (max. 10000000)
 

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2020.9.12)  13 NOV 2020 21:49
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2020.9.12)  17 NOV 2020 15:21
 entering extended mode
 **Summary_for_spatial_methods.tex
 (G:\Github\Literature\Summary\Summary_for_spatial_methods.tex
@@ -1085,424 +1085,451 @@ Package microtype Info: Character `029' is missing
 (microtype)             in font `T1/iwona/m/sc/12'.
 (microtype)             Ignoring protrusion settings for this character.
  [5] [6] [7] [8] [9]
-Overfull \hbox (0.42256pt too wide) in paragraph at lines 404--404
+Overfull \hbox (0.42256pt too wide) in paragraph at lines 406--406
  |[]\T1/iwona/m/sc/17.28/80ls two ex-plorato-ry lim-i-ta-tion-s of the n-ng-p a
 p-proach|  
  []
 
 
-LaTeX Warning: Reference `fig:datta' on page 10 undefined on input line 411.
+LaTeX Warning: Reference `fig:datta' on page 10 undefined on input line 413.
 
 
-LaTeX Warning: Reference `fig:datta' on page 10 undefined on input line 411.
+LaTeX Warning: Reference `fig:datta' on page 10 undefined on input line 413.
 
 
-LaTeX Warning: Reference `fig:datta' on page 10 undefined on input line 411.
+LaTeX Warning: Reference `fig:datta' on page 10 undefined on input line 413.
 
 
-LaTeX Warning: Reference `fig:nnGP1' on page 10 undefined on input line 444.
+LaTeX Warning: Reference `fig:nnGP1' on page 10 undefined on input line 446.
 
 
-LaTeX Warning: Reference `fig:nnGP2' on page 10 undefined on input line 444.
+LaTeX Warning: Reference `fig:nnGP2' on page 10 undefined on input line 446.
 
 
-LaTeX Warning: Reference `fig:nnGP1' on page 10 undefined on input line 444.
+LaTeX Warning: Reference `fig:nnGP1' on page 10 undefined on input line 446.
 
 [10]
-Overfull \hbox (5.09882pt too wide) in paragraph at lines 453--480
+Overfull \hbox (5.09882pt too wide) in paragraph at lines 455--482
 \T1/qbk/m/n/12 the do-main and $\U/zeur/m/n/12 w\U/zeus/m/n/12 ¨\U/zeur/m/n/12 
 s[]\U/zeus/m/n/12 ©$ \T1/qbk/m/n/12 as $\U/zeur/m/n/12 w[]$\T1/qbk/m/n/12 . As-
 sume that $[][] \U/zeus/m/n/12 ½ [][]  \U/zeur/m/n/12 NNGP []$
  []
 
-LaTeX Font Info:    Try loading font information for U+bbm on input line 495.
+LaTeX Font Info:    Try loading font information for U+bbm on input line 497.
 (D:\CTEX\MiKTeX\tex\latex\bbm\ubbm.fd
 File: ubbm.fd 1999/03/15 V 1.2 Font definition for bbm font - TH
 ) [11]
-<Figures/Set.jpg, id=506, 228.855pt x 193.47281pt>
+<Figures/Set.jpg, id=505, 228.855pt x 193.47281pt>
 File: Figures/Set.jpg Graphic file (type jpg)
  <use Figures/Set.jpg>
-Package pdftex.def Info: Figures/Set.jpg used on input line 552.
+Package pdftex.def Info: Figures/Set.jpg used on input line 554.
 (pdftex.def)             Requested size: 113.81102pt x 96.21362pt.
 
 [12 <G:/Github/Literature/Summary/Figures/Set.jpg>]
-Overfull \hbox (47.77899pt too wide) in paragraph at lines 613--615
+Overfull \hbox (47.77899pt too wide) in paragraph at lines 615--617
 []\T1/qbk/b/n/12 sequential up-date method: \T1/qbk/m/n/12 Con-sid-er $[]$,
  []
 
 
-Overfull \hbox (59.83073pt too wide) detected at line 629
+Overfull \hbox (59.83073pt too wide) detected at line 631
 \U/zeur/m/n/12 p [] \U/zeus/m/n/12 ½ \U/zeur/m/n/12 IG []
  []
 
 [13]
-
-Package natbib Warning: Citation `hefley2017bayesian' on page 14 undefined on i
-nput line 677.
-
-
-Package natbib Warning: Citation `al2019semiparametric' on page 14 undefined on
- input line 678.
-
-
-Package natbib Warning: Citation `antonelli2020estimating' on page 14 undefined
- on input line 678.
+Overfull \hbox (0.46623pt too wide) in paragraph at lines 679--682
+[]\T1/qbk/m/n/12 Confounding: See [][][][]Hefley et al.[][] [[][]2017[][]][][],
+ [][][][]B-hat-tacharya et al.[][] [[][]2015[][]][][], [][][][]Cheng[][] [[][]2
+016[][]][][]. 
+ []
 
 (G:\Github\Literature\Summary\Summary_for_spatial_methods.bbl
 LaTeX Font Info:    Font shape `T1/fvm/m/n' will be
 (Font)              scaled to size 9.30756pt on input line 15.
- [14]
-Underfull \hbox (badness 6204) in paragraph at lines 70--78
+
+Overfull \hbox (25.13348pt too wide) in paragraph at lines 9--16
+$\T1/fvm/m/n/10.95 Estimationforsemiparametricnonlinearregressionofirregularlyl
+ocatedspatialtime-[]seriesdata .$
+ []
+
+[14]
+Underfull \hbox (badness 10000) in paragraph at lines 19--27
+$\T1/fvm/m/n/10.95 onasemiparametricdatadrivennonlinearmodelwithpenalizedspatio
+temporallaginteractions .$
+ []
+
+
+Underfull \hbox (badness 1314) in paragraph at lines 60--66
+\T1/qbk/m/n/12 pri-ors for op-ti-mal shrink-age.  \T1/qbk/m/it/12 Jour-nal of t
+he Amer-i-can S-ta-tis-ti-cal As-so-ci-a-
+ []
+
+
+Underfull \hbox (badness 3428) in paragraph at lines 93--99
+[]\T1/qbk/m/n/12 H. Cheng.  \T1/qbk/m/it/12 S-parse rep-re-sen-ta-tion, mod-el-
+ing and learn-ing in vi-su-al recog-
+ []
+
+
+Underfull \hbox (badness 4582) in paragraph at lines 93--99
+\T1/qbk/m/it/12 ni-tion\T1/qbk/m/n/12 .  Springer, 2016.  URL [][]$\T1/fvm/m/n/
+10.95 https : / / chenyw68 . github . io / Literature / [2015 ]$
+ []
+
+[15]
+Underfull \hbox (badness 6204) in paragraph at lines 118--126
 []\T1/qbk/m/n/12 A. Dat-ta, S. Baner-jee, A. O. Fin-ley, and A. E. Gelfand.  Hi
 -er-ar-chi-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 70--78
+Underfull \hbox (badness 10000) in paragraph at lines 118--126
 \T1/qbk/m/n/12 cal nearest-neighbor gaus-sian pro-cess mod-el-s for large geo-s
 ta-tis-ti-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 70--78
+Underfull \hbox (badness 10000) in paragraph at lines 118--126
 \T1/qbk/m/n/12 cal dataset-s.  \T1/qbk/m/it/12 Jour-nal of the Amer-i-can S-ta-
 tis-ti-cal As-so-ci-a-tion\T1/qbk/m/n/12 , 111
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 70--78
+Underfull \hbox (badness 10000) in paragraph at lines 118--126
 \T1/qbk/m/n/12 (514):800--812, 2016a.  URL [][]$\T1/fvm/m/n/10.95 https : / / c
 henyw68 . github . io / Literature / [2016 ]$
  []
 
-[15]
-Underfull \hbox (badness 5726) in paragraph at lines 112--120
+
+Underfull \hbox (badness 5726) in paragraph at lines 160--168
 []\T1/qbk/m/n/12 A. O. Fin-ley, A. Dat-ta, B. D. Cook, D. C. Mor-ton, H. E. An-
 der-sen,
  []
 
 
-Underfull \hbox (badness 5817) in paragraph at lines 112--120
+Underfull \hbox (badness 5817) in paragraph at lines 160--168
 \T1/qbk/m/n/12 and S. Baner-jee.  Ef-fi-cien-t al-go-rithm-s for bayesian n-ear
 -est neigh-bor
  []
 
 
-Underfull \hbox (badness 5893) in paragraph at lines 112--120
+Underfull \hbox (badness 5893) in paragraph at lines 160--168
 \T1/qbk/m/n/12 gaus-sian pro-cess-es.  \T1/qbk/m/it/12 Jour-nal of Com-pu-ta-ti
 on-al and Graph-i-cal S-tatis-tic-
  []
 
 
-Underfull \hbox (badness 6220) in paragraph at lines 112--120
+Underfull \hbox (badness 6220) in paragraph at lines 160--168
 \T1/qbk/m/it/12 s\T1/qbk/m/n/12 , 28(2):401--414, 2019.  URL [][]$\T1/fvm/m/n/1
 0.95 https : / / chenyw68 . github . io / Literature / [2019 ]$
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 122--128
+Underfull \hbox (badness 10000) in paragraph at lines 170--176
 []\T1/qbk/m/n/12 M. Fuentes.  Ap-prox-i-mate like-li-hood for large ir-reg-u-la
 r-ly s-paced s-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 122--128
+Underfull \hbox (badness 10000) in paragraph at lines 170--176
 \T1/qbk/m/n/12 pa-tial da-ta.  \T1/qbk/m/it/12 Jour-nal of the Amer-i-can S-ta-
 tis-ti-cal As-so-ci-a-tion\T1/qbk/m/n/12 , 102
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 122--128
+Underfull \hbox (badness 10000) in paragraph at lines 170--176
 \T1/qbk/m/n/12 (477):321--331, 2007.  URL [][]$\T1/fvm/m/n/10.95 https : / / ch
 enyw68 . github . io / Literature / [2007 ]$
  []
 
 
-Underfull \hbox (badness 2237) in paragraph at lines 138--144
+Underfull \hbox (badness 2237) in paragraph at lines 186--192
 \T1/qbk/m/n/12 large com-put-er ex-per-i-ments.  \T1/qbk/m/it/12 Jour-nal of Co
 m-pu-ta-tion-al and Graph-i-cal S-
  []
 
-
-Underfull \hbox (badness 2277) in paragraph at lines 173--181
+[16]
+Underfull \hbox (badness 2277) in paragraph at lines 221--229
 \T1/qbk/m/n/12 gi, F. Ger-ber, R. B. Gra-ma-cy, D. Ham-mer-ling, M. Katz-fuss, 
 et al.  A
  []
 
 
-Underfull \hbox (badness 4967) in paragraph at lines 173--181
+Underfull \hbox (badness 4967) in paragraph at lines 221--229
 \T1/qbk/m/n/12 case s-tudy com-pe-ti-tion a-mong meth-od-s for an-a-lyz-ing lar
 ge s-pa-tial da-
  []
 
 
-Underfull \hbox (badness 4378) in paragraph at lines 173--181
+Underfull \hbox (badness 4378) in paragraph at lines 221--229
 \T1/qbk/m/n/12 ta.  \T1/qbk/m/it/12 Jour-nal of A-gri-cul-tur-al, Bi-o-log-i-ca
 l and En-vi-ron-men-tal S-tatis-tic-s\T1/qbk/m/n/12 , 24
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 173--181
+Underfull \hbox (badness 10000) in paragraph at lines 221--229
 \T1/qbk/m/n/12 (3):398--425, 2019.  URL [][]$\T1/fvm/m/n/10.95 https : / / chen
 yw68 . github . io / Literature / [2018 ]$
  []
 
 
-Underfull \hbox (badness 1442) in paragraph at lines 183--190
+Underfull \hbox (badness 1442) in paragraph at lines 240--247
 []\T1/qbk/m/n/12 X. Hu and I. Steins-land.  S-pa-tial mod-el-ing with sys-tem o
 f s-tochas-tic par-
  []
 
 
-Underfull \hbox (badness 1237) in paragraph at lines 192--199
+Underfull \hbox (badness 1237) in paragraph at lines 249--256
 []\T1/qbk/m/n/12 X. Hu, D. Simp-son, F. Lind-gren, and H. Rue.  Mul-ti-vari-ate
  gaus-sian ran-
  []
 
 
-Overfull \hbox (2.22089pt too wide) in paragraph at lines 192--199
+Overfull \hbox (2.22089pt too wide) in paragraph at lines 249--256
 $\T1/fvm/m/n/10.95 MultivariateGaussianrandomfieldsusingsystemsofstochasticpart
 ialdifferentialequations .$
  []
 
-[16]
-Underfull \hbox (badness 2435) in paragraph at lines 201--208
+
+Underfull \hbox (badness 2435) in paragraph at lines 258--265
 \T1/qbk/m/n/12 ap-pli-ca-tion-s to high-dimensional spatio-temporal fil-ter-ing
 .  \T1/qbk/m/it/12 arX-iv preprint
  []
 
 
-Underfull \hbox (badness 7963) in paragraph at lines 201--208
+Underfull \hbox (badness 7963) in paragraph at lines 258--265
 \T1/qbk/m/it/12 arX-iv:2006.16901\T1/qbk/m/n/12 , 2020.  URL [][]$\T1/fvm/m/n/1
 0.95 https : / / chenyw68 . github . io / Literature / [2020 ]$
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 201--208
+Underfull \hbox (badness 10000) in paragraph at lines 258--265
 $\T1/fvm/m/n/10.95 HierarchicalsparseCholeskydecompositionwithapplicationstospa
 tio-[]temporalfiltering .$
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 210--216
+Underfull \hbox (badness 10000) in paragraph at lines 267--273
 []\T1/qbk/m/n/12 M. Katz-fuss.  A multi-resolution ap-prox-i-ma-tion for mas-si
 ve s-pa-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 210--216
+Underfull \hbox (badness 10000) in paragraph at lines 267--273
 \T1/qbk/m/n/12 tial dataset-s.  \T1/qbk/m/it/12 Jour-nal of the Amer-i-can S-ta
 -tis-ti-cal As-so-ci-a-tion\T1/qbk/m/n/12 , 112
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 210--216
+Underfull \hbox (badness 10000) in paragraph at lines 267--273
 \T1/qbk/m/n/12 (517):201--214, 2017.  URL [][]$\T1/fvm/m/n/10.95 https : / / ch
 enyw68 . github . io / Literature / [2017 ]$
  []
 
 
-Underfull \hbox (badness 1881) in paragraph at lines 218--225
+Underfull \hbox (badness 1881) in paragraph at lines 275--282
 []\T1/qbk/m/n/12 M. Katz-fuss and D. Ham-mer-ling.  Par-al-lel in-fer-ence for 
 mas-sive dis-tribut-
  []
 
 
-Underfull \hbox (badness 3646) in paragraph at lines 218--225
+Underfull \hbox (badness 3646) in paragraph at lines 275--282
 \T1/qbk/m/n/12 ed s-pa-tial da-ta us-ing low-rank mod-el-s.  \T1/qbk/m/it/12 S-
 tatis-tic-s and Com-put-ing\T1/qbk/m/n/12 , 27
  []
 
 
-Underfull \hbox (badness 5862) in paragraph at lines 218--225
+Underfull \hbox (badness 5862) in paragraph at lines 275--282
 \T1/qbk/m/n/12 (2):363--375, 2017.  URL [][]$\T1/fvm/m/n/10.95 https : / / chen
 yw68 . github . io / Literature / [2017-[]formal ]$
  []
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 237--244
+[17]
+Underfull \hbox (badness 10000) in paragraph at lines 294--301
 []\T1/qbk/m/n/12 C. G. Kauf-man, M. J. Schervish, and D. W. Ny-ch-ka.  Co-vari-
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 237--244
+Underfull \hbox (badness 10000) in paragraph at lines 294--301
 \T1/qbk/m/n/12 ance ta-per-ing for likelihood-based es-ti-ma-tion in large s-pa
 -tial da-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 237--244
+Underfull \hbox (badness 10000) in paragraph at lines 294--301
 \T1/qbk/m/n/12 ta set-s.  \T1/qbk/m/it/12 Jour-nal of the Amer-i-can S-ta-tis-t
 i-cal As-so-ci-a-tion\T1/qbk/m/n/12 , 103(484):
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 237--244
+Underfull \hbox (badness 10000) in paragraph at lines 294--301
 \T1/qbk/m/n/12 1545--1555, 2008.  URL [][]$\T1/fvm/m/n/10.95 https : / / chenyw
 68 . github . io / Literature / [2008 ]$
  []
 
 
-Underfull \hbox (badness 5417) in paragraph at lines 264--271
+Underfull \hbox (badness 5417) in paragraph at lines 321--328
 []\T1/qbk/m/n/12 B. A. Kono-mi, H. Sang, and B. K. Mallick.  Adap-tive bayesian
  non-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 264--271
+Underfull \hbox (badness 10000) in paragraph at lines 321--328
 \T1/qbk/m/n/12 sta-tion-ary mod-el-ing for large s-pa-tial dataset-s us-ing co-
 vari-ance ap-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 264--271
+Underfull \hbox (badness 10000) in paragraph at lines 321--328
 \T1/qbk/m/n/12 prox-i-ma-tion-s.  \T1/qbk/m/it/12 Jour-nal of Com-pu-ta-tion-al
  and Graph-i-cal S-tatis-tic-s\T1/qbk/m/n/12 , 23
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 264--271
+Underfull \hbox (badness 10000) in paragraph at lines 321--328
 \T1/qbk/m/n/12 (3):802--829, 2014.  URL [][]$\T1/fvm/m/n/10.95 https : / / chen
 yw68 . github . io / Literature / [2014 ]$
  []
 
-[17]
-Underfull \hbox (badness 7631) in paragraph at lines 283--289
+
+Underfull \hbox (badness 7631) in paragraph at lines 340--346
 []\T1/qbk/m/n/12 P. Ma and E. L. Kang.  A fused gaus-sian pro-cess mod-el for v
 ery
  []
 
 
-Underfull \hbox (badness 6944) in paragraph at lines 283--289
+Underfull \hbox (badness 6944) in paragraph at lines 340--346
 \T1/qbk/m/n/12 large s-pa-tial da-ta.  \T1/qbk/m/it/12 Jour-nal of Com-pu-ta-ti
 on-al and Graph-i-cal S-tatis-tic-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 283--289
+Underfull \hbox (badness 10000) in paragraph at lines 340--346
 \T1/qbk/m/it/12 s\T1/qbk/m/n/12 , pages 1--11, 2020.  URL [][]$\T1/fvm/m/n/10.9
 5 https : / / chenyw68 . github . io / Literature / [2020 ]$
  []
 
 
-Underfull \hbox (badness 1014) in paragraph at lines 299--306
+Underfull \hbox (badness 1014) in paragraph at lines 356--363
 []\T1/qbk/m/n/12 B. Neelon, A. E. Gelfand, and M. L. Mi-ran-da.  A mul-ti-vari-
 ate s-pa-tial mix-
  []
 
 
-Underfull \hbox (badness 1028) in paragraph at lines 299--306
+Underfull \hbox (badness 1028) in paragraph at lines 356--363
 \T1/qbk/m/n/12 ture mod-el for are-al da-ta: ex-am-in-ing re-gion-al d-if-fer-e
 nces in s-tan-dard-ized
  []
 
 
-Underfull \hbox (badness 1661) in paragraph at lines 299--306
+Underfull \hbox (badness 1661) in paragraph at lines 356--363
 \T1/qbk/m/n/12 test s-cores.  \T1/qbk/m/it/12 Jour-nal of the Roy-al S-ta-tis-t
 i-cal So-ci-ety. Se-ries C, Ap-plied s-
  []
 
 
-Underfull \hbox (badness 3250) in paragraph at lines 299--306
+Underfull \hbox (badness 3250) in paragraph at lines 356--363
 \T1/qbk/m/it/12 tatis-tic-s\T1/qbk/m/n/12 , 63(5):737, 2014.  URL [][]$\T1/fvm/
 m/n/10.95 https : / / chenyw68 . github . io / Literature / [2014 ]$
  []
 
 
-Underfull \hbox (badness 2088) in paragraph at lines 309--317
+Underfull \hbox (badness 2088) in paragraph at lines 366--374
 []\T1/qbk/m/n/12 D. Ny-ch-ka, S. Bandy-opad-hyay, D. Ham-mer-ling, F. Lind-gren
 , and S. Sain.
  []
 
 
-Underfull \hbox (badness 5274) in paragraph at lines 309--317
+Underfull \hbox (badness 5274) in paragraph at lines 366--374
 \T1/qbk/m/n/12 A mul-tires-o-lu-tion gaus-sian pro-cess mod-el for the anal-y-s
 is of large s-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 309--317
+Underfull \hbox (badness 10000) in paragraph at lines 366--374
 \T1/qbk/m/n/12 pa-tial dataset-s.  \T1/qbk/m/it/12 Jour-nal of Com-pu-ta-tion-a
 l and Graph-i-cal S-tatis-tic-s\T1/qbk/m/n/12 ,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 309--317
+Underfull \hbox (badness 10000) in paragraph at lines 366--374
 \T1/qbk/m/n/12 24(2):579--599, 2015.  URL [][]$\T1/fvm/m/n/10.95 https : / / ch
 enyw68 . github . io / Literature / [2015 ]$
  []
 
-
-Underfull \hbox (badness 1931) in paragraph at lines 319--325
+[18]
+Underfull \hbox (badness 1931) in paragraph at lines 376--382
 []\T1/qbk/m/n/12 E. Por-cu, J.-M. Mon-tero, and M. Schlather.  \T1/qbk/m/it/12 
 Ad-vances and chal-lenges in
  []
 
 
-Underfull \hbox (badness 3942) in paragraph at lines 319--325
+Underfull \hbox (badness 3942) in paragraph at lines 376--382
 \T1/qbk/m/it/12 space-time mod-elling of nat-u-ral events\T1/qbk/m/n/12 , vol-u
 me 207.  Springer Sci-ence
  []
 
 
-Underfull \hbox (badness 2680) in paragraph at lines 319--325
+Underfull \hbox (badness 2680) in paragraph at lines 376--382
 \T1/qbk/m/n/12 & Busi-ness Me-di-a, 2012.  URL [][]$\T1/fvm/m/n/10.95 https : /
  / chenyw68 . github . io / Literature / [2012 ]$
  []
 
 
-Underfull \hbox (badness 4832) in paragraph at lines 327--335
+Overfull \hbox (24.35426pt too wide) in paragraph at lines 384--392
+$\T1/fvm/m/n/10.95 AMultivariateSemiparametricBayesianSpatialModelingFrameworkF
+orHurricaneSurfaceWindFields .$
+ []
+
+
+Underfull \hbox (badness 4832) in paragraph at lines 394--402
 []\T1/qbk/m/n/12 Q. Ren and S. Baner-jee.  Hi-er-ar-chi-cal fac-tor mod-el-s fo
 r large s-pa-tial-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 327--335
+Underfull \hbox (badness 10000) in paragraph at lines 394--402
 \T1/qbk/m/n/12 ly mis-aligned da-ta: A low-rank pre-dic-tive pro-cess ap-proach
 .  \T1/qbk/m/it/12 Bio-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 327--335
+Underfull \hbox (badness 10000) in paragraph at lines 394--402
 \T1/qbk/m/it/12 met-ric-s\T1/qbk/m/n/12 , 69(1):19--30, 2013.  URL [][]$\T1/fvm
 /m/n/10.95 https : / / chenyw68 . github . io / Literature /$
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 327--335
+Underfull \hbox (badness 10000) in paragraph at lines 394--402
 $\T1/fvm/m/n/10.95 [2013 ] identifiability ) hierarchicalfactormodelsforlargesp
 atiallymisaligneddata _$
  []
 
 
-Underfull \hbox (badness 2005) in paragraph at lines 346--351
+Underfull \hbox (badness 2005) in paragraph at lines 413--418
 []\T1/qbk/m/n/12 H. Rue and L. Held.  \T1/qbk/m/it/12 Gaus-sian Markov ran-dom 
 field-s: the-o-ry and ap-pli-
  []
 
-[18]
-Underfull \hbox (badness 3646) in paragraph at lines 391--397
+[19]
+Underfull \hbox (badness 3646) in paragraph at lines 458--464
 []\T1/qbk/m/n/12 A. Wien-s, D. Ny-ch-ka, and W. K-leibe.  Mod-el-ing s-pa-tial 
 da-ta us-ing lo-
  []
 
 
-Underfull \hbox (badness 7759) in paragraph at lines 391--397
+Underfull \hbox (badness 7759) in paragraph at lines 458--464
 \T1/qbk/m/n/12 cal like-li-hood es-ti-ma-tion and a mat$\U/zeus/m/n/12 n$\T1/qb
 k/m/n/12 'ern to sar trans-la-tion.  \T1/qbk/m/it/12 arX-iv
  []
 
 )
-
-Package natbib Warning: There were undefined citations.
-
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 687.
-[19]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 687.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 694.
+ [20]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 694.
  (G:\Github\Literature\Summary\Summary_for_spatial_methods.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 687.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 687.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 694.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 694.
 Package rerunfilecheck Info: File `Summary_for_spatial_methods.out' has not cha
 nged.
 (rerunfilecheck)             Checksum: 090A8F02DA23AAA177C20AEB7809E999;1731.
@@ -1515,10 +1542,10 @@ LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 14855 strings out of 495354
- 223994 string characters out of 3183859
- 477557 words of memory out of 3000000
- 17561 multiletter control sequences out of 15000+200000
+ 14881 strings out of 495354
+ 224689 string characters out of 3183859
+ 478018 words of memory out of 3000000
+ 17579 multiletter control sequences out of 15000+200000
  114329 words of font info for 165 fonts, out of 3000000 for 9000
  14 hyphenation exceptions out of 8191
  52i,18n,52p,1433b,556s stack positions out of 5000i,500n,10000p,200000b,50000s
@@ -1545,9 +1572,9 @@ owacki/iwona/iwonab.pfb><D:/CTEX/MiKTeX/fonts/type1/nowacki/iwona/iwonar.pfb><D
 <D:/CTEX/MiKTeX/fonts/type1/public/tex-gyre/qbkri.pfb><D:/CTEX/MiKTeX/fonts/typ
 e1/urw/palatino/uplb8a.pfb><D:/CTEX/MiKTeX/fonts/type1/urw/palatino/uplr8a.pfb>
 
-Output written on Summary_for_spatial_methods.pdf (19 pages, 567413 bytes).
+Output written on Summary_for_spatial_methods.pdf (20 pages, 581155 bytes).
 PDF statistics:
- 783 PDF objects out of 1000 (max. 8388607)
- 120 named destinations out of 1000 (max. 500000)
+ 832 PDF objects out of 1000 (max. 8388607)
+ 128 named destinations out of 1000 (max. 500000)
  25774 words of extra memory for PDF output out of 29859 (max. 10000000)
 

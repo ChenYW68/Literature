@@ -8,3 +8,4 @@
 \contentsline {subsubsection}{\numberline {2.2.4}Computational complexity}{3}{subsubsection.2.2.4}
 \contentsline {subsubsection}{\numberline {2.2.5} Robustness under stationary covariance families}{3}{subsubsection.2.2.5}
 \contentsline {subsubsection}{\numberline {2.2.6}Non-stationary performance}{4}{subsubsection.2.2.6}
+\contentsline {subsection}{\numberline {2.3}Non-stationary performance}{4}{subsection.2.3}
