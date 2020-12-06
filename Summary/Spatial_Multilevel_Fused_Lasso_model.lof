@@ -1,0 +1,5 @@
+\deactivateaddvspace 
+\contentsline {figure}{\numberline {1}{\ignorespaces Note that the covariance model(i.e. Matern function with the smoothness parameter $0.5$) is correctly specified for NNGP model. Left: RMSE for the two models. Right: CRPS for the two models.\relax }}{3}{figure.caption.3}
+\contentsline {figure}{\numberline {2}{\ignorespaces Note that the NNGP covariance model is incorrectly specified and the specification is Matern function with the smoothness parameter $2$. Left: RMSE for the two models. Right: CRPS for the two models.\relax }}{4}{figure.caption.4}
+\contentsline {figure}{\numberline {3}{\ignorespaces The covariate $\boldsymbol {X}$ are from Gaussian distribution.\relax }}{4}{figure.caption.5}
+\contentsline {figure}{\numberline {4}{\ignorespaces (a):The cross validation for the warm season with the $6$ different models. (b): The cross validation for the cool season with the $6$ different model. The label ``\texttt {fLasso}'' corresponds to model (\ref {model2}) and the label ``\texttt {fLassoM}'' is a multi-variable version.\relax }}{5}{figure.caption.6}

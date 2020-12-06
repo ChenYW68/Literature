@@ -1,0 +1,5 @@
+\contentsline {section}{\numberline {1}\leavevmode {\color [rgb]{1.00,0.00,0.50}Model specification}}{2}{section.1}
+\contentsline {section}{\numberline {2}Some examples}{2}{section.2}
+\contentsline {subsection}{\numberline {2.1}Synthetic example from \href {https://chenyw68.github.io/Literature/[2018]A case study competition among methods for analyzing large spatial data.pdf}{\cite {heaton2019case}}}{2}{subsection.2.1}
+\contentsline {subsection}{\numberline {2.2}Simulation study}{2}{subsection.2.2}
+\contentsline {subsection}{\numberline {2.3}Real data from Beijing-Tianjin-Hebei region}{5}{subsection.2.3}

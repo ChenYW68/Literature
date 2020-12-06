@@ -134,33 +134,33 @@ BCOR5mm, % Binding correction
 %	ABSTRACT
 %----------------------------------------------------------------------------------------
 \newpage
-\section{\href{https://chenyw68.github.io/Literature[2020]spNNGP R package for Nearest Neighbor Gaussian Process models.pdf}{The nearest neighbor Gaussian process}}
-Similar to the pre-defined knots for Gaussian predictive processes, the starting point of nearest neighbor Gaussian process (NNGP) approach is to choose a fixed collection (e.g.,  $\boldsymbol{S}$) of distinct locations in $\boldsymbol{D}$, where $\boldsymbol{S}$ need not coincide with or be apart of the
-observed locations, so its size $k$ need not equal the size of the dataset $n$ (or \textcolor[rgb]{0.50,0.50,0.50}{even larger than the size $n$}). The set $\boldsymbol{S}$ is called as reference set by
-\href{https://chenyw68.github.io/Literature/[2016]Hierarchical nearest-neighbor Gaussian process models for large geostatistical datasets.pdf}{\cite{datta2016hierarchical}}.
-
-A directed acyclic graph is defined on the reference set $\boldsymbol{S}$, and then the joint distribution of spatial process $w(s)$ from the reference set is represented by the product of conditional densities which is motivated by Vecchia’s approximation \citep{vecchia1988estimation} ideas, where a careful choice of suitable conditional sets is required, and this conditional set is constrained to be the $m$-nearest neighbors by the NNGP approach, thereby facilitating computation in estimation and prediction problem (for more details on those problems, see  \href{https://chenyw68.github.io/Literature/[2016]Hierarchical nearest-neighbor Gaussian process models for large geostatistical datasets-Appdix.pdf}{Appendix} of \href{https://chenyw68.github.io/Literature/[2016]Hierarchical nearest-neighbor Gaussian process models for large geostatistical datasets.pdf}{\cite{datta2016hierarchical}} and \href{https://chenyw68.github.io/Literature/[2017]Applying Nearest Neighbor Gaussian Processes to Massive Spatial Data Sets.pdf}{\citep{finley2017applying}} and \href{https://chenyw68.github.io/Literature/[2019]Efficient algorithms for bayesian nearest neighbor gaussian processes.pdf}{\cite{finley2019efficient}}); \href{https://chenyw68.github.io/Literature/[2019]Distributed Implementation of Nearest-Neighbor Gaussian process.pdf}{the distributed Implementation}.
-
-Based on these results above, a NNGP can be well-defined from a parent Gaussian process $GP(\boldsymbol{0}, \boldsymbol{C\left(\cdot; \boldsymbol{\theta}\right)})$.
-
-%is defined from the conditional specification of the joint distribution of spatial process $w(s)$ in (\ref{model}), i.e. the joint distribution is
-%represented by the product of conditional densities which is motivated by \citet{vecchia1988estimation} ideas, where a careful choice of suitable conditional sets is required.
-
-%\textcolor[rgb]{1.00,0.00,1.00}{Comment:}
-\begin{itemize}
- \item [1)] Total operations is $O((n + k)m^3)$ where $m (\approx 20)$ is the size of conditioning set or neighbor set, and several processes can run in parallel (e.g, computations of weights in Kriging equation (\ref{Kriging})).
- \item [2)] The other major advantage is that the precision matrix of the NNGP is sparse with at most $km(m + 1)/2$ nonzero entries.
- \item [3)] NNGP can also be extended to large spatio-temporal data (
-\href{https://chenyw68.github.io/Literature/[2016]Nonseparable dynamic NNGP models for large spatio-temporal data.pdf}{\cite{datta2016nonseparable}}) and non-stationary process(\href{https://chenyw68.github.io/Literature/[2020]Computationally efficient nonstationary NNGP models using data-driven techniques.pdf}{\cite{konomi2019computationally}}), \href{https://chenyw68.github.io/Literature/[2020-formal]Bayesian inference for high dimensional nonstationary Gaussian processes.pdf}{\citep{risser2020bayesian}}.
-\end{itemize}
-
-
-\section{Two exploratory limitations of the NNGP approach}
-\subsection{Exploratory analysis }
-\begin{itemize}
- \item [1)]Problem 1: Since the joint distribution of spatial process $w(s)$ from the reference set is represented by using the product of conditional densities and those conditional sets are constrained to be the $m$-nearest neighbors, so $m$-nearest neighbors may fail to capture all the information about the covariance parameters when there is a true \textbf{large scale dependence} in the dataset.
- \item [2)]Problem 2: From an application point of view, the reference set $\boldsymbol{S}$ cannot be infinite because we need to solve neighbor set for every location, so the performance of the NNGP approximation depends on the size of the spatial dependence range relative to the spacing of the reference set, that maybe lead to the quality of the NNGP approximation gets worse when \textbf{the spatial dependence range gets shorter}.
-\end{itemize}
+%\section{\href{https://chenyw68.github.io/Literature[2020]spNNGP R package for Nearest Neighbor Gaussian Process models.pdf}{The nearest neighbor Gaussian process}}
+%Similar to the pre-defined knots for Gaussian predictive processes, the starting point of nearest neighbor Gaussian process (NNGP) approach is to choose a fixed collection (e.g.,  $\boldsymbol{S}$) of distinct locations in $\boldsymbol{D}$, where $\boldsymbol{S}$ need not coincide with or be apart of the
+%observed locations, so its size $k$ need not equal the size of the dataset $n$ (or \textcolor[rgb]{0.50,0.50,0.50}{even larger than the size $n$}). The set $\boldsymbol{S}$ is called as reference set by
+%\href{https://chenyw68.github.io/Literature/[2016]Hierarchical nearest-neighbor Gaussian process models for large geostatistical datasets.pdf}{\cite{datta2016hierarchical}}.
+%
+%A directed acyclic graph is defined on the reference set $\boldsymbol{S}$, and then the joint distribution of spatial process $w(s)$ from the reference set is represented by the product of conditional densities which is motivated by Vecchia’s approximation \citep{vecchia1988estimation} ideas, where a careful choice of suitable conditional sets is required, and this conditional set is constrained to be the $m$-nearest neighbors by the NNGP approach, thereby facilitating computation in estimation and prediction problem (for more details on those problems, see  \href{https://chenyw68.github.io/Literature/[2016]Hierarchical nearest-neighbor Gaussian process models for large geostatistical datasets-Appdix.pdf}{Appendix} of \href{https://chenyw68.github.io/Literature/[2016]Hierarchical nearest-neighbor Gaussian process models for large geostatistical datasets.pdf}{\cite{datta2016hierarchical}} and \href{https://chenyw68.github.io/Literature/[2017]Applying Nearest Neighbor Gaussian Processes to Massive Spatial Data Sets.pdf}{\citep{finley2017applying}} and \href{https://chenyw68.github.io/Literature/[2019]Efficient algorithms for bayesian nearest neighbor gaussian processes.pdf}{\cite{finley2019efficient}}); \href{https://chenyw68.github.io/Literature/[2019]Distributed Implementation of Nearest-Neighbor Gaussian process.pdf}{the distributed Implementation}.
+%
+%Based on these results above, a NNGP can be well-defined from a parent Gaussian process $GP(\boldsymbol{0}, \boldsymbol{C\left(\cdot; \boldsymbol{\theta}\right)})$.
+%
+%%is defined from the conditional specification of the joint distribution of spatial process $w(s)$ in (\ref{model}), i.e. the joint distribution is
+%%represented by the product of conditional densities which is motivated by \citet{vecchia1988estimation} ideas, where a careful choice of suitable conditional sets is required.
+%
+%%\textcolor[rgb]{1.00,0.00,1.00}{Comment:}
+%\begin{itemize}
+% \item [1)] Total operations is $O((n + k)m^3)$ where $m (\approx 20)$ is the size of conditioning set or neighbor set, and several processes can run in parallel (e.g, computations of weights in Kriging equation (\ref{Kriging})).
+% \item [2)] The other major advantage is that the precision matrix of the NNGP is sparse with at most $km(m + 1)/2$ nonzero entries.
+% \item [3)] NNGP can also be extended to large spatio-temporal data (
+%\href{https://chenyw68.github.io/Literature/[2016]Nonseparable dynamic NNGP models for large spatio-temporal data.pdf}{\cite{datta2016nonseparable}}) and non-stationary process(\href{https://chenyw68.github.io/Literature/[2020]Computationally efficient nonstationary NNGP models using data-driven techniques.pdf}{\cite{konomi2019computationally}}), \href{https://chenyw68.github.io/Literature/[2020-formal]Bayesian inference for high dimensional nonstationary Gaussian processes.pdf}{\citep{risser2020bayesian}}.
+%\end{itemize}
+%
+%
+%\section{Two exploratory limitations of the NNGP approach}
+%\subsection{Exploratory analysis }
+%\begin{itemize}
+% \item [1)]Problem 1: Since the joint distribution of spatial process $w(s)$ from the reference set is represented by using the product of conditional densities and those conditional sets are constrained to be the $m$-nearest neighbors, so $m$-nearest neighbors may fail to capture all the information about the covariance parameters when there is a true \textbf{large scale dependence} in the dataset.
+% \item [2)]Problem 2: From an application point of view, the reference set $\boldsymbol{S}$ cannot be infinite because we need to solve neighbor set for every location, so the performance of the NNGP approximation depends on the size of the spatial dependence range relative to the spacing of the reference set, that maybe lead to the quality of the NNGP approximation gets worse when \textbf{the spatial dependence range gets shorter}.
+%\end{itemize}
 
 %With regard to Problem 1, some simulation results were given by \href{https://chenyw68.github.io/Literature/[2016]Hierarchical nearest-neighbor Gaussian process models for large geostatistical datasets.pdf}{\cite{datta2016hierarchical}} where they generated datasets of size 2500 in a unit square domain and considered estimation cases of different range parameters. Those results can be found in Figure \ref{fig:datta}.  Figure \ref{fig:datta} suggests that the NNGP model deliver inference similar to that of a full GP even for slow decaying covariance functions. However, Figure \ref{fig:datta} shows also that the NNGP obviously tends to underestimate the estimate of range parameter $\phi$ with the increase of spatial range $\phi$.
 %\begin{figure}[H]
@@ -196,7 +196,7 @@ Based on these results above, a NNGP can be well-defined from a parent Gaussian 
 %\end{figure}
 
 %Figure \ref{fig:nnGP1} and \ref{fig:nnGP2} suggest that \textbf{the large-scale spatial dependencies for a larger domain can not be well-captured} by the NNGP, and at the same time, the top two panel of Figure \ref{fig:nnGP1} show that as with predictive process model, the NNGP may also \textbf{fail to capture some local information}, that may be related to the selection of reference set.
-Combing a NNGP $w(s)$ used to capture the \textcolor[rgb]{0.50,0.50,0.50}{local, small scale dependence structure} with its spatial smooth version $f(s)$ used to capture the \textcolor[rgb]{0.50,0.50,0.50}{large scale dependence structure}.
+%Combing a NNGP $w(s)$ used to capture the \textcolor[rgb]{0.50,0.50,0.50}{local, small scale dependence structure} with its spatial smooth version $f(s)$ used to capture the \textcolor[rgb]{0.50,0.50,0.50}{large scale dependence structure}.
 
 \subsection{\textcolor[rgb]{1.00,0.00,0.50}{Model specification}}
 \begin{equation}
