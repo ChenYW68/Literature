@@ -1,0 +1,17 @@
+d = seq(0, 10, , 100)
+a = 0.3
+phi = 20
+ y1 = a*exp(-x/phi)
+y2 = exp(-x/phi)
+plot(x, y1, ylim = range(y1, y2))
+lines(x, y2, col = "red")
+
+library(fields)
+r1<- Matern.cor.to.range( 10, nu=.5, cor.target=.8)
+y<- Matern( d, range = r1, nu=.5)
+
+matplot( d, y, type="l", lty=1, lwd=2)
+xline( 10)
+yline( .8)
+
+

@@ -1,0 +1,323 @@
+[
+    {
+        "file": "G:/Github/semiBase/src/nonPara.cpp",
+        "file_last_write": 1615724509.0,
+        "definitions": [
+            {
+                "usr": "c:@F@error#$@N@std@N@__1@S@basic_string>#C#$@N@std@N@__1@S@char_traits>#C#$@N@std@N@__1@S@allocator>#C#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "error(std::string)",
+                "file": "G:/Github/semiBase/src/nonPara.cpp",
+                "line": 19,
+                "column": 6
+            },
+            {
+                "usr": "c:@F@zeros#*d#I#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "zeros(double *, int)",
+                "file": "G:/Github/semiBase/src/nonPara.cpp",
+                "line": 23,
+                "column": 6
+            },
+            {
+                "usr": "c:@F@which#I#*I#I#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "which(int, int *, int)",
+                "file": "G:/Github/semiBase/src/nonPara.cpp",
+                "line": 29,
+                "column": 5
+            },
+            {
+                "usr": "c:@F@mvrnorm#*d#S0_#S0_#I#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "mvrnorm(double *, double *, double *, int)",
+                "file": "G:/Github/semiBase/src/nonPara.cpp",
+                "line": 41,
+                "column": 6
+            },
+            {
+                "usr": "c:@F@logit#d#d#d#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "logit(double, double, double)",
+                "file": "G:/Github/semiBase/src/nonPara.cpp",
+                "line": 55,
+                "column": 8
+            },
+            {
+                "usr": "c:@F@logitInv#d#d#d#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "logitInv(double, double, double)",
+                "file": "G:/Github/semiBase/src/nonPara.cpp",
+                "line": 59,
+                "column": 8
+            },
+            {
+                "usr": "c:@F@dist2#&d#S0_#S0_#S0_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "dist2(double &, double &, double &, double &)",
+                "file": "G:/Github/semiBase/src/nonPara.cpp",
+                "line": 63,
+                "column": 8
+            },
+            {
+                "usr": "c:@F@getCorName#I#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "getCorName(int)",
+                "file": "G:/Github/semiBase/src/nonPara.cpp",
+                "line": 67,
+                "column": 13
+            },
+            {
+                "usr": "c:@F@getNNIndx#I#I#&I#S0_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "getNNIndx(int, int, int &, int &)",
+                "file": "G:/Github/semiBase/src/nonPara.cpp",
+                "line": 82,
+                "column": 6
+            },
+            {
+                "usr": "c:@F@mkUIndx0#I#I#*I#S0_#S0_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "mkUIndx0(int, int, int *, int *, int *)",
+                "file": "G:/Github/semiBase/src/nonPara.cpp",
+                "line": 99,
+                "column": 6
+            },
+            {
+                "usr": "c:@F@mkUIndx1#I#I#*I#S0_#S0_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "mkUIndx1(int, int, int *, int *, int *)",
+                "file": "G:/Github/semiBase/src/nonPara.cpp",
+                "line": 120,
+                "column": 6
+            },
+            {
+                "usr": "c:@F@crs_csc#I#*I#S0_#S0_#S0_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "crs_csc(int, int *, int *, int *, int *)",
+                "file": "G:/Github/semiBase/src/nonPara.cpp",
+                "line": 140,
+                "column": 6
+            },
+            {
+                "usr": "c:@F@mkUIndx2#I#I#*I#S0_#S0_#S0_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "mkUIndx2(int, int, int *, int *, int *, int *)",
+                "file": "G:/Github/semiBase/src/nonPara.cpp",
+                "line": 180,
+                "column": 6
+            },
+            {
+                "usr": "c:@F@mkUIndx#*$@S@SEXPREC#S0_#S0_#S0_#S0_#S0_#S0_#S0_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "mkUIndx(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP)",
+                "file": "G:/Github/semiBase/src/nonPara.cpp",
+                "line": 217,
+                "column": 6
+            },
+            {
+                "usr": "c:@F@mkNNIndx#*$@S@SEXPREC#S0_#S0_#S0_#S0_#S0_#S0_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "mkNNIndx(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP)",
+                "file": "G:/Github/semiBase/src/nonPara.cpp",
+                "line": 255,
+                "column": 6
+            },
+            {
+                "usr": "c:@F@dmi#*d#S0_#I#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "dmi(double *, double *, int)",
+                "file": "G:/Github/semiBase/src/nonPara.cpp",
+                "line": 321,
+                "column": 8
+            },
+            {
+                "usr": "c:@F@dei#*d#S0_#I#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "dei(double *, double *, int)",
+                "file": "G:/Github/semiBase/src/nonPara.cpp",
+                "line": 325,
+                "column": 8
+            },
+            {
+                "usr": "c:@F@fastNN#I#I#*d#I#S0_#*I#S1_#S0_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "fastNN(int, int, double *, int, double *, int *, int *, double *)",
+                "file": "G:/Github/semiBase/src/nonPara.cpp",
+                "line": 328,
+                "column": 6
+            },
+            {
+                "usr": "c:@F@mkNNIndxCB#*$@S@SEXPREC#S0_#S0_#S0_#S0_#S0_#S0_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "mkNNIndxCB(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP)",
+                "file": "G:/Github/semiBase/src/nonPara.cpp",
+                "line": 405,
+                "column": 6
+            },
+            {
+                "usr": "c:@F@spCor#&d#S0_#S0_#&I#*d#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "spCor(double &, double &, double &, int &, double *)",
+                "file": "G:/Github/semiBase/src/nonPara.cpp",
+                "line": 450,
+                "column": 8
+            },
+            {
+                "usr": "c:@F@Q#*d#S0_#S0_#S0_#I#*I#S1_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "Q(double *, double *, double *, double *, int, int *, int *)",
+                "file": "G:/Github/semiBase/src/nonPara.cpp",
+                "line": 503,
+                "column": 8
+            },
+            {
+                "usr": "c:@F@updateBF#*d#S0_#S0_#S0_#S0_#*I#S1_#I#I#S0_#d#d#I#S0_#d#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "updateBF(double *, double *, double *, double *, double *, int *, int *, int, int, double *, double, double, int, double *, double)",
+                "file": "G:/Github/semiBase/src/nonPara.cpp",
+                "line": 580,
+                "column": 6
+            },
+            {
+                "usr": "c:@F@updateBF1#*d#S0_#S0_#S0_#S0_#*I#S1_#I#I#d#d#d#I#S0_#d#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "updateBF1(double *, double *, double *, double *, double *, int *, int *, int, int, double, double, double, int, double *, double)",
+                "file": "G:/Github/semiBase/src/nonPara.cpp",
+                "line": 632,
+                "column": 6
+            },
+            {
+                "usr": "c:@F@RdistC#*$@S@SEXPREC#S0_#S0_#S0_#S0_#S0_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "RdistC(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP)",
+                "file": "G:/Github/semiBase/src/nonPara.cpp",
+                "line": 681,
+                "column": 6
+            },
+            {
+                "usr": "c:@F@ConExp#*$@S@SEXPREC#S0_#S0_#S0_#S0_#S0_#S0_#S0_#S0_#S0_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "ConExp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP)",
+                "file": "G:/Github/semiBase/src/nonPara.cpp",
+                "line": 732,
+                "column": 6
+            },
+            {
+                "usr": "c:@F@local_kernel_est#*$@S@SEXPREC#S0_#S0_#S0_#S0_#S0_#S0_#S0_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "local_kernel_est(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP)",
+                "file": "G:/Github/semiBase/src/nonPara.cpp",
+                "line": 869,
+                "column": 6
+            },
+            {
+                "usr": "c:@F@local_kernel_pred#*$@S@SEXPREC#S0_#S0_#S0_#S0_#S0_#S0_#S0_#S0_#S0_#S0_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "local_kernel_pred(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP)",
+                "file": "G:/Github/semiBase/src/nonPara.cpp",
+                "line": 1031,
+                "column": 6
+            },
+            {
+                "usr": "c:@F@BetaEst#*d#S0_#S0_#S0_#S0_#S0_#*I#S1_#I#I#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "BetaEst(double *, double *, double *, double *, double *, double *, int *, int *, int, int)",
+                "file": "G:/Github/semiBase/src/nonPara.cpp",
+                "line": 1183,
+                "column": 6
+            },
+            {
+                "usr": "c:@F@bivariate_local_kernel_est#*$@S@SEXPREC#S0_#S0_#S0_#S0_#S0_#S0_#S0_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "bivariate_local_kernel_est(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP)",
+                "file": "G:/Github/semiBase/src/nonPara.cpp",
+                "line": 1234,
+                "column": 6
+            },
+            {
+                "usr": "c:@F@semiQLME#*$@S@SEXPREC#S0_#S0_#S0_#S0_#S0_#S0_#S0_#S0_#S0_#S0_#S0_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "semiQLME(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP)",
+                "file": "G:/Github/semiBase/src/nonPara.cpp",
+                "line": 1378,
+                "column": 6
+            },
+            {
+                "usr": "c:@F@OputBF#*$@S@SEXPREC#S0_#S0_#S0_#S0_#S0_#S0_#S0_#S0_#S0_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "OputBF(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP)",
+                "file": "G:/Github/semiBase/src/nonPara.cpp",
+                "line": 1521,
+                "column": 6
+            },
+            {
+                "usr": "c:@F@SemiAlphaPro#*$@S@SEXPREC#S0_#S0_#S0_#S0_#S0_#S0_#S0_#S0_#S0_#S0_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "SemiAlphaPro(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP)",
+                "file": "G:/Github/semiBase/src/nonPara.cpp",
+                "line": 1677,
+                "column": 6
+            },
+            {
+                "usr": "c:@F@semiProPred#*$@S@SEXPREC#S0_#S0_#S0_#S0_#S0_#S0_#S0_#S0_#S0_#S0_#S0_#S0_#S0_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "semiProPred(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP)",
+                "file": "G:/Github/semiBase/src/nonPara.cpp",
+                "line": 1819,
+                "column": 6
+            },
+            {
+                "usr": "c:@F@SemiAlpha#*$@S@SEXPREC#S0_#S0_#S0_#S0_#S0_#S0_#S0_#S0_#S0_#S0_#S0_#S0_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "SemiAlpha(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP)",
+                "file": "G:/Github/semiBase/src/nonPara.cpp",
+                "line": 1982,
+                "column": 6
+            },
+            {
+                "usr": "c:@F@semiPred#*$@S@SEXPREC#S0_#S0_#S0_#S0_#S0_#S0_#S0_#S0_#S0_#S0_#S0_#S0_#S0_#S0_#S0_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "semiPred(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP)",
+                "file": "G:/Github/semiBase/src/nonPara.cpp",
+                "line": 2255,
+                "column": 6
+            }
+        ]
+    }
+]

@@ -1,0 +1,25 @@
+{
+    "id": "33C47E84",
+    "path": "G:/Github/semiBase/R/util.R",
+    "project_path": "R/util.R",
+    "type": "r_source",
+    "hash": "0",
+    "contents": "",
+    "dirty": false,
+    "created": 1615741084383.0,
+    "source_on_save": false,
+    "relative_order": 3,
+    "properties": {
+        "docOutlineVisible": "1",
+        "cursorPosition": "547,31",
+        "scrollLine": "536"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1615953377,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1615953377689,
+    "read_only": false,
+    "read_only_alternatives": []
+}

@@ -1,0 +1,32 @@
+library(RODBC)
+# library(semiBase)
+library(data.table)
+DSN_01 <- odbcConnect(
+  "DSN_01",
+  uid = "myname",
+  pwd = "mypwd",
+  believeNRows = FALSE,
+  case = "toupper"
+)
+n = 200
+phi = 50
+profile = T
+
+name = "Semi_09"
+
+tab <- paste0(name, "_", n, "_", profile, "_M")
+Result1 = sqlQuery(DSN_01, paste0("SELECT * FROM ", tab))
+
+profile = T
+tab <- paste0(name, "_", n, "_", profile)
+Result2 = sqlQuery(DSN_01, paste0("SELECT * FROM ", tab))
+colnames(Result2)
+setDT(Result1)
+setDT(Result2)
+round(Result1[1:10, -c(1:4, 13)], 3)
+round(Result2[1:10, -c(1:4, 13)], 3)
+round(colMeans(Result1), 3)
+round(colMeans(Result2), 3)
+
+# colVar(Result1)
+# colVar(Result2)

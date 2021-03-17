@@ -1,0 +1,16 @@
+{
+    "args": [
+        "-ID:/RStudio/resources/libclang/builtin-headers/5.0.2",
+        "-ID:/RStudio/resources/libclang/builtin-headers/libc++/5.0.2",
+        "-ID:/Microsoft-R-Open/R-4.0.2/library/Rcpp/include",
+        "-ID:/Microsoft-R-Open/R-4.0.2/library/RcppArmadillo/include",
+        "-std=gnu++11",
+        "-ID:/Microsoft-R-Open/R-4.0.2/include",
+        "-DNDEBUG",
+        "-IC:/a/w/1/s/vendor/extsoft/include",
+        "-fopenmp"
+    ],
+    "pch": "RcppArmadillo",
+    "is_cpp": true,
+    "hash": "161216513516121651351612165135"
+}
