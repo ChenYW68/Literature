@@ -1320,11 +1320,11 @@ SEXP spatial_LLE(SEXP y_r, SEXP X_r,
 		 }
 		 
 	for(i = 0; i < n; i++){
-	  Dist[n*threadID + i] = dist2(coords[s], coords[n + s], coords[i], coords[n + i]);///theta  
+	  Dist[n*threadID + i] = dist2(coords[s], coords[n + s], coords[i], coords[n + i])/h;///theta  
       if(Kernel == 1){
-        K[n*threadID + i] = exp(-abs(Dist[n*threadID + i])/h)/pow(h, 2);  
+        K[n*threadID + i] = exp(-abs(Dist[n*threadID + i]))/pow(h, 2);  
       }else{
-        K[n*threadID + i] = exp(-pow(Dist[n*threadID + i]/h, 2))/pow(h, 2); 
+        K[n*threadID + i] = exp(-pow(Dist[n*threadID + i], 2))/pow(h, 2); 
       }
 	  //kernel function
 		for(j = i; j < i + 1; j++){ 
@@ -1453,11 +1453,11 @@ SEXP spatial_LLE_Pred(SEXP y_r, SEXP X_r,
 		 }
 		 
 	for(i = 0; i < n; i++){
-	  Dist[n*threadID + i] = dist2(pred_coord[s], pred_coord[m + s], coords[i], coords[n + i]);///theta  
+	  Dist[n*threadID + i] = dist2(pred_coord[s], pred_coord[m + s], coords[i], coords[n + i])/h;///theta  
       if(Kernel == 1){
-        K[n*threadID + i] = exp(-abs(Dist[n*threadID + i])/h)/pow(h, 2);  
+        K[n*threadID + i] = exp(-abs(Dist[n*threadID + i]))/pow(h, 2);  
       }else{
-        K[n*threadID + i] = exp(-pow(Dist[n*threadID + i]/h, 2))/pow(h, 2); 
+        K[n*threadID + i] = exp(-pow(Dist[n*threadID + i], 2))/pow(h, 2); 
       }
 	  //kernel function
 		for(j = i; j < i + 1; j++){ 

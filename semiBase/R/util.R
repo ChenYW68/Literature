@@ -1,3 +1,251 @@
+spT.validation <- function(z, zhat, zhat.Ens = NULL, names = FALSE) 
+{
+  VMSE <- function(z, zhat) {
+    z <- as.matrix(as.data.frame(z))
+    zhat <- as.matrix(as.data.frame(zhat))
+    x <- c(z - zhat)
+    u <- x[!is.na(x)]
+    round(sum(u^2)/length(u), 4)
+  }
+  ## root mean square error
+  RMSE <- function(z, zhat) {
+    z <- as.matrix(as.data.frame(z))
+    zhat <- as.matrix(as.data.frame(zhat))
+    x <- c(z - zhat)
+    u <- x[!is.na(x)]
+    round(sqrt(sum(u^2)/length(u)), 10)
+  }
+  MAE <- function(z, zhat) {
+    z <- as.matrix(as.data.frame(z))
+    zhat <- as.matrix(as.data.frame(zhat))
+    x <- abs(c(zhat - z))
+    u <- x[!is.na(x)]
+    round(sum(u)/length(u), 4)
+  }
+  MAPE <- function(z, zhat) {
+    z <- as.matrix(as.data.frame(z))
+    zhat <- as.matrix(as.data.frame(zhat))
+    x <- abs(c(zhat - z))/abs(z)
+    u <- x[!is.na(x)]
+    u <- u[!is.infinite(u)]
+    round(sum(u)/length(u) * 100, 4)
+  }
+  ## normalised mean gross error
+  NMGE <- function(z, zhat) {
+    z <- z %>% as.data.frame() %>% as.matrix() %>% as.vector()
+    zhat <- zhat %>% as.data.frame() %>% as.matrix() %>% as.vector()
+    da <- data.frame(z = z, zhat = zhat)
+    x <- na.omit(da)
+    NMGE <- abs(c(x[[2]] - x[[1]]))/sum(x[[1]])
+    round(mean(NMGE), 4)
+  }  
+  
+  BIAS <- function(z, zhat) {
+    z <- as.matrix(as.data.frame(z))
+    zhat <- as.matrix(as.data.frame(zhat))
+    x <- c(zhat - z)
+    u <- x[!is.na(x)]
+    round(sum(u)/length(u), 4)
+  }
+  rBIAS <- function(z, zhat) {
+    z <- as.matrix(as.data.frame(z))
+    zhat <- as.matrix(as.data.frame(zhat))
+    x <- c(zhat - z)
+    u <- x[!is.na(x)]
+    round(sum(u)/(length(u) * mean(z, na.rm = TRUE)), 4)
+  }
+  ## normalised mean bias
+  nBIAS <- function(z, zhat) {
+    z <- as.matrix(as.data.frame(z))
+    zhat <- as.matrix(as.data.frame(zhat))
+    x <- c(zhat - z)
+    round(sum(x, na.rm = T)*100/sum(z, na.rm = T), 4)
+  }
+  
+  rMSEP <- function(z, zhat) {
+    z <- as.matrix(as.data.frame(z))
+    zhat <- as.matrix(as.data.frame(zhat))
+    x <- c(zhat - z)
+    u <- x[!is.na(x)]
+    y <- c(mean(zhat, na.rm = TRUE) - z)
+    v <- y[!is.na(y)]
+    round(sum(u^2)/sum(v^2), 4)
+  }
+  ## correlation coefficient
+  Coef <- function(z, zhat) {
+    z <- z %>% as.data.frame() %>% as.matrix() %>% as.vector()
+    zhat <- zhat %>% as.data.frame()  %>% as.matrix() %>% as.vector()
+    da <- data.frame(z = z, zhat = zhat)
+    x <- na.omit(da)
+    Coef <- suppressWarnings(cor(x[[2]], x[[1]])) ## when SD=0; will return NA
+    round(Coef, 4)
+  }
+  
+  ##  Coefficient of Efficiency
+  COE <- function(z, zhat) {
+    z <- z %>% as.data.frame() %>% as.matrix() %>% as.vector()
+    zhat <- zhat %>% as.data.frame()  %>% as.matrix() %>% as.vector()
+    da <- data.frame(z = z, zhat = zhat)
+    x <- na.omit(da)
+    COE <- 1 - sum(abs(x[[2]] - x[[1]])) / sum(abs(x[[1]] - mean(x[[1]])))
+    round(COE, 4) 
+  }
+  # FAC2 <- function(z, zhat) {
+  #   z <- z %>% as.data.frame() %>% as.vector()
+  #   zhat <- zhat %>% as.data.frame() %>% as.vector()
+  #   index <- !is.na(z)
+  #   round(mean(zhat[index]/z[index]), 4)
+  # }
+  ## fraction within a factor of two
+  FAC2 <- function(z, zhat) {
+    z <- z %>% as.data.frame() %>% as.matrix() %>% as.vector()
+    zhat <- zhat %>% as.data.frame() %>% as.matrix() %>% as.vector()
+    da <- data.frame(z = z, zhat = zhat)
+    x <- na.omit(da)
+    ratio <- x[[2]]/x[[1]]
+    len <- length(ratio)
+    if (len > 0) {
+      FAC2 <- length(which(ratio >= 0.5 & ratio <= 2)) / len
+    } else {
+      FAC2 <- NA
+    }
+    round(FAC2, 4)
+  }
+  ## mean gross error
+  MGE <- function(z, zhat) {
+    z <- z %>% as.data.frame() %>% as.matrix() %>% as.vector()
+    zhat <- zhat %>% as.data.frame() %>% as.matrix() %>% as.vector()
+    da <- data.frame(z = z, zhat = zhat)
+    x <- na.omit(da)
+    MGE <- round(mean(abs(x[[2]] - x[[1]])), 4)
+  }
+  
+  ##  Index of Agreement
+  IOA <- function(z, zhat) {
+    z <- z %>% as.data.frame() %>% as.matrix() %>% as.vector()
+    zhat <- zhat %>% as.data.frame()  %>% as.matrix() %>% as.vector()
+    da <- data.frame(z = z, zhat = zhat)
+    x <- na.omit(da)
+    
+    LHS <- sum(abs(x[[2]] - x[[1]]))
+    RHS <- 2 * sum(abs(x[[1]] - mean(x[[1]])))
+    
+    if (LHS <= RHS) IOA <- 1 - LHS / RHS else IOA <- RHS / LHS - 1
+    round(IOA, 4)
+  }
+  
+  
+  CRPS <- function(z, zhat){
+    z <- as.matrix(as.data.frame(z))
+    zhat <- as.matrix(as.data.frame(zhat))
+    
+    Nt <- nrow(z)
+    n <- ncol(z) 
+    
+    CRPS <- vector()
+    for(p in 1:n)
+    {
+      test.index <- which(is.na(z[, p]))%>% as.vector()
+      if(length(test.index) == 0 ) {
+        z0 <- z[, p] %>% as.vector()
+        zt <- zhat[, p] %>% as.vector()
+        s <- sd(zt)
+      }else{
+        z0 <- z[-test.index, p] %>% as.vector()
+        zt <- zhat[-test.index, p] %>% as.vector()
+        s <- sd(zt)
+      }
+      CRPS[p] <- verification::crps(z0, cbind(zt, s))$CRPS
+    }
+    CRPS <- round(mean(CRPS, na.rm = T), 4) 
+  } 
+  
+  CRPS.ES <- function(z, zhat, zhat.Ens) {
+    z <- as.matrix(as.data.frame(z))
+    zhat <- as.matrix(as.data.frame(zhat))
+    
+    Nt <- nrow(z)
+    n <- ncol(z) 
+    # cat("Nt = ", Nt)
+    if(!is.null(zhat.Ens))
+    {
+      # z <- as.matrix(z)
+      test.index <- which(is.na(z), arr.ind = T)
+      if(nrow(test.index) >0){ z[test.index] <- 0 }
+      CRPS <- ES <- matrix(NA, nrow = nrow(z), ncol = n)
+      for(t in 1:Nt)
+      {
+        CRPS[t, ] <- crps_sample(z[t, ], zhat.Ens[t,,])
+        ES[t, ] <- es_sample(z[t, ], zhat.Ens[t,,])
+      }
+      CRPS[test.index] <-  ES[test.index] <- NA
+      #crps
+      CRPS <- round(mean(CRPS, na.rm = T), 4)
+      ES <- round(mean(ES, na.rm = T), 4)
+    }else{
+      # z <- as.matrix(z)
+      # zhat <- as.matrix(zhat)
+      
+      CRPS <- ES <- vector()
+      for(t in 1:Nt)
+      {
+        test.index <- which(is.na(z[t, ]))%>% as.vector()
+        if(length(test.index) == 0 ) {
+          z0 <- z[t, ] %>% as.vector()
+          zt <- zhat[t, ] %>% as.matrix()
+        }else{
+          z0 <- z[t, -test.index] %>% as.vector()
+          zt <- zhat[t, -test.index] %>% as.matrix()
+        }
+        CRPS[t] <- mean(crps_sample(z0, zt))
+        ES[t] <-  es_sample(z0, zt)
+      }
+      CRPS <- round(mean(CRPS, na.rm = T), 4)
+      ES <- round(mean(ES, na.rm = T), 4)
+    }
+    return(list(CRPS = CRPS, ES = ES))
+  }
+  if (names == TRUE) {
+    cat("##\n Mean Squared Error (MSE) \n Root Mean Squared Error (RMSE) \n Mean Absolute Error (MAE) \n Mean Absolute Percentage Error (MAPE) \n Normalized Mean Error(NME: %) \n Bias (BIAS) \n Relative Bias (rBIAS) \n Normalized Mean Bias(NMB: %) \n Relative Mean Separation (rMSEP) \n Correlation coefficient (Coef.) \n The fraction of predictions within a factor of two of observations (FAC2) \n Continuous ranked probability score (CRPS) based on sample mean and standard deviation \n CRPS based on empirical distribution function \n Energy score (ES) based on empirical distribution function \n##\n")
+  }
+  out <- NULL
+  # out$MSE <- VMSE((z), (zhat))
+  out$RMSE <- RMSE((z), (zhat))
+  out$MAE <- MAE((z), (zhat))
+  #out$MAPE <- MAPE((z), (zhat))
+  # out$NMGE <- NMGE((z), (zhat))
+  # out$BIAS <- BIAS((z), (zhat))
+  # out$rBIAS <- rBIAS((z), (zhat))
+  # out$NMB <- nBIAS((z), (zhat))
+  # out$rMSEP <- rMSEP((z), (zhat))
+  # out$Coef <- Coef((z), (zhat))
+  # out$COE <- COE(z, zhat)
+  # out$FAC2 <- FAC2(z, zhat)
+  # out$MGE <- MGE(z, zhat)
+  # out$IOA <- IOA(z, zhat)
+  
+  # if(!is.null(zhat.Ens))
+  # {
+  #   R <- CRPS.ES(z, zhat, zhat.Ens)
+  # }else{
+  #   R <- CRPS.ES(z, zhat, zhat.Ens = NULL)
+  # }
+  out$CRPS <- CRPS(z, zhat)
+  # out$CRPS.sample <- R$CRPS
+  # out$ES.sample <- R$ES
+  unlist(out)
+}
+
+colVar <- function(data){
+  colNames <- colnames(data)
+  temp = NULL
+  for(i in 1:ncol(data)){
+    temp <- cbind(temp, var(data[, i]))
+  }
+  colnames(temp) <- colNames
+  return(temp)
+}
+
 Rdist <- function(loc1, loc2, theta = NULL, threads = 10){
   if(is.null(theta)){
     theta = 1;
@@ -234,14 +482,25 @@ ConExpeX <- function(X, Z, coords,
                 h, GeomVariable, nThreads))
 }
 
-sFun <- function(S, i, j, index1, ind){
+sFun <- function(Z, S, i, j, index1, ind){
+  # m1 <-range(ind[[i]])
+  return((Z[i, ]) %*% S[index1 == j, ind[[i]]])
+}
+sFun.Znull <- function(S, i, j, index1, ind){
   # m1 <-range(ind[[i]])
   return(S[index1 == j, ind[[i]]])
 }
+
+devFun <- function(y, S, i, j, index1, ind){
+  # m1 <-range(ind[[i]])
+  return(t(S[index1 == j, ind[[i]]] %*% y))
+}
+
 spLocLKest <- function(y, X, coord, 
                        Kernel, 
                        h, nThreads){
-  coord <- as.matrix(coord)
+  # x.sd <- attr(X, "scaled:scale")
+  coord <- as.matrix(cbind(coord))
   X <- as.matrix(cbind(X))
   n = nrow(X)
   p = ncol(X)
@@ -270,20 +529,20 @@ spLocLKest <- function(y, X, coord,
   }
  
   
-  coord.0 <- round(coord, 2)
+  # coord.0 <- round(coord, 2)
 
-  rowName <- paste0("s(", coord.0[, 1],
-                           ",", coord.0[, 2], ")")
+  # rowName <- paste0("s(", coord.0[, 1],
+  #                          ",", coord.0[, 2], ")")
 
   ind = split(1:length(index2), index2)
   
-  S0 <- lapply(X = 1:n, sFun, S = sLLE$S, j = 1, index1 = index1, ind)
-  lon.S <- lapply(X = 1:n, sFun, S = sLLE$S, j = 2, index1 = index1, ind)
-  lat.S <- lapply(X = 1:n, sFun, S = sLLE$S, j = 3, index1 = index1, ind)
+  S0 <- lapply(X = 1:n, sFun, Z = X, S = sLLE$S, j = 1, index1 = index1, ind)
+  # lon.S <- lapply(X = 1:n, FUN = devFun, y = y, S = sLLE$S, j = 2, index1 = index1, ind)
+  # lat.S <- lapply(X = 1:n, FUN = devFun, y = y, S = sLLE$S, j = 3, index1 = index1, ind)
   
   S0 <- do.call("rbind", S0)
-  lon.S <- do.call("rbind", lon.S)
-  lat.S <- do.call("rbind", lat.S)
+  # lon.S <- do.call("rbind", lon.S)
+  # lat.S <- do.call("rbind", lat.S)
   
   #   S0 <- rbind(S0, sLLE$S[index1 == 1, index2 == i])
   #   lon.S <- rbind(S.lon, sLLE$S[index1 == 1, index2 == i])
@@ -295,119 +554,156 @@ spLocLKest <- function(y, X, coord,
     colName <- c("lon", "lat", colnames(X)) 
   }
   
-  alpha <- cbind(coord, alpha)
-  lon.diff.coef <- cbind(coord, lon.diff.coef)
-  lat.diff.coef <- cbind(coord, lat.diff.coef)
-  rownames(alpha) <- rownames(lon.diff.coef) <- rownames(lat.diff.coef) <-rowName
+  alpha <- data.table(coord, alpha)
+  lon.diff.coef <- data.table(coord, lon.diff.coef)
+  lat.diff.coef <- data.table(coord, lat.diff.coef)
+  # rownames(alpha) <- rownames(lon.diff.coef) <- rownames(lat.diff.coef) <- rowName
   colnames(alpha) <- colnames(lon.diff.coef) <- colnames(lat.diff.coef) <- colName
-
+  # setDT();#setDT(lon.diff.coef);setDT(lat.diff.coef);
+  
+   
+  fitted.values = S0 %*% y
   return(list(Alpha = sLLE$alpha, alpha = alpha,
               lon.diff.coef = lon.diff.coef,
               lat.diff.coef = lat.diff.coef,
               S = sLLE$S, S0 = S0, 
-              lon.S = lon.S,
-              lat.S = lat.S))
+              fitted.values = fitted.values,
+              residuals = y - fitted.values
+              # ,lon.S = lon.S,
+              # lat.S = lat.S
+              ))
 }
 
-spLocLKpred <- function(y, X, coord, 
+spLocLinKernel <- function(y, X,
+                        coord,
+                        FitModel = TRUE,
+                        pred.X = NULL,
                         pred.coord = NULL,
-                        pred.nGrid = 1e2,
+                        pred.nGrid = 0,
                         Kernel = 2, 
-                        h = 0.1, nThreads = 10){
-  if(is.null(pred.coord)){
-    Min = c(min(coord[, 1]), min(coord[, 2]))
-    Max = c(max(coord[, 1]), max(coord[, 2]))
-    # }
-    # cat(Min)
-    pred.coord <- cbind(seq(Min[1], Max[1],, pred.nGrid), 
-                        seq(Min[2], Max[2],, pred.nGrid))
+                        h = 0.1, 
+                        nThreads = 10){
+  if(FitModel){
+    Fit = spLocLKest(y = y, X = X, coord = coord, 
+                     Kernel = Kernel, h = h, 
+                     nThreads = nThreads)
+  }else{
+    Fit = NULL
+  }
+  # if((pred.nGrid > 0)| (!is.null(pred.coord))){
+  if((pred.nGrid > 0)|(!is.null(pred.X)&(!is.null(pred.coord)))){
+    if(is.null(pred.coord)){
+      Min = c(min(coord[, 1]), min(coord[, 2]))
+      Max = c(max(coord[, 1]), max(coord[, 2]))
+      # }
+      # cat(Min)
+      pred.coord <- cbind(seq(Min[1], Max[1],, pred.nGrid), 
+                          seq(Min[2], Max[2],, pred.nGrid))
+      
+      pred.coord <- expand.grid(x = pred.coord[, 1],
+                                y = pred.coord[, 2])
+    }
+    coord <- as.matrix(coord)
+    pred.coord <- as.matrix(pred.coord)
+    X <- as.matrix(cbind(X))
+    if(!is.null(pred.X)){
+      pred.X <- as.matrix(cbind(pred.X))
+    }
     
-    pred.coord <- expand.grid(x = pred.coord[, 1],
-                              y = pred.coord[, 2])
-  }
-  coord <- as.matrix(coord)
-  pred.coord <- as.matrix(pred.coord)
-  X <- as.matrix(cbind(X))
-  n = length(y)
-  p = ncol(X)
-  m = nrow(pred.coord)
-  
-  storage.mode(y) <- "double"
-  storage.mode(X) <- "double"
-  storage.mode(coord) <- "double"
-  storage.mode(pred.coord) <- "double"
-  storage.mode(n) <- "integer"
-  storage.mode(m) <- "integer"
-  storage.mode(p) <- "integer"
-  storage.mode(Kernel) <- "integer"
-  storage.mode(h) <- "double" 
-  
-  storage.mode(nThreads) <- "integer"
-  
-  sLLE <- spatial_LLE_Pred(y, X, coord, n, pred.coord, 
-                           m, p, Kernel, h, nThreads)
-  
-  index1 <- rep(1:3, p)
-  index2 <- rep(1:m, each = n)
-  if(p==1){
-    alpha <- cbind(sLLE$alpha[index1 == 1, ])
-    lon.diff.coef <- cbind(sLLE$alpha[index1 == 2, ])
-    lat.diff.coef <- cbind(sLLE$alpha[index1 == 3, ])
+    n = length(y)
+    p = ncol(X)
+    m = nrow(pred.coord)
+    
+    storage.mode(y) <- "double"
+    storage.mode(X) <- "double"
+    storage.mode(coord) <- "double"
+    storage.mode(pred.coord) <- "double"
+    storage.mode(n) <- "integer"
+    storage.mode(m) <- "integer"
+    storage.mode(p) <- "integer"
+    storage.mode(Kernel) <- "integer"
+    storage.mode(h) <- "double" 
+    
+    storage.mode(nThreads) <- "integer"
+    
+    sLLE <- spatial_LLE_Pred(y, X, coord, n, pred.coord, 
+                             m, p, Kernel, h, nThreads)
+    
+    index1 <- rep(1:3, p)
+    index2 <- rep(1:m, each = n)
+    if(p==1){
+      alpha <- cbind(sLLE$alpha[index1 == 1, ])
+      lon.diff.coef <- cbind(sLLE$alpha[index1 == 2, ])
+      lat.diff.coef <- cbind(sLLE$alpha[index1 == 3, ])
+    }else{
+      alpha <- t(sLLE$alpha[index1 == 1, ])
+      lon.diff.coef <- t(sLLE$alpha[index1 == 2, ])
+      lat.diff.coef <- t(sLLE$alpha[index1 == 3, ])
+    }
+    
+    # pred.coord.0 <- pred.coord
+    # pred.coord <- round(pred.coord, 2)
+    rowName <- NULL
+    
+    # rowName <- paste0("s(", pred.coord[, 1],
+    #                    ",", pred.coord[, 2], ")")
+    
+    
+    # S = data.table(sLLE$S)
+    ind = split(1:length(index2), index2)
+    
+    # cat(pred.X)
+    # pred.X = NULL
+    if(!is.null(pred.X)){
+      S0 <- lapply(X = 1:m, FUN = sFun, Z = pred.X, S = sLLE$S, j = 1, index1 = index1, ind)
+      S0 <- do.call("rbind", S0)
+    }else{
+      S0 <- lapply(X = 1:m, FUN = sFun.Znull, S = sLLE$S, j = 1, index1 = index1, ind)
+    }
+    
+    # lon.S <- lapply(X = 1:m, FUN = devFun, y = y, S = sLLE$S, j = 2, index1 = index1, ind)
+    # lat.S <- lapply(X = 1:m, FUN = devFun, y = y, S = sLLE$S, j = 3, index1 = index1, ind)
+    
+    
+    
+    # lon.S <- do.call("rbind", lon.S)
+    # lat.S <- do.call("rbind", lat.S)
+    
+    if(is.null(colnames(X))){
+      colName <- c("lon", "lat", paste0("alpha", 1:p))
+    }else{
+      colName <- c("lon", "lat", colnames(X)) 
+    }
+    
+    alpha <- data.table(pred.coord, alpha)
+    lon.diff.coef <- data.table(pred.coord, lon.diff.coef)
+    lat.diff.coef <- data.table(pred.coord, lat.diff.coef)
+    # rownames(alpha) <- rownames(lon.diff.coef) <- rownames(lat.diff.coef) <- rowName
+    colnames(alpha) <- colnames(lon.diff.coef) <- colnames(lat.diff.coef) <- colName
+    
+    predict <- list(Alpha = sLLE$alpha, alpha = alpha
+                    , lon.diff.coef = lon.diff.coef
+                    , lat.diff.coef = lat.diff.coef
+                    , S = sLLE$S, S0 = S0
+                    # , lon.S = lon.S
+                    # , lat.S = lat.S
+                    , pred.coord = pred.coord)
   }else{
-    alpha <- t(sLLE$alpha[index1 == 1, ])
-    lon.diff.coef <- t(sLLE$alpha[index1 == 2, ])
-    lat.diff.coef <- t(sLLE$alpha[index1 == 3, ])
+    predict = NULL
   }
   
-  pred.coord.0 <- pred.coord
-  pred.coord <- round(pred.coord, 2)
-  rowName <- NULL
-
-  rowName <- paste0("s(", pred.coord[, 1],
-                     ",", pred.coord[, 2], ")")
-  
-  
-  # S = data.table(sLLE$S)
-  ind = split(1:length(index2), index2)
- 
-  S0 <- lapply(X = 1:m, sFun, S = sLLE$S, j = 1, index1 = index1, ind)
-  lon.S <- lapply(X = 1:m, sFun, S = sLLE$S, j = 2, index1 = index1, ind)
-  lat.S <- lapply(X = 1:m, sFun, S = sLLE$S, j = 3, index1 = index1, ind)
-  
-  
-  S0 <- do.call("rbind", S0)
-  lon.S <- do.call("rbind", lon.S)
-  lat.S <- do.call("rbind", lat.S)
-  
-  if(is.null(colnames(X))){
-    colName <- c("lon", "lat", paste0("alpha", 1:p))
-  }else{
-    colName <- c("lon", "lat", colnames(X)) 
-  }
-  
-  alpha <- cbind(pred.coord, alpha)
-  lon.diff.coef <- cbind(pred.coord, lon.diff.coef)
-  lat.diff.coef <- cbind(pred.coord, lat.diff.coef)
-  rownames(alpha) <- rownames(lon.diff.coef) <- rownames(lat.diff.coef) <-rowName
-  colnames(alpha) <- colnames(lon.diff.coef) <- colnames(lat.diff.coef) <- colName
-  
-  return(list(Alpha = sLLE$alpha, alpha = alpha
-              , lon.diff.coef = lon.diff.coef
-              , lat.diff.coef = lat.diff.coef
-              , S = sLLE$S, S0 = S0
-              , lon.S = lon.S
-              , lat.S = lat.S
-              , pred.coord = pred.coord.0))
+  return(list(Fit.Model = Fit, predict = predict))
 }
 
 spLocPlot <- function(predModel, 
-                      nCov = 1, Num = 50,
+                      nCov = 1, Num = 10,
                       screen = c(60, -60),
                       size= 20, simu = F,
                       FUN = function(x, y){
   sin(((x^2 + y^2))*pi)}){
   library(plot3D)
-  alpha <- data.table(predModel$alpha[, c(1, 2, nCov + 2)])
+  alpha <- setDF(predModel$alpha)
+  alpha <- data.table(alpha[, c(1, 2, nCov + 2)])
   if(!is.null(colnames(alpha))){
     Name <- colnames(alpha)[3]
   }else{
@@ -453,28 +749,62 @@ spLocPlot <- function(predModel,
 
   
   if(simu){
-    par(mfrow = c(2, 2))
-    contour2D(z = z.true, lwd = 2)
+    par(mfrow = c(1, 2))
+    # contour2D(x = lon, y = lat, z = z.true, lwd = 1 ,
+    #           levels = round(seq(min(z.true),
+    #            max(z.true), , Num), 3))
+    # contour2D(x = lon, y = lat, z = z.pre, lwd = 1
+    #           ,levels = round(seq(min(z.pre),
+    #                              max(z.pre), , Num), 3)
+    #           )
+    
+    
     zcl = range(z.true)
-    persp3D(z = z.true, zlim = c(zcl[1], zcl[2]), 
+    persp3D(z = z.true, zlim = c(zcl[1], zcl[2]),
             phi = 20,
-            colkey = list(length = 1, width = 1, 
+            colkey = list(length = 1, width = 1,
                           shift = 0.15,
                           cex.axis = 0.8,
                           cex.clab = 0.85,
-                          side = 4), 
+                          side = 4),
             lighting = TRUE, lphi = 90,
             clab = c("","true.fx"), bty = "f", plot = T)
     layout = c(2, 1)
+   
+    
+    
+    
   }else{
     par(mfrow = c(1, 2))
     z.true = z = NULL
     layout = c(1, 1)
-   
+    z.pre.index <- which(is.na(z.pre), arr.ind = T)
+    z.pre[z.pre.index] <- 0
+    contour2D(x = lon, y = lat, z = z.pre, lwd = 2,
+              levels = round(seq(min(z.pre), 
+                                 max(z.pre), , Num), 3))
+    
+    # zcl = range(z.pre)
+    # persp3D(z = z.pre, zlim = c(zcl[1], zcl[2]),
+    #         phi = 20,
+    #         colkey = list(length = 1, width = 1,
+    #                       shift = 0.15,
+    #                       cex.axis = 0.8,
+    #                       cex.clab = 0.85,
+    #                       side = 4),
+    #         lighting = TRUE, lphi = 90,
+    #         clab = c("","predict.fx"), bty = "f", plot = T)
   }
-  contour2D(x = lon, y = lat, z = z.pre, lwd = 2,
-            levels = round(seq(min(z.pre), 
-                               max(z.pre), , Num), 3))
+  zcl = range(z.pre)
+  persp3D(z = z.pre, zlim = c(zcl[1], zcl[2]),
+          phi = 20,
+          colkey = list(length = 1, width = 1,
+                        shift = 0.15,
+                        cex.axis = 0.8,
+                        cex.clab = 0.85,
+                        side = 4),
+          lighting = TRUE, lphi = 90,
+          clab = c("","predict.fx"), bty = "f", plot = T)
   # contour2D(x = lon, y = lat, z = z.pre, lwd = 2)
   # persp(z = z.true)
   # persp(z = z.pre)
@@ -501,16 +831,7 @@ spLocPlot <- function(predModel,
   # # add contour
   # contour3D(z = zcl[1], colvar = lon.diff, add = TRUE,
   #           col = "black", plot = TRUE)
-  zcl = range(z.pre)
-  persp3D(z = z.pre, zlim = c(zcl[1], zcl[2]),
-          phi = 20,
-          colkey = list(length = 1, width = 1,
-                        shift = 0.15,
-                        cex.axis = 0.8,
-                        cex.clab = 0.85,
-                        side = 4),
-          lighting = TRUE, lphi = 90,
-          clab = c("","predict.fx"), bty = "f", plot = T)
+
   # scatterplot3js(predModel$pred.coord[, 1],
   #                predModel$pred.coord[, 2], alpha[, c(nCov + 2)],
   #                phi = 40, #theta = 20,
