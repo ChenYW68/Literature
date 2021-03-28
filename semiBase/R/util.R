@@ -956,9 +956,236 @@ spLocPlot <- function(predModel,
               p = p))
 }
 
+semiQLM <- function(y, m, coords, covModel,
+                    nnIndx, nnIndxLU, sigmaSq, phi, 
+                    nu, nThreads){
+  cov.model.names <- c("exponential","spherical","matern","gaussian")##order much match util.cpp spCor
+  cov.model.indx <- which(covModel == cov.model.names)-1
+  n <- length(y)
+  N <- length(phi)
+  storage.mode(y) <- "double" 
+  storage.mode(n) <- "integer"
+  storage.mode(m) <- "integer"
+  storage.mode(N) <- "integer" 
+  
+  storage.mode(coords) <- "double"
+  storage.mode(cov.model.indx) <- "integer"
+  storage.mode(nnIndx) <- "integer" 
+  storage.mode(nnIndxLU) <- "integer"
+  
+  storage.mode(sigmaSq) <- "double"
+  storage.mode(phi) <- "double"
+  storage.mode(nu) <- "double"
+  
+  storage.mode(nThreads) <- "integer"
+  
+  return(semiQLME(y, n, m, N, coords, cov.model.indx,
+                  nnIndx, nnIndxLU, sigmaSq, phi, 
+                  nu, nThreads) )
+}
+
+local_linear_kernel <- function(y, covZ, coords,
+                                covModel, h = 0.1,
+                                nu = 0, nuUnifb = 0,
+                                nThreads = 10){
+  n <- length(y)
+  storage.mode(y) <- "double" 
+  storage.mode(covZ) <- "double" 
+  storage.mode(coords) <- "double" 
+  
+  storage.mode(n) <- "integer"
+  storage.mode(covModel) <- "integer"
+  storage.mode(h) <- "double" 
+  storage.mode(nu) <- "double" 
+  storage.mode(nThreads) <- "integer"
+  storage.mode(nuUnifb) <- "integer"
+  locLin = local_kernel_est(y, covZ, coords, n, 
+                            covModel, h, nu, 
+                            nuUnifb, nThreads)
+  
+  
+  return(list(S0 = t(matrix(locLin$S[1, ], n, n)),
+              S1 = t(matrix(locLin$S[2, ], n, n)),
+              alpha = locLin$alpha))
+}
+LocalPredict <- function(y, Z, TestZ, coords, TestCoords,
+                         covModel, h, nu, nuUnifb = 0, 
+                         nThreads){
+  n = length(y)
+  nTest = length(TestZ)
+  TestCoords <- as.matrix(TestCoords)
+  storage.mode(y) <- "double"
+  storage.mode(Z) <- "double"
+  storage.mode(TestZ) <- "double"
+  storage.mode(coords) <- "double"
+  storage.mode(TestCoords) <- "double"
+  storage.mode(nuUnifb) <- "integer"
+  
+  storage.mode(n) <- "integer"
+  storage.mode(nTest) <- "integer"
+  storage.mode(covModel) <- "integer"
+  storage.mode(h) <- "double"
+  storage.mode(nu) <- "double"
+  storage.mode(nThreads) <- "integer"
+  
+  return(local_kernel_pred(y, Z, TestZ, coords,
+                           TestCoords, n, nTest, 
+                           covModel, h, nu, nuUnifb,
+                           nThreads))
+  
+}
+semiPredict <- function(model, newZ, newCoords){
+  newZ <- as.matrix(newZ)
+  newCoords <- as.matrix(newCoords)
+  
+  localPre <- spLocLinKernel(y = model$data$order$data$semiY,
+                             X = model$data$order$data$Z,
+                             coord = model$data$order$data$coords,
+                             fs.Density = model$data$order$data$fs.Density,
+                             pred.X = newZ,
+                             pred.coord = newCoords,
+                             FitModel = F,
+                             pred.nGrid = 0,
+                             covModel = model$model$mean.covModel,
+                             h = model$model$meanH,
+                             nu = model$model$var.nu, 
+                             nuUnifb = model$model$nuUnifb, 
+                             adapt.n = model$model$adapt.n,
+                             nThreads = model$model$nThreads)
+  return(list(S0 = localPre$predict$S0,
+              S1 = localPre$predict$S,
+              alpha = localPre$predict$alpha))
+}
 
 
-
+Predict <- function(model, newX = NULL, newZ = NULL, newCoords, newCovZ = NULL){
+  if(!is.null(newX)){
+    newX <- as.matrix(cbind(1, newX))}
+  
+  newCoords <- as.matrix(newCoords)
+  n.0 <- nrow(newCoords)
+  n <- nrow(model$data$order$data$coords)
+  
+  # if(model$model$center){
+  #   for(i in 1:model$data$input$Pz){
+  #     Rz <- range(newZ[, i])
+  #     newZ[, i] <- (newZ[, i] - Rz[1])/(Rz[2]- Rz[1])
+  #   }
+  #   Rz <- range(newCovX)
+  #   newCovX <- (newCovX - Rz[1])/(Rz[2]- Rz[1])
+  # }
+  if(!is.null(newCovZ)){
+    newCovZ <- as.matrix(newCovZ)
+    if(ncol(newCovZ) == 1){
+      CovPre <- LocalPredict(y = model$data$order$residual^2, 
+                             Z = model$data$order$data$covZ,
+                             TestZ = newCovZ, 
+                             coords = model$data$order$data$coords,
+                             TestCoords = newCoords, 
+                             covModel = model$model$var.covModel,
+                             h = model$model$varH,
+                             nu = model$model$var.nu,
+                             nuUnifb = model$model$nuUnifb, 
+                             nThreads = model$model$nThreads)
+      
+      var.pre <- CovPre$alpha[1,]
+    }else{
+      CovPre <- spLocLinKernel(y = model$data$order$residual^2,
+                               X = model$data$order$data$covZ, 
+                               coord = model$data$order$data$coords,
+                               fs.Density = model$data$order$data$fs.Density,
+                               pred.X = rep(1, length(newCovZ)),
+                               pred.coord = newCoords,
+                               FitModel = F,
+                               pred.nGrid = 0, 
+                               covModel = model$model$var.covModel, 
+                               h = model$model$varH,
+                               nu = model$model$var.nu,
+                               nuUnifb = model$model$nuUnifb, 
+                               adapt.n = model$model$adapt.n,
+                               nThreads = model$model$nThreads)
+      
+      var.pre <- CovPre$predict$alpha$alpha1
+    }
+    
+    # locpoly(newCovX, Fit$est$variance$sigmaSq, bandwidth = 0.25)
+    # var.pre = local_linear_kernel(pre.residual^2, newCovX, model$coords, 
+    #                               model$Kernel[2], 
+    #                               model$varH, model$GeomVariable, 
+    #                               model$n.omp.threads)$alpha[1, ]
+    
+    if(length(which(var.pre < 0))>= 1){
+      var.pre[which(var.pre < 0)] <- min(var.pre[- which(var.pre < 0)])
+    }
+  }else{
+    CovPre <- NULL
+    var.pre <- rep(model$est$variance$sigmaSq[1], n.0)
+  }
+  nn.indx.0 <- RANN::nn2(model$data$order$data$coords, newCoords,
+                         k = model$data$order$neighbors$n.neighbors)$nn.idx
+  
+  
+  wPre <- vector()
+  for(i in 1:n.0)
+  {
+    
+    Ci <- sqrt(var.pre[i])*Rdist(newCoords[i,], 
+                                 model$data$order$data$coords[nn.indx.0[i,],], 
+                                 covModel = model$model$mean.covModel, 
+                                 phi = model$model$phi, 
+                                 nu = model$model$mean.nu,
+                                 nuUnifb = model$model$nuUnifb, 
+                                 threads = model$model$nThreads)$Corr
+    
+    siGma <- Rdist(model$data$order$data$coords[nn.indx.0[i,], ], 
+                   model$data$order$data$coords[nn.indx.0[i,], ], 
+                   covModel = model$model$mean.covModel, 
+                   phi = model$model$phi, 
+                   nu = model$model$mean.nu,
+                   nuUnifb = model$model$nuUnifb, 
+                   threads = model$model$nThreads)$Corr
+    
+    
+    # Ci = sqrt(var.pre[i])*exp(-Rdist(newCoords[i,], 
+    #                                  model$data$order$data$coords[nn.indx.0[i,],])$Dist/model$model$phi)
+    
+    # siGma <- exp(-Rdist(model$data$order$data$coords[nn.indx.0[i,], ],
+    #                     model$data$order$data$coords[nn.indx.0[i,],])$Dist/model$model$phi)
+    
+    siGma <- diag(sqrt(model$data$order$sigmaSq[nn.indx.0[i, ]])) %*% 
+      siGma %*% diag(sqrt(model$data$order$sigmaSq[nn.indx.0[i, ]]))
+    # for(k1 in 1:model$data$order$neighbors$n.neighbors){
+    #   siGma[k1, ] <- siGma[k1, ] * sqrt(model$data$order$sigmaSq[nn.indx.0[i, k1]])
+    # }
+    # for(k2 in 1:model$data$order$neighbors$n.neighbors){
+    #   siGma[, k2] <- siGma[, k2] * sqrt(model$data$order$sigmaSq[nn.indx.0[i, k2]]) 
+    # }
+    
+    wPre[i] <- as.vector((Ci * sqrt(model$data$order$sigmaSq[nn.indx.0[i, ]])) %*% 
+                           solve(siGma) %*% model$data$order$residual[nn.indx.0[i, ]]) 
+  }
+  
+  if(!is.null(newZ))
+  {
+    newZ <- as.matrix(newZ)
+    semiP <- semiPredict(model, newZ, newCoords)
+    semiPred <- semiP$S0 %*% model$data$order$data$semiY
+  }else{
+    semiPred <- 0;
+    semiP <- NULL
+  }
+  
+  FixEffect <- 0
+  if(!is.null(newX)){
+    FixEffect <- newX %*% rbind(model$est$mean$intercept, model$est$mean$beta)
+  } #+ wPre
+  pred <-  FixEffect + semiPred + wPre
+  # return(list(pred = pred))
+  return(list(FinalPred = pred, FixEffect = FixEffect,
+              semiPred = semiPred, RandmomPred = wPre, 
+              varPred = var.pre,
+              semiPreDa = semiP, CovPreDa = CovPre))
+}
 
 
 
@@ -984,33 +1211,7 @@ bivariate_local_kernel <- function(y, covZ, lon, lat,
                                     nThreads))
 }
 
-semiQLM <- function(y, m, coords, covModel,
-                    nnIndx, nnIndxLU, sigmaSq, phi, 
-                    nu, nThreads){
-  cov.model.names <- c("exponential","spherical","matern","gaussian")##order much match util.cpp spCor
-  cov.model.indx <- which(covModel == cov.model.names)-1
-  n <- length(y)
-  N <- length(phi)
-  storage.mode(y) <- "double" 
-  storage.mode(n) <- "integer"
-  storage.mode(m) <- "integer"
-  storage.mode(N) <- "integer" 
- 
-  storage.mode(coords) <- "double"
-  storage.mode(cov.model.indx) <- "integer"
-  storage.mode(nnIndx) <- "integer" 
-  storage.mode(nnIndxLU) <- "integer"
-  
-  storage.mode(sigmaSq) <- "double"
-  storage.mode(phi) <- "double"
-  storage.mode(nu) <- "double"
-  
-  storage.mode(nThreads) <- "integer"
-  
-  return(semiQLME(y, n, m, N, coords, cov.model.indx,
-                  nnIndx, nnIndxLU, sigmaSq, phi, 
-                  nu, nThreads) )
-}
+
 
 SemiAlphaProfile <- function(y, Z, n, coords, B, varF, Q, nnIndx, nnIndxLU,
                   Kernel, meanH, GeomVariable, nThreads){
@@ -1041,30 +1242,7 @@ SemiAlphaProfile <- function(y, Z, n, coords, B, varF, Q, nnIndx, nnIndxLU,
 }
 
 
-local_linear_kernel <- function(y, covZ, coords,
-                                covModel, h = 0.1,
-                                nu = 0, nuUnifb = 0,
-                                nThreads = 10){
-  n <- length(y)
-  storage.mode(y) <- "double" 
-  storage.mode(covZ) <- "double" 
-  storage.mode(coords) <- "double" 
-  
-  storage.mode(n) <- "integer"
-  storage.mode(covModel) <- "integer"
-  storage.mode(h) <- "double" 
-  storage.mode(nu) <- "double" 
-  storage.mode(nThreads) <- "integer"
-  storage.mode(nuUnifb) <- "integer"
-  locLin = local_kernel_est(y, covZ, coords, n, 
-                            covModel, h, nu, 
-                            nuUnifb, nThreads)
-  
 
-  return(list(S0 = t(matrix(locLin$S[1, ], n, n)),
-         S1 = t(matrix(locLin$S[2, ], n, n)),
-         alpha = locLin$alpha))
-}
 
 SemiProf <- function(y, Z, coords, Q, 
                       nnIndx,nnIndxLU,
@@ -1185,184 +1363,6 @@ profilePredict <- function(y, Z, TestZ, coords,
                           Kernel, h, GeomVariable, nThreads))
 }
 
-LocalPredict <- function(y, Z, TestZ, coords, TestCoords,
-                         covModel, h, nu, nuUnifb = 0, 
-                         nThreads){
-  n = length(y)
-  nTest = length(TestZ)
-  TestCoords <- as.matrix(TestCoords)
-  storage.mode(y) <- "double"
-  storage.mode(Z) <- "double"
-  storage.mode(TestZ) <- "double"
-  storage.mode(coords) <- "double"
-  storage.mode(TestCoords) <- "double"
-  storage.mode(nuUnifb) <- "integer"
-  
-  storage.mode(n) <- "integer"
-  storage.mode(nTest) <- "integer"
-  storage.mode(covModel) <- "integer"
-  storage.mode(h) <- "double"
-  storage.mode(nu) <- "double"
-  storage.mode(nThreads) <- "integer"
-  
-  return(local_kernel_pred(y, Z, TestZ, coords,
-                           TestCoords, n, nTest, 
-                           covModel, h, nu, nuUnifb,
-                           nThreads))
-  
-}
-semiPredict <- function(model, newZ, newCoords){
-  newZ <- as.matrix(newZ)
-  newCoords <- as.matrix(newCoords)
-
-  localPre <- spLocLinKernel(y = model$data$order$data$semiY,
-                            X = model$data$order$data$Z,
-                            coord = model$data$order$data$coords,
-                            fs.Density = model$data$order$data$fs.Density,
-                            pred.X = newZ,
-                            pred.coord = newCoords,
-                            FitModel = F,
-                            pred.nGrid = 0,
-                            covModel = model$model$mean.covModel,
-                            h = model$model$meanH,
-                            nu = model$model$var.nu, 
-                            nuUnifb = model$model$nuUnifb, 
-                            adapt.n = model$model$adapt.n,
-                            nThreads = model$model$nThreads)
-  return(list(S0 = localPre$predict$S0,
-              S1 = localPre$predict$S,
-              alpha = localPre$predict$alpha))
-}
-
-
-Predict <- function(model, newX = NULL, newZ = NULL, newCoords, newCovZ = NULL){
-  if(!is.null(newX)){
-  newX <- as.matrix(cbind(1, newX))}
-
-  newCoords <- as.matrix(newCoords)
-  n.0 <- nrow(newCoords)
-  n <- nrow(model$data$order$data$coords)
-  
-  # if(model$model$center){
-  #   for(i in 1:model$data$input$Pz){
-  #     Rz <- range(newZ[, i])
-  #     newZ[, i] <- (newZ[, i] - Rz[1])/(Rz[2]- Rz[1])
-  #   }
-  #   Rz <- range(newCovX)
-  #   newCovX <- (newCovX - Rz[1])/(Rz[2]- Rz[1])
-  # }
-  if(!is.null(newCovZ)){
-    newCovZ <- as.matrix(newCovZ)
-    if(ncol(newCovZ) == 1){
-        CovPre <- LocalPredict(y = model$data$order$residual^2, 
-                               Z = model$data$order$data$covZ,
-                               TestZ = newCovZ, 
-                               coords = model$data$order$data$coords,
-                               TestCoords = newCoords, 
-                               covModel = model$model$var.covModel,
-                               h = model$model$varH,
-                               nu = model$model$var.nu,
-                               nuUnifb = model$model$nuUnifb, 
-                               nThreads = model$model$nThreads)
-        
-        var.pre <- CovPre$alpha[1,]
-    }else{
-      CovPre <- spLocLinKernel(y = model$data$order$residual^2,
-                               X = model$data$order$data$covZ, 
-                               coord = model$data$order$data$coords,
-                               fs.Density = model$data$order$data$fs.Density,
-                               pred.X = rep(1, length(newCovZ)),
-                               pred.coord = newCoords,
-                               FitModel = F,
-                               pred.nGrid = 0, 
-                               covModel = model$model$var.covModel, 
-                               h = model$model$varH,
-                               nu = model$model$var.nu,
-                               nuUnifb = model$model$nuUnifb, 
-                               adapt.n = model$model$adapt.n,
-                               nThreads = model$model$nThreads)
-      
-      var.pre <- CovPre$predict$alpha$alpha1
-    }
-  
-  # locpoly(newCovX, Fit$est$variance$sigmaSq, bandwidth = 0.25)
-  # var.pre = local_linear_kernel(pre.residual^2, newCovX, model$coords, 
-  #                               model$Kernel[2], 
-  #                               model$varH, model$GeomVariable, 
-  #                               model$n.omp.threads)$alpha[1, ]
-  
-  if(length(which(var.pre < 0))>= 1){
-    var.pre[which(var.pre < 0)] <- min(var.pre[- which(var.pre < 0)])
-  }
-  }else{
-    CovPre <- NULL
-    var.pre <- rep(model$est$variance$sigmaSq[1], n.0)
-  }
-  nn.indx.0 <- RANN::nn2(model$data$order$data$coords, newCoords,
-                         k = model$data$order$neighbors$n.neighbors)$nn.idx
-
- 
-  wPre <- vector()
-  for(i in 1:n.0)
-  {
-    
-    Ci <- sqrt(var.pre[i])*Rdist(newCoords[i,], 
-                  model$data$order$data$coords[nn.indx.0[i,],], 
-                  covModel = model$model$mean.covModel, 
-                  phi = model$model$phi, 
-                  nu = model$model$mean.nu,
-                  nuUnifb = model$model$nuUnifb, 
-                  threads = model$model$nThreads)$Corr
-   
-    siGma <- Rdist(model$data$order$data$coords[nn.indx.0[i,], ], 
-                 model$data$order$data$coords[nn.indx.0[i,], ], 
-                 covModel = model$model$mean.covModel, 
-                 phi = model$model$phi, 
-                 nu = model$model$mean.nu,
-                 nuUnifb = model$model$nuUnifb, 
-                 threads = model$model$nThreads)$Corr
-    
-    
-    # Ci = sqrt(var.pre[i])*exp(-Rdist(newCoords[i,], 
-    #                                  model$data$order$data$coords[nn.indx.0[i,],])$Dist/model$model$phi)
-    
-    # siGma <- exp(-Rdist(model$data$order$data$coords[nn.indx.0[i,], ],
-    #                     model$data$order$data$coords[nn.indx.0[i,],])$Dist/model$model$phi)
-    
-    siGma <- diag(sqrt(model$data$order$sigmaSq[nn.indx.0[i, ]])) %*% 
-             siGma %*% diag(sqrt(model$data$order$sigmaSq[nn.indx.0[i, ]]))
-    # for(k1 in 1:model$data$order$neighbors$n.neighbors){
-    #   siGma[k1, ] <- siGma[k1, ] * sqrt(model$data$order$sigmaSq[nn.indx.0[i, k1]])
-    # }
-    # for(k2 in 1:model$data$order$neighbors$n.neighbors){
-    #   siGma[, k2] <- siGma[, k2] * sqrt(model$data$order$sigmaSq[nn.indx.0[i, k2]]) 
-    # }
-    
-    wPre[i] <- as.vector((Ci * sqrt(model$data$order$sigmaSq[nn.indx.0[i, ]])) %*% 
-                           solve(siGma) %*% model$data$order$residual[nn.indx.0[i, ]]) 
-  }
-  
-  if(!is.null(newZ))
-  {
-    newZ <- as.matrix(newZ)
-    semiP <- semiPredict(model, newZ, newCoords)
-    semiPred <- semiP$S0 %*% model$data$order$data$semiY
-  }else{
-    semiPred <- 0;
-    semiP <- NULL
-  }
-  
-  FixEffect <- 0
-  if(!is.null(newX)){
-    FixEffect <- newX %*% rbind(model$est$mean$intercept, model$est$mean$beta)
-  } #+ wPre
-  pred <-  FixEffect + semiPred + wPre
-  # return(list(pred = pred))
-  return(list(FinalPred = pred, FixEffect = FixEffect,
-              semiPred = semiPred, RandmomPred = wPre, 
-              varPred = var.pre,
-              semiPreDa = semiP, CovPreDa = CovPre))
-}
 
 
 

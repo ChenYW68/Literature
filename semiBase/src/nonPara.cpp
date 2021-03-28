@@ -1275,55 +1275,7 @@ SEXP local_kernel_pred(SEXP y_r,
   
 }
 
-void BetaEst(double *alpha, double *A, double *B, double *F, double *u, double *y, int *nnIndx, int *nnIndxLU, int n, int p){
-  int info;
-  const int inc = 1;
-  const double one = 1.0;
-  const double zero = 0.0;
-  char const *lower = "L";
-  // SEXP A_r, b_r, alpha_r;
-  // PROTECT(A_r = Rf_allocVector(REALSXP, p*p)); nProtect++;
-  // PROTECT(b_r = Rf_allocVector(REALSXP, p)); nProtect++;
-  // PROTECT(alpha_r = Rf_allocVector(REALSXP, p)); nProtect++;
-  // double *A = REAL(A_r); 
-  // double *b = REAL(b_r);
-  // double *alpha = REAL(alpha_r);
-  int pp = p*p;
-  
-  double *A0 = (double *) R_alloc(p*p, sizeof(double));
-  //  double *alpha = (double *) R_alloc(p, sizeof(double));
-  double *b = (double *) R_alloc(p, sizeof(double));
-  
-  int k0 =0;
-  double *Xi = (double *) R_alloc(n, sizeof(double));
-  double *Xj = (double *) R_alloc(n, sizeof(double));
-  for(int k1 = 0; k1 < p; k1++){
-    for(int i = 0; i < n; i++){
-      Xi[i] = u[k1*n + i];
-    }
-    b[k1] = Q(B, F, Xi, y, n, nnIndx, nnIndxLU);
-    for(int k2 = 0; k2 < p; k2++){
-      for(int j = 0; j < n; j++){
-        Xj[j] = u[k2*n+ j];
-      } 	   
-      A0[k0]= Q(B, F, Xi, Xj, n, nnIndx, nnIndxLU);
-      k0++;
-    }
-  }
-  
-  F77_NAME(dcopy)(&pp, A0, &inc, A, &inc);
-  //double *alpha_temp = (double *) R_alloc(p, sizeof(double));
-  
-  F77_NAME(dpotrf)(lower, &p, A0, &p, &info); if(info != 0){error("c++ error: dpotrf failed\n");}
-  F77_NAME(dpotri)(lower, &p, A0, &p, &info); if(info != 0){error("c++ error: dpotri failed\n");}//solve(A)
-  F77_NAME(dsymv)(lower, &p, &one, A0, &p, b, &inc, &zero, alpha, &inc);
-  // Rprintf("alpha: %3.10f \n", alpha_temp[0]);
-  // Rprintf("alpha: %3.10f \n", alpha_temp[1]);
-  // for(int k1 = 0; k1 < p; k1++){
-  // alpha[k1] = alpha_temp[k1];
-  // }
-  //return(alpha[0]);
-}
+
 
 // [[Rcpp::export]]
 SEXP spatial_LLE(SEXP y_r, SEXP X_r, 
@@ -1684,6 +1636,146 @@ SEXP spatial_LLE_Pred(SEXP y_r, SEXP X_r,
 						  
 }
 
+// [[Rcpp::export]]
+SEXP semiQLME(SEXP y_r, SEXP n_r, SEXP m_r, SEXP N_r, SEXP coords_r, SEXP covModel_r,
+              SEXP nnIndx_r, SEXP nnIndxLU_r, SEXP sigmaSq_r, SEXP phi_r, 
+			  SEXP nu_r, SEXP nThreads_r){
+			   // SEXP uIndx_r, SEXP uIndxLU_r, SEXP uiIndx_r, SEXP TestCoords_r,
+  int i, j, k, l, s, info, nProtect=0;
+  const int inc = 1;
+  const double one = 1.0;
+  const double negOne = -1.0;
+  const double zero = 0.0;
+ 
+  
+  //get args
+  int n = INTEGER(n_r)[0];
+  int m = INTEGER(m_r)[0];
+  int N = INTEGER(N_r)[0];
+
+  double *coords = REAL(coords_r);
+  double *y = REAL(y_r);
+  
+  int *nnIndx = INTEGER(nnIndx_r);
+  int *nnIndxLU = INTEGER(nnIndxLU_r);
+  // int *uIndx = INTEGER(uIndx_r);
+  // int *uIndxLU = INTEGER(uIndxLU_r);
+  // int *uiIndx = INTEGER(uiIndx_r);
+
+  
+  int covModel = INTEGER(covModel_r)[0];
+  std::string corName = getCorName(covModel);
+  
+
+  int nThreads = INTEGER(nThreads_r)[0];
+
+  char Trans = 'T';
+  char TransN = 'N';
+  char lower = 'L';
+  
+#ifdef _OPENMP
+  omp_set_num_threads(nThreads);
+#else
+  if(nThreads > 1){
+    warning("n.omp.threads > %i, but source not compiled with OpenMP support.", nThreads);
+    nThreads = 1;
+  }
+#endif
+  
+  
+  //starting	
+
+  double *sigmaSq = REAL(sigmaSq_r);
+  double *phi = REAL(phi_r);
+
+  //allocate for the U index vector that keep track of which locations have the i-th location as a neighbor
+  int nIndx = static_cast<int>(static_cast<double>(1+m)/2*m+(n-m-1)*m);
+
+  //other stuff
+  int mm = m*m;
+  
+  int nn = n*n;
+  // SEXP neiB_r, varF_r;
+  // PROTECT(neiB_r = Rf_allocVector(REALSXP, nIndx)); nProtect++;
+  // PROTECT(varF_r = Rf_allocVector(REALSXP, n)); nProtect++;
+  // double *B = REAL(neiB_r);
+  // double *F = REAL(varF_r);
+  double *B = (double *) R_alloc(nIndx, sizeof(double));
+  double *F = (double *) R_alloc(n, sizeof(double));
+
+  double *c =(double *) R_alloc(m*nThreads, sizeof(double));
+  double *C = (double *) R_alloc(mm*nThreads, sizeof(double));
+  int nuUnifb = 0;
+  double *bk = (double *) R_alloc(nThreads*(1.0+static_cast<int>(floor(nuUnifb))), sizeof(double));
+
+  double nu = 0;
+  if(corName == "matern"){nu = REAL(nu_r)[0];}
+  
+  double sq_err, qle;
+  SEXP Q_r, qleSum_r;
+  PROTECT(Q_r = Rf_allocMatrix(REALSXP, n, n)); nProtect++;
+  PROTECT(qleSum_r = Rf_allocVector(REALSXP, N)); nProtect++;
+  double *Q_temp2 = REAL(Q_r);zeros(Q_temp2, n*n);
+  double *qleSum = REAL(qleSum_r);
+  
+  double *Q_temp = (double *) R_alloc(n*n, sizeof(double));
+  for(int s = 0; s < N; s++){ 
+     updateBF(B, F, c, C, coords, nnIndx, nnIndxLU, n, m, sigmaSq, phi[s], nu, covModel, bk, nuUnifb);
+    sq_err = Q(B, F, y, y, n, nnIndx, nnIndxLU);
+
+    double *lowB = (double *) R_alloc(n*n, sizeof(double));zeros(lowB, n*n);
+	double *invF = (double *) R_alloc(n*n, sizeof(double));zeros(invF, n*n);
+
+	for(i = 0; i < n; i++){
+		if(nnIndxLU[n + i]>0){		
+		  for(j = 0; j < nnIndxLU[n + i]; j++){
+			lowB[i + nnIndx[nnIndxLU[i] + j]*n] = - B[nnIndxLU[i] + j]; 		
+		  }
+		}
+		
+		 for(j = i; j < i + 1; j++){
+			invF[j + n*i] = 1/F[i]; 
+			lowB[j + n*i] = 1;		
+		  }
+	}
+
+
+qle = 0.0;
+
+ F77_NAME(dgemm)(&Trans, &TransN, &n, &n, &n, &one, lowB, &n, invF, &n, &zero, Q_temp,&n);
+ F77_NAME(dgemm)(&TransN, &TransN, &n, &n, &n, &one, Q_temp, &n, lowB, &n, &zero, Q_temp2,&n);
+ F77_NAME(dpotrf)(&lower, &n, Q_temp2, &n, &info); if(info != 0){error("c++ error: dpotrf failed\n");}
+ 
+  for(i = 0; i < n; i++){
+    for(j = i; j < i + 1; j++){
+     qle  += log(Q_temp2[j + n*i]);
+    }
+  }
+  qleSum[s] = qle - sq_err;
+  } 
+  //make return object
+  SEXP result_r, resultName_r;
+  int nResultListObjs = 1;
+  PROTECT(result_r = Rf_allocVector(VECSXP, nResultListObjs)); nProtect++;
+  PROTECT(resultName_r = Rf_allocVector(VECSXP, nResultListObjs)); nProtect++;
+  
+  SET_VECTOR_ELT(result_r, 0, qleSum_r);
+  SET_VECTOR_ELT(resultName_r, 0, Rf_mkChar("qleSum"));
+  
+  // SET_VECTOR_ELT(result_r, 1, Q_r);
+  // SET_VECTOR_ELT(resultName_r, 1, Rf_mkChar("Q"));
+  
+  
+  Rf_namesgets(result_r, resultName_r);
+  
+  //unprotect
+  UNPROTECT(nProtect);
+  // SEXP out;
+  // PROTECT(out = Rf_allocVector(REALSXP, nIndx));
+  // B = REAL(out);
+  
+  return(result_r);
+}
 
 
 
@@ -1699,8 +1791,55 @@ SEXP spatial_LLE_Pred(SEXP y_r, SEXP X_r,
 
 
 
-
-
+void BetaEst(double *alpha, double *A, double *B, double *F, double *u, double *y, int *nnIndx, int *nnIndxLU, int n, int p){
+  int info;
+  const int inc = 1;
+  const double one = 1.0;
+  const double zero = 0.0;
+  char const *lower = "L";
+  // SEXP A_r, b_r, alpha_r;
+  // PROTECT(A_r = Rf_allocVector(REALSXP, p*p)); nProtect++;
+  // PROTECT(b_r = Rf_allocVector(REALSXP, p)); nProtect++;
+  // PROTECT(alpha_r = Rf_allocVector(REALSXP, p)); nProtect++;
+  // double *A = REAL(A_r); 
+  // double *b = REAL(b_r);
+  // double *alpha = REAL(alpha_r);
+  int pp = p*p;
+  
+  double *A0 = (double *) R_alloc(p*p, sizeof(double));
+  //  double *alpha = (double *) R_alloc(p, sizeof(double));
+  double *b = (double *) R_alloc(p, sizeof(double));
+  
+  int k0 =0;
+  double *Xi = (double *) R_alloc(n, sizeof(double));
+  double *Xj = (double *) R_alloc(n, sizeof(double));
+  for(int k1 = 0; k1 < p; k1++){
+    for(int i = 0; i < n; i++){
+      Xi[i] = u[k1*n + i];
+    }
+    b[k1] = Q(B, F, Xi, y, n, nnIndx, nnIndxLU);
+    for(int k2 = 0; k2 < p; k2++){
+      for(int j = 0; j < n; j++){
+        Xj[j] = u[k2*n+ j];
+      } 	   
+      A0[k0]= Q(B, F, Xi, Xj, n, nnIndx, nnIndxLU);
+      k0++;
+    }
+  }
+  
+  F77_NAME(dcopy)(&pp, A0, &inc, A, &inc);
+  //double *alpha_temp = (double *) R_alloc(p, sizeof(double));
+  
+  F77_NAME(dpotrf)(lower, &p, A0, &p, &info); if(info != 0){error("c++ error: dpotrf failed\n");}
+  F77_NAME(dpotri)(lower, &p, A0, &p, &info); if(info != 0){error("c++ error: dpotri failed\n");}//solve(A)
+  F77_NAME(dsymv)(lower, &p, &one, A0, &p, b, &inc, &zero, alpha, &inc);
+  // Rprintf("alpha: %3.10f \n", alpha_temp[0]);
+  // Rprintf("alpha: %3.10f \n", alpha_temp[1]);
+  // for(int k1 = 0; k1 < p; k1++){
+  // alpha[k1] = alpha_temp[k1];
+  // }
+  //return(alpha[0]);
+}
 
 
 // [[Rcpp::export]]
@@ -1847,146 +1986,7 @@ SEXP bivariate_local_kernel_est(SEXP y_r, SEXP covZ_r,
 
 
 
-// [[Rcpp::export]]
-SEXP semiQLME(SEXP y_r, SEXP n_r, SEXP m_r, SEXP N_r, SEXP coords_r, SEXP covModel_r,
-              SEXP nnIndx_r, SEXP nnIndxLU_r, SEXP sigmaSq_r, SEXP phi_r, 
-			  SEXP nu_r, SEXP nThreads_r){
-			   // SEXP uIndx_r, SEXP uIndxLU_r, SEXP uiIndx_r, SEXP TestCoords_r,
-  int i, j, k, l, s, info, nProtect=0;
-  const int inc = 1;
-  const double one = 1.0;
-  const double negOne = -1.0;
-  const double zero = 0.0;
- 
-  
-  //get args
-  int n = INTEGER(n_r)[0];
-  int m = INTEGER(m_r)[0];
-  int N = INTEGER(N_r)[0];
 
-  double *coords = REAL(coords_r);
-  double *y = REAL(y_r);
-  
-  int *nnIndx = INTEGER(nnIndx_r);
-  int *nnIndxLU = INTEGER(nnIndxLU_r);
-  // int *uIndx = INTEGER(uIndx_r);
-  // int *uIndxLU = INTEGER(uIndxLU_r);
-  // int *uiIndx = INTEGER(uiIndx_r);
-
-  
-  int covModel = INTEGER(covModel_r)[0];
-  std::string corName = getCorName(covModel);
-  
-
-  int nThreads = INTEGER(nThreads_r)[0];
-
-  char Trans = 'T';
-  char TransN = 'N';
-  char lower = 'L';
-  
-#ifdef _OPENMP
-  omp_set_num_threads(nThreads);
-#else
-  if(nThreads > 1){
-    warning("n.omp.threads > %i, but source not compiled with OpenMP support.", nThreads);
-    nThreads = 1;
-  }
-#endif
-  
-  
-  //starting	
-
-  double *sigmaSq = REAL(sigmaSq_r);
-  double *phi = REAL(phi_r);
-
-  //allocate for the U index vector that keep track of which locations have the i-th location as a neighbor
-  int nIndx = static_cast<int>(static_cast<double>(1+m)/2*m+(n-m-1)*m);
-
-  //other stuff
-  int mm = m*m;
-  
-  int nn = n*n;
-  // SEXP neiB_r, varF_r;
-  // PROTECT(neiB_r = Rf_allocVector(REALSXP, nIndx)); nProtect++;
-  // PROTECT(varF_r = Rf_allocVector(REALSXP, n)); nProtect++;
-  // double *B = REAL(neiB_r);
-  // double *F = REAL(varF_r);
-  double *B = (double *) R_alloc(nIndx, sizeof(double));
-  double *F = (double *) R_alloc(n, sizeof(double));
-
-  double *c =(double *) R_alloc(m*nThreads, sizeof(double));
-  double *C = (double *) R_alloc(mm*nThreads, sizeof(double));
-  int nuUnifb = 0;
-  double *bk = (double *) R_alloc(nThreads*(1.0+static_cast<int>(floor(nuUnifb))), sizeof(double));
-
-  double nu = 0;
-  if(corName == "matern"){nu = REAL(nu_r)[0];}
-  
-  double sq_err, qle;
-  SEXP Q_r, qleSum_r;
-  PROTECT(Q_r = Rf_allocMatrix(REALSXP, n, n)); nProtect++;
-  PROTECT(qleSum_r = Rf_allocVector(REALSXP, N)); nProtect++;
-  double *Q_temp2 = REAL(Q_r);zeros(Q_temp2, n*n);
-  double *qleSum = REAL(qleSum_r);
-  
-  double *Q_temp = (double *) R_alloc(n*n, sizeof(double));
-  for(int s = 0; s < N; s++){ 
-     updateBF(B, F, c, C, coords, nnIndx, nnIndxLU, n, m, sigmaSq, phi[s], nu, covModel, bk, nuUnifb);
-    sq_err = Q(B, F, y, y, n, nnIndx, nnIndxLU);
-
-    double *lowB = (double *) R_alloc(n*n, sizeof(double));zeros(lowB, n*n);
-	double *invF = (double *) R_alloc(n*n, sizeof(double));zeros(invF, n*n);
-
-	for(i = 0; i < n; i++){
-		if(nnIndxLU[n + i]>0){		
-		  for(j = 0; j < nnIndxLU[n + i]; j++){
-			lowB[i + nnIndx[nnIndxLU[i] + j]*n] = - B[nnIndxLU[i] + j]; 		
-		  }
-		}
-		
-		 for(j = i; j < i + 1; j++){
-			invF[j + n*i] = 1/F[i]; 
-			lowB[j + n*i] = 1;		
-		  }
-	}
-
-
-qle = 0.0;
-
- F77_NAME(dgemm)(&Trans, &TransN, &n, &n, &n, &one, lowB, &n, invF, &n, &zero, Q_temp,&n);
- F77_NAME(dgemm)(&TransN, &TransN, &n, &n, &n, &one, Q_temp, &n, lowB, &n, &zero, Q_temp2,&n);
- F77_NAME(dpotrf)(&lower, &n, Q_temp2, &n, &info); if(info != 0){error("c++ error: dpotrf failed\n");}
- 
-  for(i = 0; i < n; i++){
-    for(j = i; j < i + 1; j++){
-     qle  += log(Q_temp2[j + n*i]);
-    }
-  }
-  qleSum[s] = qle - sq_err;
-  } 
-  //make return object
-  SEXP result_r, resultName_r;
-  int nResultListObjs = 1;
-  PROTECT(result_r = Rf_allocVector(VECSXP, nResultListObjs)); nProtect++;
-  PROTECT(resultName_r = Rf_allocVector(VECSXP, nResultListObjs)); nProtect++;
-  
-  SET_VECTOR_ELT(result_r, 0, qleSum_r);
-  SET_VECTOR_ELT(resultName_r, 0, Rf_mkChar("qleSum"));
-  
-  // SET_VECTOR_ELT(result_r, 1, Q_r);
-  // SET_VECTOR_ELT(resultName_r, 1, Rf_mkChar("Q"));
-  
-  
-  Rf_namesgets(result_r, resultName_r);
-  
-  //unprotect
-  UNPROTECT(nProtect);
-  // SEXP out;
-  // PROTECT(out = Rf_allocVector(REALSXP, nIndx));
-  // B = REAL(out);
-  
-  return(result_r);
-}
 
 
 

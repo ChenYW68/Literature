@@ -186,24 +186,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// bivariate_local_kernel_est
-SEXP bivariate_local_kernel_est(SEXP y_r, SEXP covZ_r, SEXP lon_r, SEXP lat_r, SEXP n_r, SEXP Kernel_r, SEXP h_r, SEXP nThreads_r);
-RcppExport SEXP _semiBase_bivariate_local_kernel_est(SEXP y_rSEXP, SEXP covZ_rSEXP, SEXP lon_rSEXP, SEXP lat_rSEXP, SEXP n_rSEXP, SEXP Kernel_rSEXP, SEXP h_rSEXP, SEXP nThreads_rSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< SEXP >::type y_r(y_rSEXP);
-    Rcpp::traits::input_parameter< SEXP >::type covZ_r(covZ_rSEXP);
-    Rcpp::traits::input_parameter< SEXP >::type lon_r(lon_rSEXP);
-    Rcpp::traits::input_parameter< SEXP >::type lat_r(lat_rSEXP);
-    Rcpp::traits::input_parameter< SEXP >::type n_r(n_rSEXP);
-    Rcpp::traits::input_parameter< SEXP >::type Kernel_r(Kernel_rSEXP);
-    Rcpp::traits::input_parameter< SEXP >::type h_r(h_rSEXP);
-    Rcpp::traits::input_parameter< SEXP >::type nThreads_r(nThreads_rSEXP);
-    rcpp_result_gen = Rcpp::wrap(bivariate_local_kernel_est(y_r, covZ_r, lon_r, lat_r, n_r, Kernel_r, h_r, nThreads_r));
-    return rcpp_result_gen;
-END_RCPP
-}
 // semiQLME
 SEXP semiQLME(SEXP y_r, SEXP n_r, SEXP m_r, SEXP N_r, SEXP coords_r, SEXP covModel_r, SEXP nnIndx_r, SEXP nnIndxLU_r, SEXP sigmaSq_r, SEXP phi_r, SEXP nu_r, SEXP nThreads_r);
 RcppExport SEXP _semiBase_semiQLME(SEXP y_rSEXP, SEXP n_rSEXP, SEXP m_rSEXP, SEXP N_rSEXP, SEXP coords_rSEXP, SEXP covModel_rSEXP, SEXP nnIndx_rSEXP, SEXP nnIndxLU_rSEXP, SEXP sigmaSq_rSEXP, SEXP phi_rSEXP, SEXP nu_rSEXP, SEXP nThreads_rSEXP) {
@@ -223,6 +205,24 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< SEXP >::type nu_r(nu_rSEXP);
     Rcpp::traits::input_parameter< SEXP >::type nThreads_r(nThreads_rSEXP);
     rcpp_result_gen = Rcpp::wrap(semiQLME(y_r, n_r, m_r, N_r, coords_r, covModel_r, nnIndx_r, nnIndxLU_r, sigmaSq_r, phi_r, nu_r, nThreads_r));
+    return rcpp_result_gen;
+END_RCPP
+}
+// bivariate_local_kernel_est
+SEXP bivariate_local_kernel_est(SEXP y_r, SEXP covZ_r, SEXP lon_r, SEXP lat_r, SEXP n_r, SEXP Kernel_r, SEXP h_r, SEXP nThreads_r);
+RcppExport SEXP _semiBase_bivariate_local_kernel_est(SEXP y_rSEXP, SEXP covZ_rSEXP, SEXP lon_rSEXP, SEXP lat_rSEXP, SEXP n_rSEXP, SEXP Kernel_rSEXP, SEXP h_rSEXP, SEXP nThreads_rSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type y_r(y_rSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type covZ_r(covZ_rSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type lon_r(lon_rSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type lat_r(lat_rSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type n_r(n_rSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type Kernel_r(Kernel_rSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type h_r(h_rSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type nThreads_r(nThreads_rSEXP);
+    rcpp_result_gen = Rcpp::wrap(bivariate_local_kernel_est(y_r, covZ_r, lon_r, lat_r, n_r, Kernel_r, h_r, nThreads_r));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -352,8 +352,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_semiBase_local_kernel_pred", (DL_FUNC) &_semiBase_local_kernel_pred, 12},
     {"_semiBase_spatial_LLE", (DL_FUNC) &_semiBase_spatial_LLE, 13},
     {"_semiBase_spatial_LLE_Pred", (DL_FUNC) &_semiBase_spatial_LLE_Pred, 15},
-    {"_semiBase_bivariate_local_kernel_est", (DL_FUNC) &_semiBase_bivariate_local_kernel_est, 8},
     {"_semiBase_semiQLME", (DL_FUNC) &_semiBase_semiQLME, 12},
+    {"_semiBase_bivariate_local_kernel_est", (DL_FUNC) &_semiBase_bivariate_local_kernel_est, 8},
     {"_semiBase_OputBF", (DL_FUNC) &_semiBase_OputBF, 11},
     {"_semiBase_SemiAlphaPro", (DL_FUNC) &_semiBase_SemiAlphaPro, 11},
     {"_semiBase_semiProPred", (DL_FUNC) &_semiBase_semiProPred, 14},
