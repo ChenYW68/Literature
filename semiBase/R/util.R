@@ -246,23 +246,28 @@ colVar <- function(data){
   return(temp)
 }
 
-Rdist <- function(loc1, loc2, theta = NULL, threads = 10){
-  if(is.null(theta)){
-    theta = 1;
-  }
+Rdist <- function(loc1, loc2, covModel = 0, phi = 1, nu = 0,
+                  nuUnifb = 0, threads = 10){
+
   loc1 <- matrix(as.matrix(loc1), ncol = 2)
   loc2 <- matrix(as.matrix(loc2), ncol = 2)
   n1 <- nrow(loc1)
   n2 <- nrow(loc2)
   storage.mode(loc1) <- "double"
   storage.mode(loc2) <- "double" 
-  storage.mode(theta) <- "double" 
+  storage.mode(covModel) <- "integer"
+  storage.mode(phi) <- "double"
+  storage.mode(nu) <- "double"
+  storage.mode(nuUnifb) <- "integer"
+  
   storage.mode(n1) <- "integer" 
   storage.mode(n2) <- "integer" 
   storage.mode(threads) <- "integer"
-  Dvec <- RdistC(loc1, loc2, n1, n2, theta, threads)$Dist
-  D <- Dvec %>% matrix(nrow = n1, ncol = n2, byrow = T)
-  return(list(Dist = D, Dvec = Dvec))
+  Dvec <- RdistC(loc1, loc2, n1, n2, covModel, phi, nu, nuUnifb, threads)
+  
+  D <- Dvec$Dist %>% matrix(nrow = n1, ncol = n2, byrow = T)
+  Corr <- Dvec$Corr %>% matrix(nrow = n1, ncol = n2, byrow = T)
+  return(list(Dist = D, Corr = Corr, range = range(D)))
 }
 
 colVar <- function(data){
@@ -417,16 +422,15 @@ parseFormula <-  function(formula, data, intercept=TRUE, justX=FALSE){
 }
 
 OutputBF <- function(m = 3, coords, 
-                     cov.model = "exponential", 
-                     sigmaSq = 1, phi = 1, nu = 0.5, 
+                     cov.model = 1, 
+                     sigmaSq = 1, phi = 1, 
+                     nu = 0.5, nuUnifb = 0,
                      nnIndx, nnIndxLU,
                      nThreads = 10){
   coords <- as.matrix(coords)
   n <- nrow(coords)
  
-  cov.model.names <- c("exponential","spherical","matern","gaussian")##order much match util.cpp spCor
-  cov.model.indx <- which(cov.model == cov.model.names)-1##obo for cov model lookup on c side
-  
+
   search.type.names <- c("brute", "cb")
   
   
@@ -434,7 +438,8 @@ OutputBF <- function(m = 3, coords,
   m <- as.integer(m)
   coords <- as.double(coords)
   
-  cov.model.indx <- as.integer(cov.model.indx)
+  cov.model <- as.integer(cov.model)
+  nuUnifb <- as.integer(nuUnifb)
   nnIndx <- as.integer(nnIndx)
   nnIndxLU <- as.integer(nnIndxLU)
   
@@ -443,8 +448,8 @@ OutputBF <- function(m = 3, coords,
   nu <- as.double(nu)
   nThreads <- as.integer(nThreads)
   
-  BF <- OputBF(n, m, coords, cov.model.indx, nnIndx, nnIndxLU,
-               sigmaSq, phi, nu, nThreads)
+  BF <- OputBF(n, m, coords, cov.model, nnIndx, nnIndxLU,
+               sigmaSq, phi, nu, nuUnifb, nThreads)
   
   # Q <- Matrix::Matrix(BF$Q)
   # lowB <- matrix(BF$lowB, ncol = n)
@@ -497,24 +502,36 @@ devFun <- function(y, S, i, j, index1, ind){
 }
 
 spLocLKest <- function(y, X, coord, 
-                       Kernel, 
-                       h, nThreads){
+                       fs.Density,
+                       covModel,
+                       h, nu,
+                       nuUnifb = 0,
+                       ad.width,
+                       nThreads){
   # x.sd <- attr(X, "scaled:scale")
   coord <- as.matrix(cbind(coord))
   X <- as.matrix(cbind(X))
+  ad.width <- as.matrix(cbind(ad.width))
+  mm <- ncol(ad.width)
   n = nrow(X)
   p = ncol(X)
+  storage.mode(nuUnifb) <- "integer"
   storage.mode(y) <- "double"
   storage.mode(X) <- "double"
   storage.mode(coord) <- "double"
+  storage.mode(fs.Density) <- "double"
   storage.mode(n) <- "integer"
   storage.mode(p) <- "integer"
-  storage.mode(Kernel) <- "integer"
+  storage.mode(covModel) <- "integer"
   storage.mode(h) <- "double" 
-  
+  storage.mode(nu) <- "double" 
+  storage.mode(ad.width) <- "integer" 
+  storage.mode(mm) <- "integer"
   storage.mode(nThreads) <- "integer"
   
-  sLLE <- spatial_LLE(y, X, coord, n, p, Kernel, h, nThreads)
+  sLLE <- spatial_LLE(y, X, coord, fs.Density, 
+                      n, p, covModel, h, nu, nuUnifb,
+                      ad.width, mm, nThreads)
   
   index1 <- rep(1:3, p)
   index2 <- rep(1:n, each = n)
@@ -576,16 +593,28 @@ spLocLKest <- function(y, X, coord,
 
 spLocLinKernel <- function(y, X,
                         coord,
+                        fs.Density,
                         FitModel = TRUE,
                         pred.X = NULL,
                         pred.coord = NULL,
                         pred.nGrid = 0,
-                        Kernel = 2, 
+                        covModel = 2, 
                         h = 0.1, 
+                        nu = 0,
+                        nuUnifb = 0,
+                        adapt.n = 0,
                         nThreads = 10){
+  coord <- as.matrix(cbind(coord))
   if(FitModel){
+
+     ad.width <- RANN::nn2(coord, coord, k = adapt.n + 1)$nn.idx - 1
+    
     Fit = spLocLKest(y = y, X = X, coord = coord, 
-                     Kernel = Kernel, h = h, 
+                     fs.Density = fs.Density,
+                     covModel = covModel, 
+                     h = h, nu = nu,
+                     nuUnifb = nuUnifb,
+                     ad.width = ad.width,
                      nThreads = nThreads)
   }else{
     Fit = NULL
@@ -605,6 +634,15 @@ spLocLinKernel <- function(y, X,
     }
     coord <- as.matrix(coord)
     pred.coord <- as.matrix(pred.coord)
+    # if(adapt.n>0){
+    ad.width <- RANN::nn2(coord, pred.coord, 
+                          k = adapt.n + 1)$nn.idx - 1
+    mm <- ncol(ad.width)
+    # }else{
+    #   ad.width <- NA
+    #   mm <- 0
+    # }
+    
     X <- as.matrix(cbind(X))
     if(!is.null(pred.X)){
       pred.X <- as.matrix(cbind(pred.X))
@@ -614,20 +652,28 @@ spLocLinKernel <- function(y, X,
     p = ncol(X)
     m = nrow(pred.coord)
     
+    storage.mode(nuUnifb) <- "integer"
     storage.mode(y) <- "double"
     storage.mode(X) <- "double"
     storage.mode(coord) <- "double"
+    storage.mode(fs.Density) <- "double"
     storage.mode(pred.coord) <- "double"
     storage.mode(n) <- "integer"
     storage.mode(m) <- "integer"
     storage.mode(p) <- "integer"
-    storage.mode(Kernel) <- "integer"
+    storage.mode(covModel) <- "integer"
     storage.mode(h) <- "double" 
-    
+    storage.mode(nu) <- "double" 
+    storage.mode(ad.width) <- "integer"
+    storage.mode(mm) <- "integer"
     storage.mode(nThreads) <- "integer"
     
-    sLLE <- spatial_LLE_Pred(y, X, coord, n, pred.coord, 
-                             m, p, Kernel, h, nThreads)
+    sLLE <- spatial_LLE_Pred(y, X, coord, 
+                             fs.Density,
+                             n, pred.coord, 
+                             m, p, covModel, h, 
+                             nu, nuUnifb, ad.width,
+                             mm, nThreads)
     
     index1 <- rep(1:3, p)
     index2 <- rep(1:m, each = n)
@@ -698,11 +744,14 @@ spLocLinKernel <- function(y, X,
 spLocPlot <- function(predModel, 
                       nCov = 1, Num = 10,
                       screen = c(60, -60),
+                      cols = rainbow(10, alpha=0.5),
                       size= 20, simu = F,
+                      path = 'H:/semiSpatailM/figure/',
                       FUN = function(x, y){
   sin(((x^2 + y^2))*pi)}){
   library(plot3D)
   alpha <- setDF(predModel$alpha)
+  
   alpha <- data.table(alpha[, c(1, 2, nCov + 2)])
   if(!is.null(colnames(alpha))){
     Name <- colnames(alpha)[3]
@@ -747,7 +796,7 @@ spLocPlot <- function(predModel,
     alpha$group <- as.factor(alpha$group)
   }
 
-  
+  pdf(file = paste0(path, "/semiTemp", nCov, ".pdf"), width = 10, height = 5)
   if(simu){
     par(mfrow = c(1, 2))
     # contour2D(x = lon, y = lat, z = z.true, lwd = 1 ,
@@ -757,33 +806,41 @@ spLocPlot <- function(predModel,
     #           ,levels = round(seq(min(z.pre),
     #                              max(z.pre), , Num), 3)
     #           )
-    
-    
     zcl = range(z.true)
-    persp3D(z = z.true, zlim = c(zcl[1], zcl[2]),
-            phi = 20,
-            colkey = list(length = 1, width = 1,
-                          shift = 0.15,
+    persp3D(x = lon, y = lat, z = z.true, 
+            zlim = c(zcl[1], zcl[2]),
+            phi = 20, contour =list(fill = cols, col= cols),
+            colkey = list(length = 1, line.clab = 1.0,
+                          # adj.clab = 1e-3,
+                          # dist = -0.1,
+                          # addlines = T,
+                          # breaks = seq(zcl[1], zcl[2],, 10),
+                          width = 1,
+                          shift =0,
                           cex.axis = 0.8,
                           cex.clab = 0.85,
                           side = 4),
             lighting = TRUE, lphi = 90,
-            clab = c("","true.fx"), bty = "f", plot = T)
+            clab = c("","true.fx"),
+            bty = "f", plot = T)
     layout = c(2, 1)
    
-    
-    
-    
   }else{
     par(mfrow = c(1, 2))
     z.true = z = NULL
     layout = c(1, 1)
     z.pre.index <- which(is.na(z.pre), arr.ind = T)
     z.pre[z.pre.index] <- 0
-    contour2D(x = lon, y = lat, z = z.pre, lwd = 2,
-              levels = round(seq(min(z.pre), 
-                                 max(z.pre), , Num), 3))
-    
+    # contour2D(x = lon, y = lat, z = z.pre, lwd = 2,
+    #           xlab = "longitude", ylab = "latitude",
+    #           levels = round(seq(min(z.pre), 
+    #                              max(z.pre), , Num), 3))
+    image2D(x = lon, y = lat, z = z.pre,  contour = list(col = "black", 
+                                    labcex = 1, lwd = 3, alpha = .6),
+            xlab = "longitude", ylab = "latitude",
+            levels = round(seq(min(z.pre), 
+                   max(z.pre), , Num), 3)
+            )
     # zcl = range(z.pre)
     # persp3D(z = z.pre, zlim = c(zcl[1], zcl[2]),
     #         phi = 20,
@@ -796,15 +853,37 @@ spLocPlot <- function(predModel,
     #         clab = c("","predict.fx"), bty = "f", plot = T)
   }
   zcl = range(z.pre)
-  persp3D(z = z.pre, zlim = c(zcl[1], zcl[2]),
-          phi = 20,
-          colkey = list(length = 1, width = 1,
-                        shift = 0.15,
+ 
+  persp3D(x = lon, y = lat, z = z.pre, zlim = c(zcl[1], zcl[2]),
+          phi = 20, contour =list(fill = cols, col= cols),
+          colkey = list(length = 1, line.clab = 1.0,
+                        # adj.clab = 1e-3,
+                        # dist = -0.1,
+                        # addlines = T,
+                        # breaks = seq(zcl[1], zcl[2],, 10),
+                        width = 1,
+                        shift =0,
                         cex.axis = 0.8,
-                        cex.clab = 0.85,
+                        cex.clab = 1,
                         side = 4),
           lighting = TRUE, lphi = 90,
-          clab = c("","predict.fx"), bty = "f", plot = T)
+          xlab = "longitude", ylab = "latitude",
+          zlab = Name,
+          clab = c("", paste0(Name, ": predict.f(s)")), bty = "f", plot = T)
+
+  dev.off()
+  
+  # library(rgl)
+  # zlim <- range(A$z.pre)
+  # zlen <- zlim[2]-zlim[1] + 1
+  # #Assign color values
+  # colorlut <- terrain.colors(zlen, alpha = 0)
+  # col <- colorlut[A$z.pre-zlim[1]+1]
+  # open3d()
+  # rgl.surface(x = A$lon, y = A$lat, z = A$z.pre, color = col, back = "lines") 
+  # 
+  
+  
   # contour2D(x = lon, y = lat, z = z.pre, lwd = 2)
   # persp(z = z.true)
   # persp(z = z.pre)
@@ -870,6 +949,7 @@ spLocPlot <- function(predModel,
   
   return(list(pred.coord = predModel$pred.coord,
               z.pre = z.pre,
+              lon = lon, lat = lat,
               z.true = z.true,
               alpha = alpha,
               alpha.true = z,
@@ -962,23 +1042,23 @@ SemiAlphaProfile <- function(y, Z, n, coords, B, varF, Q, nnIndx, nnIndxLU,
 
 
 local_linear_kernel <- function(y, covZ, coords,
-                                Kernel, h = 0.1,  
-                                GeomVariable, 
+                                covModel, h = 0.1,
+                                nu = 0, nuUnifb = 0,
                                 nThreads = 10){
-  GeomVariable = 1
   n <- length(y)
   storage.mode(y) <- "double" 
   storage.mode(covZ) <- "double" 
   storage.mode(coords) <- "double" 
   
   storage.mode(n) <- "integer"
-  storage.mode(Kernel) <- "integer"
+  storage.mode(covModel) <- "integer"
   storage.mode(h) <- "double" 
-  storage.mode(GeomVariable) <- "integer"
+  storage.mode(nu) <- "double" 
   storage.mode(nThreads) <- "integer"
-  
-  locLin = local_kernel_est(y, covZ, coords, n, Kernel, h, 
-                            GeomVariable, nThreads)
+  storage.mode(nuUnifb) <- "integer"
+  locLin = local_kernel_est(y, covZ, coords, n, 
+                            covModel, h, nu, 
+                            nuUnifb, nThreads)
   
 
   return(list(S0 = t(matrix(locLin$S[1, ], n, n)),
@@ -1106,7 +1186,8 @@ profilePredict <- function(y, Z, TestZ, coords,
 }
 
 LocalPredict <- function(y, Z, TestZ, coords, TestCoords,
-                         Kernel, h, GeomVariable, nThreads){
+                         covModel, h, nu, nuUnifb = 0, 
+                         nThreads){
   n = length(y)
   nTest = length(TestZ)
   TestCoords <- as.matrix(TestCoords)
@@ -1115,133 +1196,95 @@ LocalPredict <- function(y, Z, TestZ, coords, TestCoords,
   storage.mode(TestZ) <- "double"
   storage.mode(coords) <- "double"
   storage.mode(TestCoords) <- "double"
-  
+  storage.mode(nuUnifb) <- "integer"
   
   storage.mode(n) <- "integer"
   storage.mode(nTest) <- "integer"
-  storage.mode(Kernel) <- "integer"
-  
+  storage.mode(covModel) <- "integer"
   storage.mode(h) <- "double"
-  storage.mode(GeomVariable) <- "integer"
+  storage.mode(nu) <- "double"
   storage.mode(nThreads) <- "integer"
   
-  return(local_kernel_pred(y, Z, TestZ, coords, TestCoords,
-                           n, nTest, Kernel, h,
-                           GeomVariable, nThreads))
+  return(local_kernel_pred(y, Z, TestZ, coords,
+                           TestCoords, n, nTest, 
+                           covModel, h, nu, nuUnifb,
+                           nThreads))
   
 }
-
-
 semiPredict <- function(model, newZ, newCoords){
-  n = nrow(newZ)
-  N = nrow(model$data$order$data$coords)
-  p = ncol(newZ)
   newZ <- as.matrix(newZ)
   newCoords <- as.matrix(newCoords)
-  # if(p == model$data$input$Pz){}
-  semiPreDa <- matrix(0, nrow = n, ncol = model$data$input$Pz)
-  # L = chol(model$data$order$neighbors$Q)
-  if(model$model$profile){
-    for(i in 1:model$data$input$Pz) {
-      localPre <- SemiPredPro(model$data$order$data$semiY[, i],# -
-                              # rowSums(as.matrix(semiPreDa[, -i])),
-                              model$data$order$data$Z[, i],
-                              newZ[, i],
-                              model$data$order$data$coords,
-                              newCoords, 
-                              model$data$order$neighbors$Q,
-                              model$data$order$neighbors$nnIndx,
-                              model$data$order$neighbors$nnIndxLU,
-                              model$model$Kernel[1],
-                              model$model$SecMeanH[i], 
-                              model$model$GeomVariable,
-                              model$model$nThreads)
-      
-      # y.update <- L%*%model$data$order$data$semiY - 
-      #            (L - diag(N))%*% localPre$alpha[1,]
-      # localPre <- LocalPredict(y.update -
-      #                            rowSums(as.matrix(semiPreDa[, -i])), 
-      #                          model$data$order$data$Z[, i], 
-      #                          newZ[, i], 
-      #                          model$data$order$data$coords,
-      #                          newCoords, model$model$Kernel[1],
-      #                          model$model$meanH[i], 
-      #                          model$model$GeomVariable,
-      #                          model$model$nThreads)
-      
-      
-      # localPre <- profilePredict(model$data$order$data$semiY,
-      #                                  model$data$order$data$Z[, i],
-      #                                  newZ[, i], 
-      #                                  model$data$order$data$coords,
-      #                                  newCoords, 
-      #                                  model$data$order$neighbors$B, 
-      #                                  model$data$order$neighbors$varF, 
-      #                                  model$data$order$neighbors$Q,
-      #                                  model$data$order$neighbors$nnIndx,
-      #                                  model$data$order$neighbors$nnIndxLU,
-      #                                  model$model$Kernel[1],
-      #                                  model$model$meanH[i], 
-      #                                  model$model$GeomVariable,
-      #                                  model$model$nThreads)
-      semiPreDa[, i] <- localPre$alpha[1,]
-    }
-  }else{
-    for(i in 1:model$data$input$Pz) {
-      for(j in 1:1){
-      localPre <- LocalPredict(model$data$order$data$semiY[, i], #-
-                                      #rowSums(as.matrix(semiPreDa[, -i])), 
-                                     model$data$order$data$Z[, i], 
-                                     newZ[, i], 
-                                     model$data$order$data$coords,
-                                     newCoords, model$model$Kernel[1],
-                                     model$model$SecMeanH[i], 
-                                     model$model$GeomVariable,
-                                     model$model$nThreads)
-      # y.update <- L%*%model$data$order$data$semiY - 
-      #   (L - diag(N))%*% localPre$alpha[1,]
-      # localPre <- LocalPredict(y.update -
-      #                            rowSums(as.matrix(semiPreDa[, -i])), 
-      #                          model$data$order$data$Z[, i], 
-      #                          newZ[, i], 
-      #                          model$data$order$data$coords,
-      #                          newCoords, model$model$Kernel[1],
-      #                          model$model$meanH[i], 
-      #                          model$model$GeomVariable,
-      #                          model$model$nThreads)
-      semiPreDa[, i]<- localPre$alpha[1,]
-      }
-    }
-  }
 
-  return(list(S0 = t(matrix(localPre$S[1, ], N, n)),
-              S1 = t(matrix(localPre$S[2, ], N, n)),
-              alpha = semiPreDa))
+  localPre <- spLocLinKernel(y = model$data$order$data$semiY,
+                            X = model$data$order$data$Z,
+                            coord = model$data$order$data$coords,
+                            fs.Density = model$data$order$data$fs.Density,
+                            pred.X = newZ,
+                            pred.coord = newCoords,
+                            FitModel = F,
+                            pred.nGrid = 0,
+                            covModel = model$model$mean.covModel,
+                            h = model$model$meanH,
+                            nu = model$model$var.nu, 
+                            nuUnifb = model$model$nuUnifb, 
+                            adapt.n = model$model$adapt.n,
+                            nThreads = model$model$nThreads)
+  return(list(S0 = localPre$predict$S0,
+              S1 = localPre$predict$S,
+              alpha = localPre$predict$alpha))
 }
 
-Predict <- function(model, newX, newZ, newCoords, newCovX){
-  newX <- as.matrix(cbind(1, newX))
-  newZ <- as.matrix(newZ)
+
+Predict <- function(model, newX = NULL, newZ = NULL, newCoords, newCovZ = NULL){
+  if(!is.null(newX)){
+  newX <- as.matrix(cbind(1, newX))}
+
   newCoords <- as.matrix(newCoords)
-  newCovX <- as.matrix(newCovX)
+  n.0 <- nrow(newCoords)
+  n <- nrow(model$data$order$data$coords)
   
-  if(model$model$center){
-    for(i in 1:model$data$input$Pz){
-      Rz <- range(newZ[, i])
-      newZ[, i] <- (newZ[, i] - Rz[1])/(Rz[2]- Rz[1])
+  # if(model$model$center){
+  #   for(i in 1:model$data$input$Pz){
+  #     Rz <- range(newZ[, i])
+  #     newZ[, i] <- (newZ[, i] - Rz[1])/(Rz[2]- Rz[1])
+  #   }
+  #   Rz <- range(newCovX)
+  #   newCovX <- (newCovX - Rz[1])/(Rz[2]- Rz[1])
+  # }
+  if(!is.null(newCovZ)){
+    newCovZ <- as.matrix(newCovZ)
+    if(ncol(newCovZ) == 1){
+        CovPre <- LocalPredict(y = model$data$order$residual^2, 
+                               Z = model$data$order$data$covZ,
+                               TestZ = newCovZ, 
+                               coords = model$data$order$data$coords,
+                               TestCoords = newCoords, 
+                               covModel = model$model$var.covModel,
+                               h = model$model$varH,
+                               nu = model$model$var.nu,
+                               nuUnifb = model$model$nuUnifb, 
+                               nThreads = model$model$nThreads)
+        
+        var.pre <- CovPre$alpha[1,]
+    }else{
+      CovPre <- spLocLinKernel(y = model$data$order$residual^2,
+                               X = model$data$order$data$covZ, 
+                               coord = model$data$order$data$coords,
+                               fs.Density = model$data$order$data$fs.Density,
+                               pred.X = rep(1, length(newCovZ)),
+                               pred.coord = newCoords,
+                               FitModel = F,
+                               pred.nGrid = 0, 
+                               covModel = model$model$var.covModel, 
+                               h = model$model$varH,
+                               nu = model$model$var.nu,
+                               nuUnifb = model$model$nuUnifb, 
+                               adapt.n = model$model$adapt.n,
+                               nThreads = model$model$nThreads)
+      
+      var.pre <- CovPre$predict$alpha$alpha1
     }
-    Rz <- range(newCovX)
-    newCovX <- (newCovX - Rz[1])/(Rz[2]- Rz[1])
-  }
-  CovPre <- LocalPredict(model$data$order$residual^2, 
-                          model$data$order$data$varZ.center,
-                          newCovX, model$data$order$data$coords,
-                          newCoords, model$model$Kernel[2],
-                          model$model$varH,
-                          model$model$GeomVariable,
-                          model$model$nThreads)
   
-  var.pre <- CovPre$alpha[1,]
   # locpoly(newCovX, Fit$est$variance$sigmaSq, bandwidth = 0.25)
   # var.pre = local_linear_kernel(pre.residual^2, newCovX, model$coords, 
   #                               model$Kernel[2], 
@@ -1251,21 +1294,43 @@ Predict <- function(model, newX, newZ, newCoords, newCovX){
   if(length(which(var.pre < 0))>= 1){
     var.pre[which(var.pre < 0)] <- min(var.pre[- which(var.pre < 0)])
   }
+  }else{
+    CovPre <- NULL
+    var.pre <- rep(model$est$variance$sigmaSq[1], n.0)
+  }
   nn.indx.0 <- RANN::nn2(model$data$order$data$coords, newCoords,
                          k = model$data$order$neighbors$n.neighbors)$nn.idx
-  n.0 <- nrow(newCoords)
-  n <- nrow(model$data$order$data$coords)
+
+ 
   wPre <- vector()
   for(i in 1:n.0)
   {
-    Ci = sqrt(var.pre[i])*exp(-Rdist(newCoords[i,], 
-         model$data$order$data$coords[nn.indx.0[i,],])$Dist/model$model$phi)
     
-    siGma <- exp(-Rdist(model$data$order$data$coords[nn.indx.0[i,], ],
-             model$data$order$data$coords[nn.indx.0[i,],])$Dist/model$model$phi)
+    Ci <- sqrt(var.pre[i])*Rdist(newCoords[i,], 
+                  model$data$order$data$coords[nn.indx.0[i,],], 
+                  covModel = model$model$mean.covModel, 
+                  phi = model$model$phi, 
+                  nu = model$model$mean.nu,
+                  nuUnifb = model$model$nuUnifb, 
+                  threads = model$model$nThreads)$Corr
+   
+    siGma <- Rdist(model$data$order$data$coords[nn.indx.0[i,], ], 
+                 model$data$order$data$coords[nn.indx.0[i,], ], 
+                 covModel = model$model$mean.covModel, 
+                 phi = model$model$phi, 
+                 nu = model$model$mean.nu,
+                 nuUnifb = model$model$nuUnifb, 
+                 threads = model$model$nThreads)$Corr
+    
+    
+    # Ci = sqrt(var.pre[i])*exp(-Rdist(newCoords[i,], 
+    #                                  model$data$order$data$coords[nn.indx.0[i,],])$Dist/model$model$phi)
+    
+    # siGma <- exp(-Rdist(model$data$order$data$coords[nn.indx.0[i,], ],
+    #                     model$data$order$data$coords[nn.indx.0[i,],])$Dist/model$model$phi)
     
     siGma <- diag(sqrt(model$data$order$sigmaSq[nn.indx.0[i, ]])) %*% 
-            siGma %*% diag(sqrt(model$data$order$sigmaSq[nn.indx.0[i, ]]))
+             siGma %*% diag(sqrt(model$data$order$sigmaSq[nn.indx.0[i, ]]))
     # for(k1 in 1:model$data$order$neighbors$n.neighbors){
     #   siGma[k1, ] <- siGma[k1, ] * sqrt(model$data$order$sigmaSq[nn.indx.0[i, k1]])
     # }
@@ -1274,22 +1339,204 @@ Predict <- function(model, newX, newZ, newCoords, newCovX){
     # }
     
     wPre[i] <- as.vector((Ci * sqrt(model$data$order$sigmaSq[nn.indx.0[i, ]])) %*% 
-                 solve(siGma) %*% model$data$order$residual[nn.indx.0[i, ]]) 
+                           solve(siGma) %*% model$data$order$residual[nn.indx.0[i, ]]) 
   }
   
-  semiP <- semiPredict(model, newZ, newCoords)
-  semiPred <- rowSums(semiP$alpha)
+  if(!is.null(newZ))
+  {
+    newZ <- as.matrix(newZ)
+    semiP <- semiPredict(model, newZ, newCoords)
+    semiPred <- semiP$S0 %*% model$data$order$data$semiY
+  }else{
+    semiPred <- 0;
+    semiP <- NULL
+  }
+  
   FixEffect <- 0
   if(!is.null(newX)){
     FixEffect <- newX %*% rbind(model$est$mean$intercept, model$est$mean$beta)
   } #+ wPre
-  pred <-  FixEffect + semiPred
+  pred <-  FixEffect + semiPred + wPre
   # return(list(pred = pred))
   return(list(FinalPred = pred, FixEffect = FixEffect,
               semiPred = semiPred, RandmomPred = wPre, 
               varPred = var.pre,
               semiPreDa = semiP, CovPreDa = CovPre))
 }
+
+
+
+
+
+
+
+
+
+# semiPredict <- function(model, newZ, newCoords){
+#   n = nrow(newZ)
+#   N = nrow(model$data$order$data$coords)
+#   p = ncol(newZ)
+#   newZ <- as.matrix(newZ)
+#   newCoords <- as.matrix(newCoords)
+#   # if(p == model$data$input$Pz){}
+#   semiPreDa <- matrix(0, nrow = n, ncol = model$data$input$Pz)
+#   # L = chol(model$data$order$neighbors$Q)
+#   if(model$model$profile){
+#     for(i in 1:model$data$input$Pz) {
+#       localPre <- SemiPredPro(model$data$order$data$semiY[, i],# -
+#                               # rowSums(as.matrix(semiPreDa[, -i])),
+#                               model$data$order$data$Z[, i],
+#                               newZ[, i],
+#                               model$data$order$data$coords,
+#                               newCoords, 
+#                               model$data$order$neighbors$Q,
+#                               model$data$order$neighbors$nnIndx,
+#                               model$data$order$neighbors$nnIndxLU,
+#                               model$model$Kernel[1],
+#                               model$model$SecMeanH[i], 
+#                               model$model$GeomVariable,
+#                               model$model$nThreads)
+#       
+#       # y.update <- L%*%model$data$order$data$semiY - 
+#       #            (L - diag(N))%*% localPre$alpha[1,]
+#       # localPre <- LocalPredict(y.update -
+#       #                            rowSums(as.matrix(semiPreDa[, -i])), 
+#       #                          model$data$order$data$Z[, i], 
+#       #                          newZ[, i], 
+#       #                          model$data$order$data$coords,
+#       #                          newCoords, model$model$Kernel[1],
+#       #                          model$model$meanH[i], 
+#       #                          model$model$GeomVariable,
+#       #                          model$model$nThreads)
+#       
+#       
+#       # localPre <- profilePredict(model$data$order$data$semiY,
+#       #                                  model$data$order$data$Z[, i],
+#       #                                  newZ[, i], 
+#       #                                  model$data$order$data$coords,
+#       #                                  newCoords, 
+#       #                                  model$data$order$neighbors$B, 
+#       #                                  model$data$order$neighbors$varF, 
+#       #                                  model$data$order$neighbors$Q,
+#       #                                  model$data$order$neighbors$nnIndx,
+#       #                                  model$data$order$neighbors$nnIndxLU,
+#       #                                  model$model$Kernel[1],
+#       #                                  model$model$meanH[i], 
+#       #                                  model$model$GeomVariable,
+#       #                                  model$model$nThreads)
+#       semiPreDa[, i] <- localPre$alpha[1,]
+#     }
+#   }else{
+#     for(i in 1:model$data$input$Pz) {
+#       for(j in 1:1){
+#       localPre <- LocalPredict(model$data$order$data$semiY[, i], #-
+#                                       #rowSums(as.matrix(semiPreDa[, -i])), 
+#                                      model$data$order$data$Z[, i], 
+#                                      newZ[, i], 
+#                                      model$data$order$data$coords,
+#                                      newCoords, model$model$Kernel[1],
+#                                      model$model$SecMeanH[i], 
+#                                      model$model$GeomVariable,
+#                                      model$model$nThreads)
+#       # y.update <- L%*%model$data$order$data$semiY - 
+#       #   (L - diag(N))%*% localPre$alpha[1,]
+#       # localPre <- LocalPredict(y.update -
+#       #                            rowSums(as.matrix(semiPreDa[, -i])), 
+#       #                          model$data$order$data$Z[, i], 
+#       #                          newZ[, i], 
+#       #                          model$data$order$data$coords,
+#       #                          newCoords, model$model$Kernel[1],
+#       #                          model$model$meanH[i], 
+#       #                          model$model$GeomVariable,
+#       #                          model$model$nThreads)
+#       semiPreDa[, i]<- localPre$alpha[1,]
+#       }
+#     }
+#   }
+# 
+#   return(list(S0 = t(matrix(localPre$S[1, ], N, n)),
+#               S1 = t(matrix(localPre$S[2, ], N, n)),
+#               alpha = semiPreDa))
+# }
+
+
+
+
+
+
+
+# Predict <- function(model, newX, newZ, newCoords, newCovZ){
+#   newX <- as.matrix(cbind(1, newX))
+#   newZ <- as.matrix(newZ)
+#   newCoords <- as.matrix(newCoords)
+#   newCovX <- as.matrix(newCovX)
+#   
+#   # if(model$model$center){
+#   #   for(i in 1:model$data$input$Pz){
+#   #     Rz <- range(newZ[, i])
+#   #     newZ[, i] <- (newZ[, i] - Rz[1])/(Rz[2]- Rz[1])
+#   #   }
+#   #   Rz <- range(newCovX)
+#   #   newCovX <- (newCovX - Rz[1])/(Rz[2]- Rz[1])
+#   # }
+#   
+#   
+#   CovPre <- LocalPredict(model$data$order$residual^2, 
+#                           model$data$order$data$covZ,
+#                           newCovZ, model$data$order$data$coords,
+#                           newCoords, model$model$Kernel[2],
+#                           model$model$varH,
+#                           model$model$nThreads)
+#   
+#   var.pre <- CovPre$alpha[1,]
+#   # locpoly(newCovX, Fit$est$variance$sigmaSq, bandwidth = 0.25)
+#   # var.pre = local_linear_kernel(pre.residual^2, newCovX, model$coords, 
+#   #                               model$Kernel[2], 
+#   #                               model$varH, model$GeomVariable, 
+#   #                               model$n.omp.threads)$alpha[1, ]
+#   
+#   if(length(which(var.pre < 0))>= 1){
+#     var.pre[which(var.pre < 0)] <- min(var.pre[- which(var.pre < 0)])
+#   }
+#   nn.indx.0 <- RANN::nn2(model$data$order$data$coords, newCoords,
+#                          k = model$data$order$neighbors$n.neighbors)$nn.idx
+#   n.0 <- nrow(newCoords)
+#   n <- nrow(model$data$order$data$coords)
+#   wPre <- vector()
+#   for(i in 1:n.0)
+#   {
+#     Ci = sqrt(var.pre[i])*exp(-Rdist(newCoords[i,], 
+#          model$data$order$data$coords[nn.indx.0[i,],])$Dist/model$model$phi)
+#     
+#     siGma <- exp(-Rdist(model$data$order$data$coords[nn.indx.0[i,], ],
+#              model$data$order$data$coords[nn.indx.0[i,],])$Dist/model$model$phi)
+#     
+#     siGma <- diag(sqrt(model$data$order$sigmaSq[nn.indx.0[i, ]])) %*% 
+#             siGma %*% diag(sqrt(model$data$order$sigmaSq[nn.indx.0[i, ]]))
+#     # for(k1 in 1:model$data$order$neighbors$n.neighbors){
+#     #   siGma[k1, ] <- siGma[k1, ] * sqrt(model$data$order$sigmaSq[nn.indx.0[i, k1]])
+#     # }
+#     # for(k2 in 1:model$data$order$neighbors$n.neighbors){
+#     #   siGma[, k2] <- siGma[, k2] * sqrt(model$data$order$sigmaSq[nn.indx.0[i, k2]]) 
+#     # }
+#     
+#     wPre[i] <- as.vector((Ci * sqrt(model$data$order$sigmaSq[nn.indx.0[i, ]])) %*% 
+#                  solve(siGma) %*% model$data$order$residual[nn.indx.0[i, ]]) 
+#   }
+#   
+#   #semiP <- semiPredict(model, newZ, newCoords)
+#   semiPred <- rowSums(semiP$alpha)
+#   FixEffect <- 0
+#   if(!is.null(newX)){
+#     FixEffect <- newX %*% rbind(model$est$mean$intercept, model$est$mean$beta)
+#   } #+ wPre
+#   pred <-  FixEffect + semiPred
+#   # return(list(pred = pred))
+#   return(list(FinalPred = pred, FixEffect = FixEffect,
+#               semiPred = semiPred, RandmomPred = wPre, 
+#               varPred = var.pre,
+#               semiPreDa = semiP, CovPreDa = CovPre))
+# }
 
 semiPlot <- function(data, size){
   p <- ggplot(data, aes(x = x, y = gfun, col = group)) +
@@ -1402,3 +1649,96 @@ Fitplot <- function(Fit, simDa, path = './figure/semiTemp.pdf'){
   dev.off()
 }
 
+spDensity <- function(xrounded, roundvalue = 1, burnin = 2, samples = 5, adaptive = FALSE, 
+          gridsize = 200) 
+{
+  library(Kernelheaping)
+  # gridx = seq(min(xrounded[, 1]) - 0.5 * roundvalue, max(xrounded[, 
+  #                                                                 1]) + 0.5 * roundvalue, length = gridsize)
+  # gridy = seq(min(xrounded[, 2]) - 0.5 * roundvalue, max(xrounded[, 
+  #                                                                 2]) + 0.5 * roundvalue, length = gridsize)
+  gridx = xrounded[, 1]
+  gridy =  xrounded[, 2]
+  
+  Mestimates <- ks::kde(x = xrounded, 
+                        H = diag(c(roundvalue,
+                              roundvalue))^2,
+                        gridsize = c(length(gridx), length(gridy)),
+                        # eval.points = as.matrix(xrounded)
+                        xmin = c(min(gridx), min(gridy)), xmax = c(max(gridx),
+                                                                   max(gridy))
+                        )
+  resultDensity = array(dim = c(burnin + samples, length(gridx), 
+                                length(gridy)))
+  resultX = array(dim = c(samples + burnin, nrow(xrounded), 
+                          2))
+  rvalues = unique(xrounded)
+  selectionGrid <- lapply(1:nrow(rvalues), function(k) {
+    selectionX = which(Mestimates$eval.points[[1]] >= rvalues[k, 
+                                                              1] - roundvalue * 0.5 & Mestimates$eval.points[[1]] < 
+                         rvalues[k, 1] + roundvalue * 0.5)
+    selectionY = which(Mestimates$eval.points[[2]] >= rvalues[k, 
+                                                              2] - roundvalue * 0.5 & Mestimates$eval.points[[2]] < 
+                         rvalues[k, 2] + roundvalue * 0.5)
+    list(selectionX, selectionY)
+  })
+  delaigle = aggregate(list(length = rep(1, nrow(xrounded))), 
+                       data.frame(xrounded), length)
+  delaigle[, 3] = delaigle[, 3]/sum(delaigle[, 3])/roundvalue^2
+  delaigleest = matrix(0, nrow = length(gridx), ncol = length(gridy))
+  for (i in 1:nrow(delaigle)) {
+    x = which(delaigle[i, 1] == rvalues[, 1] & delaigle[i, 
+                                                        2] == rvalues[, 2])
+    delaigleest[selectionGrid[[x]][[1]], selectionGrid[[x]][[2]]] = delaigle[i, 
+                                                                             3]
+  }
+  for (j in 1:(burnin + samples)) {
+    new = c()
+    for (i in 1:nrow(rvalues)) {
+      probs = as.vector(Mestimates$estimate[selectionGrid[[i]][[1]], 
+                                            selectionGrid[[i]][[2]]])
+      points = cbind(rep(Mestimates$eval.points[[1]][selectionGrid[[i]][[1]]], 
+                         times = length(Mestimates$eval.points[[2]][selectionGrid[[i]][[2]]])), 
+                     rep(Mestimates$eval.points[[2]][selectionGrid[[i]][[2]]], 
+                         each = length(Mestimates$eval.points[[1]][selectionGrid[[i]][[1]]])))
+      npoints = length(which(xrounded[, 1] == rvalues[i, 
+                                                      1] & xrounded[, 2] == rvalues[i, 2]))
+      new = rbind(new, points[sample(1:nrow(points), size = npoints, 
+                                     replace = T, prob = probs), ])
+    }
+    if (adaptive == FALSE) {
+      H <- ks::Hpi(x = new, binned = TRUE) * 2
+    }
+    if (adaptive == TRUE) {
+      H <- ks::Hpi(x = new, binned = TRUE)
+      H <- sqrt(sqrt(H[1, 1] * H[2, 2]))
+    }
+    if (adaptive == FALSE) {
+      Mestimates <- ks::kde(x = new, H = H, gridsize = c(length(gridx), 
+                                                         length(gridy)), bgridsize = c(length(gridx), 
+                                                                                       length(gridy)), xmin = c(min(gridx), min(gridy)), 
+                            xmax = c(max(gridx), max(gridy)), binned = TRUE)
+    }
+    if (adaptive == TRUE) {
+      counts <- plyr::count(new)
+      MestimatesAd <- sparr::bivariate.density(data = counts[, 
+                                                             c(1:2)], pilotH = H, res = length(gridx), xrange = range(gridx), 
+                                               yrange = range(gridy), adaptive = TRUE, comment = FALSE, 
+                                               counts = counts[, 3])
+      Mestimates$estimate = MestimatesAd$Zm
+    }
+    Mestimates$estimate[is.na(Mestimates$estimate)] = 1e-96
+    resultDensity[j, , ] = Mestimates$estimate
+    resultX[j, , ] = new
+    print(paste("Iteration:", j, "of", burnin + 
+                  samples))
+  }
+  Mestimates$estimate = apply(resultDensity[-c(1:burnin), , 
+  ], c(2, 3), mean)
+  est <- list(Mestimates = Mestimates, resultDensity = resultDensity, 
+              resultX = resultX, xrounded = xrounded, gridx = gridx, 
+              gridy = gridy, roundvalue = roundvalue, burnin = burnin, 
+              samples = samples, adaptive = adaptive, delaigle = delaigleest)
+  class(est) <- "bivrounding"
+  return(est)
+}
