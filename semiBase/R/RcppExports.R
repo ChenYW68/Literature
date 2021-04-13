@@ -21,32 +21,36 @@ ConExp <- function(X_r, covZ_r, coords_r, Q_r, n_r, p_r, Kernel_r, h_r, GeomVari
     .Call(`_semiBase_ConExp`, X_r, covZ_r, coords_r, Q_r, n_r, p_r, Kernel_r, h_r, GeomVariable_r, nThreads_r)
 }
 
-local_kernel_est <- function(y_r, covZ_r, coords_r, n_r, covModel_r, h_r, nu_r, nuUnifb_r, nThreads_r) {
-    .Call(`_semiBase_local_kernel_est`, y_r, covZ_r, coords_r, n_r, covModel_r, h_r, nu_r, nuUnifb_r, nThreads_r)
+local_kernel_est <- function(y_r, covZ_r, n_r, covModel_r, h_r, nu_r, nuUnifb_r, nThreads_r) {
+    .Call(`_semiBase_local_kernel_est`, y_r, covZ_r, n_r, covModel_r, h_r, nu_r, nuUnifb_r, nThreads_r)
 }
 
-local_kernel_pred <- function(y_r, covZ_r, TestCovZ_r, coords_r, TestCoords_r, n_r, nTest_r, covModel_r, h_r, nu_r, nuUnifb_r, nThreads_r) {
-    .Call(`_semiBase_local_kernel_pred`, y_r, covZ_r, TestCovZ_r, coords_r, TestCoords_r, n_r, nTest_r, covModel_r, h_r, nu_r, nuUnifb_r, nThreads_r)
+local_kernel_pred <- function(y_r, covZ_r, TestCovZ_r, n_r, nTest_r, covModel_r, h_r, nu_r, nuUnifb_r, nThreads_r) {
+    .Call(`_semiBase_local_kernel_pred`, y_r, covZ_r, TestCovZ_r, n_r, nTest_r, covModel_r, h_r, nu_r, nuUnifb_r, nThreads_r)
 }
 
-spatial_LLE <- function(y_r, X_r, coord_r, fsDensity_r, n_r, p_r, covModel_r, h_r, nu_r, nuUnifb_r, adWidth_r, mm_r, nThreads_r) {
-    .Call(`_semiBase_spatial_LLE`, y_r, X_r, coord_r, fsDensity_r, n_r, p_r, covModel_r, h_r, nu_r, nuUnifb_r, adWidth_r, mm_r, nThreads_r)
+spatial_LLE <- function(y_r, X_r, coord_r, Q_r, fsDensity_r, n_r, p_r, covModel_r, h_r, nu_r, nuUnifb_r, adWidth_r, mm_r, nThreads_r) {
+    .Call(`_semiBase_spatial_LLE`, y_r, X_r, coord_r, Q_r, fsDensity_r, n_r, p_r, covModel_r, h_r, nu_r, nuUnifb_r, adWidth_r, mm_r, nThreads_r)
 }
 
-spatial_LLE_Pred <- function(y_r, X_r, coord_r, fsDensity_r, n_r, pred_coord_r, m_r, p_r, covModel_r, h_r, nu_r, nuUnifb_r, adWidth_r, mm_r, nThreads_r) {
-    .Call(`_semiBase_spatial_LLE_Pred`, y_r, X_r, coord_r, fsDensity_r, n_r, pred_coord_r, m_r, p_r, covModel_r, h_r, nu_r, nuUnifb_r, adWidth_r, mm_r, nThreads_r)
+spatial_LLE_Pred <- function(y_r, X_r, coord_r, Q_r, fsDensity_r, n_r, pred_coord_r, m_r, p_r, covModel_r, h_r, nu_r, nuUnifb_r, adWidth_r, mm_r, nThreads_r) {
+    .Call(`_semiBase_spatial_LLE_Pred`, y_r, X_r, coord_r, Q_r, fsDensity_r, n_r, pred_coord_r, m_r, p_r, covModel_r, h_r, nu_r, nuUnifb_r, adWidth_r, mm_r, nThreads_r)
 }
 
 semiQLME <- function(y_r, n_r, m_r, N_r, coords_r, covModel_r, nnIndx_r, nnIndxLU_r, sigmaSq_r, phi_r, nu_r, nThreads_r) {
     .Call(`_semiBase_semiQLME`, y_r, n_r, m_r, N_r, coords_r, covModel_r, nnIndx_r, nnIndxLU_r, sigmaSq_r, phi_r, nu_r, nThreads_r)
 }
 
-bivariate_local_kernel_est <- function(y_r, covZ_r, lon_r, lat_r, n_r, Kernel_r, h_r, nThreads_r) {
-    .Call(`_semiBase_bivariate_local_kernel_est`, y_r, covZ_r, lon_r, lat_r, n_r, Kernel_r, h_r, nThreads_r)
+krigPred <- function(coords_r, n_r, m_r, newCoords_r, N_r, nnIndx_r, wSamples_r, covModel_r, sigmaSq_r, NewSigmaSq_r, phi_r, nu_r, nuUnifb_r, nThreads_r, verbose_r) {
+    .Call(`_semiBase_krigPred`, coords_r, n_r, m_r, newCoords_r, N_r, nnIndx_r, wSamples_r, covModel_r, sigmaSq_r, NewSigmaSq_r, phi_r, nu_r, nuUnifb_r, nThreads_r, verbose_r)
 }
 
 OputBF <- function(n_r, m_r, coords_r, covModel_r, nnIndx_r, nnIndxLU_r, sigmaSq_r, phi_r, nu_r, nuUnifb_r, nThreads_r) {
     .Call(`_semiBase_OputBF`, n_r, m_r, coords_r, covModel_r, nnIndx_r, nnIndxLU_r, sigmaSq_r, phi_r, nu_r, nuUnifb_r, nThreads_r)
+}
+
+bivariate_local_kernel_est <- function(y_r, covZ_r, lon_r, lat_r, n_r, Kernel_r, h_r, nThreads_r) {
+    .Call(`_semiBase_bivariate_local_kernel_est`, y_r, covZ_r, lon_r, lat_r, n_r, Kernel_r, h_r, nThreads_r)
 }
 
 SemiAlphaPro <- function(y_r, Z_r, n_r, coords_r, Q_r, nnIndx_r, nnIndxLU_r, Kernel_r, h_r, GeomVariable_r, nThreads_r) {

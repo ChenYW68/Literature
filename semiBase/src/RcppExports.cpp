@@ -98,35 +98,32 @@ BEGIN_RCPP
 END_RCPP
 }
 // local_kernel_est
-SEXP local_kernel_est(SEXP y_r, SEXP covZ_r, SEXP coords_r, SEXP n_r, SEXP covModel_r, SEXP h_r, SEXP nu_r, SEXP nuUnifb_r, SEXP nThreads_r);
-RcppExport SEXP _semiBase_local_kernel_est(SEXP y_rSEXP, SEXP covZ_rSEXP, SEXP coords_rSEXP, SEXP n_rSEXP, SEXP covModel_rSEXP, SEXP h_rSEXP, SEXP nu_rSEXP, SEXP nuUnifb_rSEXP, SEXP nThreads_rSEXP) {
+SEXP local_kernel_est(SEXP y_r, SEXP covZ_r, SEXP n_r, SEXP covModel_r, SEXP h_r, SEXP nu_r, SEXP nuUnifb_r, SEXP nThreads_r);
+RcppExport SEXP _semiBase_local_kernel_est(SEXP y_rSEXP, SEXP covZ_rSEXP, SEXP n_rSEXP, SEXP covModel_rSEXP, SEXP h_rSEXP, SEXP nu_rSEXP, SEXP nuUnifb_rSEXP, SEXP nThreads_rSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< SEXP >::type y_r(y_rSEXP);
     Rcpp::traits::input_parameter< SEXP >::type covZ_r(covZ_rSEXP);
-    Rcpp::traits::input_parameter< SEXP >::type coords_r(coords_rSEXP);
     Rcpp::traits::input_parameter< SEXP >::type n_r(n_rSEXP);
     Rcpp::traits::input_parameter< SEXP >::type covModel_r(covModel_rSEXP);
     Rcpp::traits::input_parameter< SEXP >::type h_r(h_rSEXP);
     Rcpp::traits::input_parameter< SEXP >::type nu_r(nu_rSEXP);
     Rcpp::traits::input_parameter< SEXP >::type nuUnifb_r(nuUnifb_rSEXP);
     Rcpp::traits::input_parameter< SEXP >::type nThreads_r(nThreads_rSEXP);
-    rcpp_result_gen = Rcpp::wrap(local_kernel_est(y_r, covZ_r, coords_r, n_r, covModel_r, h_r, nu_r, nuUnifb_r, nThreads_r));
+    rcpp_result_gen = Rcpp::wrap(local_kernel_est(y_r, covZ_r, n_r, covModel_r, h_r, nu_r, nuUnifb_r, nThreads_r));
     return rcpp_result_gen;
 END_RCPP
 }
 // local_kernel_pred
-SEXP local_kernel_pred(SEXP y_r, SEXP covZ_r, SEXP TestCovZ_r, SEXP coords_r, SEXP TestCoords_r, SEXP n_r, SEXP nTest_r, SEXP covModel_r, SEXP h_r, SEXP nu_r, SEXP nuUnifb_r, SEXP nThreads_r);
-RcppExport SEXP _semiBase_local_kernel_pred(SEXP y_rSEXP, SEXP covZ_rSEXP, SEXP TestCovZ_rSEXP, SEXP coords_rSEXP, SEXP TestCoords_rSEXP, SEXP n_rSEXP, SEXP nTest_rSEXP, SEXP covModel_rSEXP, SEXP h_rSEXP, SEXP nu_rSEXP, SEXP nuUnifb_rSEXP, SEXP nThreads_rSEXP) {
+SEXP local_kernel_pred(SEXP y_r, SEXP covZ_r, SEXP TestCovZ_r, SEXP n_r, SEXP nTest_r, SEXP covModel_r, SEXP h_r, SEXP nu_r, SEXP nuUnifb_r, SEXP nThreads_r);
+RcppExport SEXP _semiBase_local_kernel_pred(SEXP y_rSEXP, SEXP covZ_rSEXP, SEXP TestCovZ_rSEXP, SEXP n_rSEXP, SEXP nTest_rSEXP, SEXP covModel_rSEXP, SEXP h_rSEXP, SEXP nu_rSEXP, SEXP nuUnifb_rSEXP, SEXP nThreads_rSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< SEXP >::type y_r(y_rSEXP);
     Rcpp::traits::input_parameter< SEXP >::type covZ_r(covZ_rSEXP);
     Rcpp::traits::input_parameter< SEXP >::type TestCovZ_r(TestCovZ_rSEXP);
-    Rcpp::traits::input_parameter< SEXP >::type coords_r(coords_rSEXP);
-    Rcpp::traits::input_parameter< SEXP >::type TestCoords_r(TestCoords_rSEXP);
     Rcpp::traits::input_parameter< SEXP >::type n_r(n_rSEXP);
     Rcpp::traits::input_parameter< SEXP >::type nTest_r(nTest_rSEXP);
     Rcpp::traits::input_parameter< SEXP >::type covModel_r(covModel_rSEXP);
@@ -134,19 +131,20 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< SEXP >::type nu_r(nu_rSEXP);
     Rcpp::traits::input_parameter< SEXP >::type nuUnifb_r(nuUnifb_rSEXP);
     Rcpp::traits::input_parameter< SEXP >::type nThreads_r(nThreads_rSEXP);
-    rcpp_result_gen = Rcpp::wrap(local_kernel_pred(y_r, covZ_r, TestCovZ_r, coords_r, TestCoords_r, n_r, nTest_r, covModel_r, h_r, nu_r, nuUnifb_r, nThreads_r));
+    rcpp_result_gen = Rcpp::wrap(local_kernel_pred(y_r, covZ_r, TestCovZ_r, n_r, nTest_r, covModel_r, h_r, nu_r, nuUnifb_r, nThreads_r));
     return rcpp_result_gen;
 END_RCPP
 }
 // spatial_LLE
-SEXP spatial_LLE(SEXP y_r, SEXP X_r, SEXP coord_r, SEXP fsDensity_r, SEXP n_r, SEXP p_r, SEXP covModel_r, SEXP h_r, SEXP nu_r, SEXP nuUnifb_r, SEXP adWidth_r, SEXP mm_r, SEXP nThreads_r);
-RcppExport SEXP _semiBase_spatial_LLE(SEXP y_rSEXP, SEXP X_rSEXP, SEXP coord_rSEXP, SEXP fsDensity_rSEXP, SEXP n_rSEXP, SEXP p_rSEXP, SEXP covModel_rSEXP, SEXP h_rSEXP, SEXP nu_rSEXP, SEXP nuUnifb_rSEXP, SEXP adWidth_rSEXP, SEXP mm_rSEXP, SEXP nThreads_rSEXP) {
+SEXP spatial_LLE(SEXP y_r, SEXP X_r, SEXP coord_r, SEXP Q_r, SEXP fsDensity_r, SEXP n_r, SEXP p_r, SEXP covModel_r, SEXP h_r, SEXP nu_r, SEXP nuUnifb_r, SEXP adWidth_r, SEXP mm_r, SEXP nThreads_r);
+RcppExport SEXP _semiBase_spatial_LLE(SEXP y_rSEXP, SEXP X_rSEXP, SEXP coord_rSEXP, SEXP Q_rSEXP, SEXP fsDensity_rSEXP, SEXP n_rSEXP, SEXP p_rSEXP, SEXP covModel_rSEXP, SEXP h_rSEXP, SEXP nu_rSEXP, SEXP nuUnifb_rSEXP, SEXP adWidth_rSEXP, SEXP mm_rSEXP, SEXP nThreads_rSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< SEXP >::type y_r(y_rSEXP);
     Rcpp::traits::input_parameter< SEXP >::type X_r(X_rSEXP);
     Rcpp::traits::input_parameter< SEXP >::type coord_r(coord_rSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type Q_r(Q_rSEXP);
     Rcpp::traits::input_parameter< SEXP >::type fsDensity_r(fsDensity_rSEXP);
     Rcpp::traits::input_parameter< SEXP >::type n_r(n_rSEXP);
     Rcpp::traits::input_parameter< SEXP >::type p_r(p_rSEXP);
@@ -157,19 +155,20 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< SEXP >::type adWidth_r(adWidth_rSEXP);
     Rcpp::traits::input_parameter< SEXP >::type mm_r(mm_rSEXP);
     Rcpp::traits::input_parameter< SEXP >::type nThreads_r(nThreads_rSEXP);
-    rcpp_result_gen = Rcpp::wrap(spatial_LLE(y_r, X_r, coord_r, fsDensity_r, n_r, p_r, covModel_r, h_r, nu_r, nuUnifb_r, adWidth_r, mm_r, nThreads_r));
+    rcpp_result_gen = Rcpp::wrap(spatial_LLE(y_r, X_r, coord_r, Q_r, fsDensity_r, n_r, p_r, covModel_r, h_r, nu_r, nuUnifb_r, adWidth_r, mm_r, nThreads_r));
     return rcpp_result_gen;
 END_RCPP
 }
 // spatial_LLE_Pred
-SEXP spatial_LLE_Pred(SEXP y_r, SEXP X_r, SEXP coord_r, SEXP fsDensity_r, SEXP n_r, SEXP pred_coord_r, SEXP m_r, SEXP p_r, SEXP covModel_r, SEXP h_r, SEXP nu_r, SEXP nuUnifb_r, SEXP adWidth_r, SEXP mm_r, SEXP nThreads_r);
-RcppExport SEXP _semiBase_spatial_LLE_Pred(SEXP y_rSEXP, SEXP X_rSEXP, SEXP coord_rSEXP, SEXP fsDensity_rSEXP, SEXP n_rSEXP, SEXP pred_coord_rSEXP, SEXP m_rSEXP, SEXP p_rSEXP, SEXP covModel_rSEXP, SEXP h_rSEXP, SEXP nu_rSEXP, SEXP nuUnifb_rSEXP, SEXP adWidth_rSEXP, SEXP mm_rSEXP, SEXP nThreads_rSEXP) {
+SEXP spatial_LLE_Pred(SEXP y_r, SEXP X_r, SEXP coord_r, SEXP Q_r, SEXP fsDensity_r, SEXP n_r, SEXP pred_coord_r, SEXP m_r, SEXP p_r, SEXP covModel_r, SEXP h_r, SEXP nu_r, SEXP nuUnifb_r, SEXP adWidth_r, SEXP mm_r, SEXP nThreads_r);
+RcppExport SEXP _semiBase_spatial_LLE_Pred(SEXP y_rSEXP, SEXP X_rSEXP, SEXP coord_rSEXP, SEXP Q_rSEXP, SEXP fsDensity_rSEXP, SEXP n_rSEXP, SEXP pred_coord_rSEXP, SEXP m_rSEXP, SEXP p_rSEXP, SEXP covModel_rSEXP, SEXP h_rSEXP, SEXP nu_rSEXP, SEXP nuUnifb_rSEXP, SEXP adWidth_rSEXP, SEXP mm_rSEXP, SEXP nThreads_rSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< SEXP >::type y_r(y_rSEXP);
     Rcpp::traits::input_parameter< SEXP >::type X_r(X_rSEXP);
     Rcpp::traits::input_parameter< SEXP >::type coord_r(coord_rSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type Q_r(Q_rSEXP);
     Rcpp::traits::input_parameter< SEXP >::type fsDensity_r(fsDensity_rSEXP);
     Rcpp::traits::input_parameter< SEXP >::type n_r(n_rSEXP);
     Rcpp::traits::input_parameter< SEXP >::type pred_coord_r(pred_coord_rSEXP);
@@ -182,7 +181,7 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< SEXP >::type adWidth_r(adWidth_rSEXP);
     Rcpp::traits::input_parameter< SEXP >::type mm_r(mm_rSEXP);
     Rcpp::traits::input_parameter< SEXP >::type nThreads_r(nThreads_rSEXP);
-    rcpp_result_gen = Rcpp::wrap(spatial_LLE_Pred(y_r, X_r, coord_r, fsDensity_r, n_r, pred_coord_r, m_r, p_r, covModel_r, h_r, nu_r, nuUnifb_r, adWidth_r, mm_r, nThreads_r));
+    rcpp_result_gen = Rcpp::wrap(spatial_LLE_Pred(y_r, X_r, coord_r, Q_r, fsDensity_r, n_r, pred_coord_r, m_r, p_r, covModel_r, h_r, nu_r, nuUnifb_r, adWidth_r, mm_r, nThreads_r));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -208,21 +207,28 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// bivariate_local_kernel_est
-SEXP bivariate_local_kernel_est(SEXP y_r, SEXP covZ_r, SEXP lon_r, SEXP lat_r, SEXP n_r, SEXP Kernel_r, SEXP h_r, SEXP nThreads_r);
-RcppExport SEXP _semiBase_bivariate_local_kernel_est(SEXP y_rSEXP, SEXP covZ_rSEXP, SEXP lon_rSEXP, SEXP lat_rSEXP, SEXP n_rSEXP, SEXP Kernel_rSEXP, SEXP h_rSEXP, SEXP nThreads_rSEXP) {
+// krigPred
+SEXP krigPred(SEXP coords_r, SEXP n_r, SEXP m_r, SEXP newCoords_r, SEXP N_r, SEXP nnIndx_r, SEXP wSamples_r, SEXP covModel_r, SEXP sigmaSq_r, SEXP NewSigmaSq_r, SEXP phi_r, SEXP nu_r, SEXP nuUnifb_r, SEXP nThreads_r, SEXP verbose_r);
+RcppExport SEXP _semiBase_krigPred(SEXP coords_rSEXP, SEXP n_rSEXP, SEXP m_rSEXP, SEXP newCoords_rSEXP, SEXP N_rSEXP, SEXP nnIndx_rSEXP, SEXP wSamples_rSEXP, SEXP covModel_rSEXP, SEXP sigmaSq_rSEXP, SEXP NewSigmaSq_rSEXP, SEXP phi_rSEXP, SEXP nu_rSEXP, SEXP nuUnifb_rSEXP, SEXP nThreads_rSEXP, SEXP verbose_rSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< SEXP >::type y_r(y_rSEXP);
-    Rcpp::traits::input_parameter< SEXP >::type covZ_r(covZ_rSEXP);
-    Rcpp::traits::input_parameter< SEXP >::type lon_r(lon_rSEXP);
-    Rcpp::traits::input_parameter< SEXP >::type lat_r(lat_rSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type coords_r(coords_rSEXP);
     Rcpp::traits::input_parameter< SEXP >::type n_r(n_rSEXP);
-    Rcpp::traits::input_parameter< SEXP >::type Kernel_r(Kernel_rSEXP);
-    Rcpp::traits::input_parameter< SEXP >::type h_r(h_rSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type m_r(m_rSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type newCoords_r(newCoords_rSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type N_r(N_rSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type nnIndx_r(nnIndx_rSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type wSamples_r(wSamples_rSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type covModel_r(covModel_rSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type sigmaSq_r(sigmaSq_rSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type NewSigmaSq_r(NewSigmaSq_rSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type phi_r(phi_rSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type nu_r(nu_rSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type nuUnifb_r(nuUnifb_rSEXP);
     Rcpp::traits::input_parameter< SEXP >::type nThreads_r(nThreads_rSEXP);
-    rcpp_result_gen = Rcpp::wrap(bivariate_local_kernel_est(y_r, covZ_r, lon_r, lat_r, n_r, Kernel_r, h_r, nThreads_r));
+    Rcpp::traits::input_parameter< SEXP >::type verbose_r(verbose_rSEXP);
+    rcpp_result_gen = Rcpp::wrap(krigPred(coords_r, n_r, m_r, newCoords_r, N_r, nnIndx_r, wSamples_r, covModel_r, sigmaSq_r, NewSigmaSq_r, phi_r, nu_r, nuUnifb_r, nThreads_r, verbose_r));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -244,6 +250,24 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< SEXP >::type nuUnifb_r(nuUnifb_rSEXP);
     Rcpp::traits::input_parameter< SEXP >::type nThreads_r(nThreads_rSEXP);
     rcpp_result_gen = Rcpp::wrap(OputBF(n_r, m_r, coords_r, covModel_r, nnIndx_r, nnIndxLU_r, sigmaSq_r, phi_r, nu_r, nuUnifb_r, nThreads_r));
+    return rcpp_result_gen;
+END_RCPP
+}
+// bivariate_local_kernel_est
+SEXP bivariate_local_kernel_est(SEXP y_r, SEXP covZ_r, SEXP lon_r, SEXP lat_r, SEXP n_r, SEXP Kernel_r, SEXP h_r, SEXP nThreads_r);
+RcppExport SEXP _semiBase_bivariate_local_kernel_est(SEXP y_rSEXP, SEXP covZ_rSEXP, SEXP lon_rSEXP, SEXP lat_rSEXP, SEXP n_rSEXP, SEXP Kernel_rSEXP, SEXP h_rSEXP, SEXP nThreads_rSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type y_r(y_rSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type covZ_r(covZ_rSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type lon_r(lon_rSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type lat_r(lat_rSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type n_r(n_rSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type Kernel_r(Kernel_rSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type h_r(h_rSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type nThreads_r(nThreads_rSEXP);
+    rcpp_result_gen = Rcpp::wrap(bivariate_local_kernel_est(y_r, covZ_r, lon_r, lat_r, n_r, Kernel_r, h_r, nThreads_r));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -348,13 +372,14 @@ static const R_CallMethodDef CallEntries[] = {
     {"_semiBase_mkNNIndxCB", (DL_FUNC) &_semiBase_mkNNIndxCB, 7},
     {"_semiBase_RdistC", (DL_FUNC) &_semiBase_RdistC, 9},
     {"_semiBase_ConExp", (DL_FUNC) &_semiBase_ConExp, 10},
-    {"_semiBase_local_kernel_est", (DL_FUNC) &_semiBase_local_kernel_est, 9},
-    {"_semiBase_local_kernel_pred", (DL_FUNC) &_semiBase_local_kernel_pred, 12},
-    {"_semiBase_spatial_LLE", (DL_FUNC) &_semiBase_spatial_LLE, 13},
-    {"_semiBase_spatial_LLE_Pred", (DL_FUNC) &_semiBase_spatial_LLE_Pred, 15},
+    {"_semiBase_local_kernel_est", (DL_FUNC) &_semiBase_local_kernel_est, 8},
+    {"_semiBase_local_kernel_pred", (DL_FUNC) &_semiBase_local_kernel_pred, 10},
+    {"_semiBase_spatial_LLE", (DL_FUNC) &_semiBase_spatial_LLE, 14},
+    {"_semiBase_spatial_LLE_Pred", (DL_FUNC) &_semiBase_spatial_LLE_Pred, 16},
     {"_semiBase_semiQLME", (DL_FUNC) &_semiBase_semiQLME, 12},
-    {"_semiBase_bivariate_local_kernel_est", (DL_FUNC) &_semiBase_bivariate_local_kernel_est, 8},
+    {"_semiBase_krigPred", (DL_FUNC) &_semiBase_krigPred, 15},
     {"_semiBase_OputBF", (DL_FUNC) &_semiBase_OputBF, 11},
+    {"_semiBase_bivariate_local_kernel_est", (DL_FUNC) &_semiBase_bivariate_local_kernel_est, 8},
     {"_semiBase_SemiAlphaPro", (DL_FUNC) &_semiBase_SemiAlphaPro, 11},
     {"_semiBase_semiProPred", (DL_FUNC) &_semiBase_semiProPred, 14},
     {"_semiBase_SemiAlpha", (DL_FUNC) &_semiBase_SemiAlpha, 13},
