@@ -2053,3 +2053,29 @@ spDensity <- function(xrounded, roundvalue = 1, burnin = 2, samples = 5, adaptiv
   class(est) <- "bivrounding"
   return(est)
 }
+
+# bx <- Bessel::besselJ(0.2, nu=0.5)
+Cfunc <- function(theta, d, m  = 5){
+  lower = max(quantile(d, c(0.01)), 1e-2)
+  upper = quantile(d, c(0.99))
+  phi <- seq(lower, upper, , m )
+  C <- 0
+  theta <- exp(theta)
+  for(i in 1:m){
+    C <- C + theta[i]*Matern(d, range = phi[i]) 
+  }
+  return(C)
+}
+
+betaCov <- function(S, Q, X, R){
+  SI <- (diag(nrow(X)) - S) %*% X
+  S_D <- solve(t(SI) %*% Q %*% SI)
+  V <- t(SI) %*% Q %*% (R) %*% t(Q) %*% SI 
+  betaC <- S_D %*% V %*% S_D
+  return(sum(log(diag(chol(betaC)))))
+}
+
+
+
+
+

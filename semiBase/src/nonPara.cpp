@@ -455,7 +455,6 @@ double spCor(double &D, double &phi, double &nu, int &covModel, double *bk){
   //3 gaussian
   D = abs(D);
   if(covModel == 0){//exponential
-    
     return exp(-D/phi);//;//0.3*pow(D/phi,1)
   }else if(covModel == 1){//spherical
     if(D > 0 && D <= phi){
