@@ -11,7 +11,6 @@
 #include <R_ext/Utils.h>
 #include <limits>
 
-
 #ifdef _OPENMP
 #include <omp.h>
 #endif
@@ -3136,404 +3135,59 @@ SEXP semiPred(SEXP y_r,
   return(result_r);
 }
 
-// [[Rcpp::export]]
-SEXP theta_Est_Ct(SEXP y_r, SEXP Z_r, SEXP Time_r,  SEXP Q_r, 
-                   SEXP n_r, SEXP Nt_r, SEXP Pz_r, 
-				   SEXP Kernel_r, SEXP h_r, SEXP nuUnifb_r,
-				   SEXP nu_r, SEXP nThreads_r){
-	int info, nProtect=0;
-	const int inc = 1;
-	const double one = 1.0;
-	const double zero = 0.0;
-	char const *lower = "L";
-	char const *ntran = "N";
-	char Trans = 'T';
+// SEXP semiCov_Cs(SEXP y_r, 
+			  // SEXP Coord_r,
+			  // SEXP testCoord_r,
+			  // SEXP n_r,
+			  // SEXP m_r,
+			  // SEXP Kernel_r,
+			  // SEXP h_r, 
+			  // SEXP d_r,
+			  // SEXP nuUnifb_r,
+			  // SEXP nu_r,
+			  // SEXP nThreads_r){
+	// const int inc = 1;
+	// const double one = 1.0;
+	// const double zero = 0.0;
+	// char const *lower = "L";
+	// char const *ntran = "N";
+	// char Trans = 'T';
+	// int info, nProtect=0;
+	// int p = 3;  
+    // int pp = p*p;			  
+	
+    // double *y = REAL(y_r);
+	// double *Coord = REAL(Coord_r);
+	// double *testCoord = REAL(testCoord_r);
+	// int n = INTEGER(n_r);
+    // int m = INTEGER(m_r);	
+	// int Kernel = INTEGER(Kernel_r);		  
+	// double h = INTEGER(h_r); 
+    // double d = INTEGER(d_r);	
+	
+	// int nuUnifb = INTEGER(nuUnifb_r)[0];
+	// double nu = REAL(nu_r)[0];
+	// int nThreads = INTEGER(nThreads_r)[0];
 	
 	
-	double *y = REAL(y_r);
-    double *Z = REAL(Z_r);	
-	double *Time = REAL(Time_r);
-	//double *Time = REAL(Time_r);
-	double *Q = REAL(Q_r);
-	
-	int n = INTEGER(n_r)[0];
-	int Nt = INTEGER(Nt_r)[0];
-	int Pz = INTEGER(Pz_r)[0];
-	int Kernel = INTEGER(Kernel_r)[0];
-	
-	double h = REAL(h_r)[0];
-	int nuUnifb = INTEGER(nuUnifb_r)[0];
-	double nu = REAL(nu_r)[0];
-	int nThreads = INTEGER(nThreads_r)[0];
-	// int nuUnifb = 0;
-	double *bk = (double *) R_alloc(nThreads*(1.0+static_cast<int>(floor(nuUnifb))), sizeof(double));
-	int nb = 1+static_cast<int>(floor(nuUnifb));
-	int threadID = 0;
-	
-	int t, s, it, i, j, k, l, nn = n*Nt;
-	
-	double dtt, Ker;
-	
-	int p = 2*Pz;
-	int Ps = p*nn;
-	int Ps0 = Pz*nn;
-	int nnn = n*nn;
-	double *dt = (double *) R_alloc(nn*nThreads, sizeof(double)); //zeros(dt, nn*nThreads);
-	
-	double *Q_K = (double *) R_alloc(nn*nn*nThreads, sizeof(double)); //zeros(Q_K, nn*nn*nThreads);
-	double *S = (double *) R_alloc(Ps*nThreads, sizeof(double)); //zeros(S, Ps*nThreads);
-	//double *S0 = (double *) R_alloc(Ps0*nThreads, sizeof(double)); zeros(S0, Ps0*nThreads);
-	double *S1 = (double *) R_alloc(nnn*nThreads, sizeof(double)); zeros(S1, nnn*nThreads);
-	double *Zs = (double *) R_alloc(Ps*nThreads, sizeof(double)); //zeros(Zs, Ps*nThreads);
-	double *Mat = (double *) R_alloc(p*p*nThreads, sizeof(double)); //zeros(Mat, p*p*nThreads);
-	double *alpha = (double *) R_alloc(p*nThreads, sizeof(double));
-	
-	SEXP S_r, alpha_r;
-    PROTECT(S_r = Rf_allocMatrix(REALSXP, n, nn*Nt)); nProtect++;
-	PROTECT(alpha_r = Rf_allocMatrix(REALSXP, p, Nt)); nProtect++;
-	
-#ifdef _OPENMP
-  omp_set_num_threads(nThreads);
-#else
-  if(nThreads > 1){
-    warning("n.omp.threads > %i, but source not compiled with OpenMP support.", nThreads);
-    nThreads = 1;
-  }
-#endif	
-	
-	
-
-#ifdef _OPENMP
-#pragma omp parallel for private(l, s, it, i, j, dtt, Ker, threadID)
-#endif 
-	for(t = 0; t < Nt; t++){
-#ifdef _OPENMP
-    threadID = omp_get_thread_num();
-#endif
-		l = 0;
-		for(s = 0; s < n; s++){
-		  for(it = 0; it < Nt; it++){
-		   dt[nn*threadID + l] = Time[it] - Time[t];
-		   l += 1;
-		  }
-		}
-	// Z*dt
-	for(i = 0; i < nn; i++){
-		  for(j = 0; j < Pz; j++){
-			 Zs[Ps*threadID + i + j*nn] = Z[i + j*nn];
-			 Zs[Ps*threadID + i + (j + Pz)*nn] = dt[nn*threadID + i]*Z[i + (j + Pz)*nn]/h;	
-		   }
-      //Q*K
-		 dtt = abs(dt[nn*threadID + i]);
-		 Ker = spCor(dtt, h, nu, Kernel, &bk[threadID*nb])/h;	
-		for(j = 0; j < nn; j++){
-		  Q_K[nn*nn*threadID + i + nn*j] = Q[i + nn*j]*pow(Ker, 0.5);
-		 }    		
-   }	
-		//K*Q
-	for(i = 0; i < nn; i++){
-		dtt = abs(dt[nn*threadID + i]);
-		Ker = spCor(dtt, h, nu, Kernel, &bk[threadID*nb])/h;	
-	  for(j = 0; j < nn; j++){
-		Q_K[nn*nn*threadID + j + nn*i] = Q_K[nn*nn*threadID + j + nn*i]*pow(Ker, 0.5);
-		}
-	}
-	//Rprintf("Q_K[0] =  %3.5f;  \n", Q_K[0]);		
-	
-	
-   F77_NAME(dgemm)(&Trans, ntran, &p, &nn, &nn, &one, &Zs[Ps*threadID], &nn, &Q_K[nn*nn*threadID], &nn, &zero, &S[Ps*threadID], &p);
-   F77_NAME(dgemm)(ntran, ntran, &p, &p, &nn, &one, &S[Ps*threadID], &p, &Zs[Ps*threadID], &nn, &zero, &Mat[p*p*threadID], &p);
-   F77_NAME(dposv)(lower, &p, &nn, &Mat[p*p*threadID], &p, &S[Ps*threadID], &p, &info); //if(info != 0){error("c++ error: dpotrf failed\n");}
-   
-   F77_NAME(dgemv)(ntran, &p, &nn, &one, &S[Ps*threadID], &p, y, &inc, &zero, &alpha[p*threadID], &inc);	
-   F77_NAME(dcopy)(&p, &alpha[p*threadID], &inc, &REAL(alpha_r)[t*p], &inc);
-	
-   // for(i = 0; i < Pz; i++){
-	  // for(j = 0; j < nn; j++){
-		  // S0[Ps0*threadID + i + j*Pz] = S[Ps*threadID + i + j*p];
-		// }
-	// }
-	
-	//F77_NAME(dcopy)(&Ps0, &S0[Ps0*threadID], &inc, &REAL(S_r)[t*Ps0], &inc);S0[Ps0*threadID + i + j*Pz]*
-	 zeros(&S1[nnn*threadID], nnn);
-	 for(s = 0; s < n; s++){
-		for(j = 0; j < nn; j++){
-	       for(i = 0; i < Pz; i++){
-			S1[nnn*threadID + s + j*n] += S[Ps*threadID + i + j*p]*Z[t + s*Nt + i*nn];
-			 // if(i==(1)){
-			 // Rprintf("t = %i, s = %i j= %i, i = %i, S =  %3.5f;  \n", t, s, j, i, S1[nnn*threadID + s + j*n]);}
-		 }		
-	  }
-
-	 }
-	
-	F77_NAME(dcopy)(&nnn, &S1[nnn*threadID], &inc, &REAL(S_r)[t*nnn], &inc);
-}
-	
-	   //make return object
-  SEXP result_r, resultName_r;
-  int nResultListObjs = 2;
-  PROTECT(result_r = Rf_allocVector(VECSXP, nResultListObjs)); nProtect++;
-  PROTECT(resultName_r = Rf_allocVector(VECSXP, nResultListObjs)); nProtect++;
-  
-  SET_VECTOR_ELT(result_r, 0, alpha_r);
-  SET_VECTOR_ELT(resultName_r, 0, Rf_mkChar("alpha"));
-
-  SET_VECTOR_ELT(result_r, 1, S_r);
-  SET_VECTOR_ELT(resultName_r, 1, Rf_mkChar("S"));
-  
-
-  Rf_namesgets(result_r, resultName_r);
-  //unprotect
-  UNPROTECT(nProtect);
-
-  return(result_r);	
-}
-
-
-
-
-
-
-
-
-// [[Rcpp::export]]
-SEXP ModCov(SEXP C_r, SEXP Var_r, SEXP n_r){
-	double *C = REAL(C_r);
-	double *Var = REAL(Var_r);
-	int n = INTEGER(n_r)[0];
-	int info, nProtect=0;
-	int ns = n*n;
-	const int inc = 1;
-	// double *Vec = (double *) R_alloc(n*n, sizeof(double)); zeros(Vec, n*n);
-	//double *Eig = (double *) R_alloc(n, sizeof(double)); zeros(Eig, n);
-	
-	SEXP Cov_r, Vec_r, Eig_r;
-	PROTECT(Vec_r = Rf_allocMatrix(REALSXP, n, n)); nProtect++;
-	PROTECT(Cov_r = Rf_allocMatrix(REALSXP, n, n)); nProtect++;
-	//PROTECT(Eig_r = Rf_allocVector(REALSXP, l)); nProtect++;
-	PROTECT(Eig_r = Rf_allocVector(REALSXP, n)); nProtect++;
-	double *Vec = REAL(Vec_r);
-	//double *Cov = REAL(Cov_r);
-	//double *E = REAL(Eig_r);
-	double *Eig = REAL(Eig_r);
-	
-	char const *JO = "V";
-	char const *lower = "L";
-	F77_NAME(dsyev)(JO, lower, &n, C, &n, Eig, Vec, &ns, &info);
-	
-	// double vl = 0.0;
-	// double vu = 1000000.0;
-	// int il = 1;
-	// int iu = n;
-	// double abs = 0.000001;
-	// int M = n;
-	// double *W = (double *) R_alloc(n, sizeof(double)); zeros(Eig, n);
-	// double *Work = (double *) R_alloc(n*n, sizeof(double)); zeros(Work, n*n);
-	// int LWORK = 8*n; //zeros(IWORK, 5*n);
-	// int *IWORK = (int *) R_alloc(5*n, sizeof(double)); //zeros(IWORK, 5*n);
-	// int *IFAIL = (int *) R_alloc(n, sizeof(double)); //zeros(IWORK, n);
-	// char const *range = "V";
-	// F77_NAME(dsyevx)(JO, range, lower, &n, C, &n, &vl, &vu, &il, &iu, &abs, &M, W, Vec, &ns, Work, &LWORK, IWORK, IFAIL, &info);
-	
-	
-	F77_NAME(dcopy)(&ns, C, &inc, REAL(Vec_r), &inc);  
-	// Rprintf("C[1]: %3.10f, C[2]: %3.10f \n", C[0], C[2]);
-	int i, j, k, l = 0;
-	for(i = n - 1; i >= 0; i--){
-	  if(Eig[i] > 0){
-		l += 1;  
-	  }else{
-		  break;
-	  }		  
-	}
-	double *E = (double *) R_alloc(l, sizeof(double)); zeros(E, l);
-	
-	j = 0;
-	for(i = n - 1; i >= (n - l); i--){
-	  E[j] = Eig[i]; 
-      j += 1;	  
-	}
-	int ll;
-	double *Cov = (double *) R_alloc(n*n, sizeof(double)); zeros(Cov, n*n);
-	for(i = 0; i < n; i++){
-	   for(j = i; j < n; j++){
-		   if(i!=j){
-			    ll = 0;
-			  for(k = n - 1; k >= (n - l); k--){
-				Cov[i + n*j] += E[ll]*C[n*k + i]*C[n*k + j]; 
-				Cov[j + n*i] += E[ll]*C[n*k + i]*C[n*k + j]; 
-				ll += 1;			
-			  }  
-		   }else{
-			  Cov[i + n*j] += Var[i];  
-		   }
-	   }
-	}
-	
-	
-	F77_NAME(dcopy)(&ns, Cov, &inc, REAL(Cov_r), &inc);  
-	
-	
-	SEXP result_r, resultName_r;
-    int nResultListObjs = 3;
-
-    PROTECT(result_r = Rf_allocVector(VECSXP, nResultListObjs)); nProtect++;
-    PROTECT(resultName_r = Rf_allocVector(VECSXP, nResultListObjs)); nProtect++;
-    SET_VECTOR_ELT(result_r, 0, Vec_r);
-    SET_VECTOR_ELT(resultName_r, 0, Rf_mkChar("Vec"));
-	
-	SET_VECTOR_ELT(result_r, 1, Eig_r);
-    SET_VECTOR_ELT(resultName_r, 1, Rf_mkChar("Eig"));
-	
-	SET_VECTOR_ELT(result_r, 2, Cov_r);
-    SET_VECTOR_ELT(resultName_r, 2, Rf_mkChar("Cov"));
-	
-    Rf_namesgets(result_r, resultName_r);
-    
-    //unprotect
-    UNPROTECT(nProtect);
-    
-    return(result_r);
-	
-	
-}
-
-
-
-
-
-
-// [[Rcpp::export]]
-SEXP semiCov_Cs(SEXP y_r, 
-			  SEXP Coord_r,
-			  SEXP n_r,
-			  SEXP m_r,
-			  SEXP N_r,
-			  SEXP Kernel_r,
-			  SEXP h_r, 
-			  SEXP d_r,
-			  SEXP nuUnifb_r,
-			  SEXP nu_r,
-			  SEXP nThreads_r){
-	const int inc = 1;
-	const double one = 1.0;
-	const double zero = 0.0;
-	char const *lower = "L";
-	char const *ntran = "N";
-	char Trans = 'T';
-	int info, nProtect=0;
-	int p = 2; 
-	
-	double *y = REAL(y_r);
-	double *Coord = REAL(Coord_r);
-	int n = INTEGER(n_r)[0];
-	int m = INTEGER(m_r)[0];
-    int N = INTEGER(N_r)[0];	
-	int Kernel = INTEGER(Kernel_r)[0];		  
-	double h = REAL(h_r)[0]; 
-	double *d = REAL(d_r);	
-	
-	int nuUnifb = INTEGER(nuUnifb_r)[0];
-	double nu = REAL(nu_r)[0];
-	int nThreads = INTEGER(nThreads_r)[0];
-	double *bk = (double *) R_alloc(nThreads*(1.0+static_cast<int>(floor(nuUnifb))), sizeof(double));
-	int nb = 1+static_cast<int>(floor(nuUnifb));
-	int s, i, j, t;
-	double ck, ds, Ker, Kerr;
-	int threadID = 0;
-		
-	double a0, a1, a00, a01, a11;
-
-	
-	SEXP C_r;
-	PROTECT(C_r = Rf_allocVector(REALSXP, m)); nProtect++;
-	
-	double *Cd = (double *) R_alloc(nThreads*m, sizeof(double));
-	
-	double *a = (double *) R_alloc(p*nThreads, sizeof(double)); zeros(a, p*nThreads);
-	double *S = (double *) R_alloc(p*p*nThreads, sizeof(double)); zeros(S, p*p*nThreads);
-   
-	
-#ifdef _OPENMP
-  omp_set_num_threads(nThreads);
-#else
-  if(nThreads > 1){
-    warning("n.omp.threads > %i, but source not compiled with OpenMP support.", nThreads);
-    nThreads = 1;
-  }
-#endif
-
-
-	
-#ifdef _OPENMP
-#pragma omp parallel for private(threadID, a0, a1, a00, a01, a11, ds, ck,  i, j, t)
-#endif 
-	for(s = 0; s < m; s++){
-#ifdef _OPENMP
-	threadID = omp_get_thread_num();
-#endif 
-	//Ker = 0.0; Kerr = 0.0;
-	// for(t = 0; t < N; t++){
+	// for(s = 1; s < m; s++){
 	  // for(i = 0; i < n; i++){
-	   // for(j = 0; j < n; j++){
-		   // dt = dist2(Coord[i], Coord[i + n], Coord[j], Coord[j + n]) - d[s];
+		   // double dt = dist(Coord[i], Coord[i + n], testCoord[s], testCoord[s + m])
 	       // ck = spCor(dt, h, nu, Kernel, &bk[threadID*nb]);
-		   // Ker += ck; 
-		   // Kerr += y[i]*y[j]*ck;  
 		// }
-	  // }
 	// }
-	  // Cd[m*threadID] = Kerr/Ker;
-	  // F77_NAME(dcopy)(&p, &Cd[m*threadID], &inc, &REAL(C_r)[s], &inc);
-	
-	a0 = 0.0; a1 = 0.0;
-	a00 = 0.0; a01 = 0.0; 
-	a11 = 0.0;
-	
-#ifdef _OPENMP
-#pragma omp parallel for private(i, j, ds, ck, threadID) reduction(+:a00, a01, a11, a0, a1)
-#endif
-	for(i = 0; i < n; i++){
-	   for(j = 0; j < n; j++){
-		   ds = dist2(Coord[i], Coord[i + n], Coord[j], Coord[j + n]) - d[s];
-	       ck = spCor(ds, h, nu, Kernel, &bk[threadID*nb])/h;
-		for(t = 0; t < N; t++){
-		   a0 += y[i + t*n]*y[j+ t*n]*ck; 
-		   a1 += y[i + t*n]*y[j+ t*n]*ck*ds/h; 
-           a00 += ck;
-		   a01 += ck*ds/h;
-		   a11 += ck*ds*ds/(h*h);
-		}
-	  }
-	}
-	a[p*threadID] = a0; a[p*threadID + 1] = a1;
-	S[p*p*threadID] = a00; S[p*p*threadID + 1] = a01; S[p*p*threadID + 2] = a01; S[p*p*threadID + 3] = a11; 
-	F77_NAME(dposv)(lower, &p, &inc, &S[p*p*threadID], &p, &a[p*threadID], &p, &info);
-	F77_NAME(dcopy)(&inc, &a[p*threadID], &inc, &REAL(C_r)[s], &inc);  	
-	}
+// }
 
-	SEXP result_r, resultName_r;
-    int nResultListObjs = 1;
 
-    PROTECT(result_r = Rf_allocVector(VECSXP, nResultListObjs)); nProtect++;
-    PROTECT(resultName_r = Rf_allocVector(VECSXP, nResultListObjs)); nProtect++;
-    SET_VECTOR_ELT(result_r, 0, C_r);
-    SET_VECTOR_ELT(resultName_r, 0, Rf_mkChar("C"));
-    Rf_namesgets(result_r, resultName_r);
-    
-    //unprotect
-    UNPROTECT(nProtect);
-    
-    return(result_r);
-}
+
+
 
 
 
 
 
 // [[Rcpp::export]]
-SEXP semiCov_Ct(SEXP y_r,
+SEXP semiCov_C(SEXP y_r,
 			  SEXP Time_r, 
 			  SEXP CvIndex_r, 
 			  SEXP n_r, 
@@ -3585,7 +3239,7 @@ SEXP semiCov_Ct(SEXP y_r,
 	
     int t, s, i, j, k;
 	double *a = (double *) R_alloc(p*nThreads, sizeof(double)); zeros(a, p*nThreads);
-	double *S1 = (double *) R_alloc(p*p*nThreads, sizeof(double)); //zeros(S1, p*p*nThreads);
+	double *S1 = (double *) R_alloc(p*p*nThreads, sizeof(double)); zeros(S1, p*p*nThreads);
 	double *Index = (double *) R_alloc(N*nThreads, sizeof(double)); zeros(Index, N*nThreads);
 	
 	
@@ -3600,7 +3254,7 @@ SEXP semiCov_Ct(SEXP y_r,
 	//double *Index = REAL(Index_r);
 	// zeros(S, p*p);
 	// k = 0;
-	 double ck, ck1, ck2;
+	 double ck;
 	 
 	 
 #ifdef _OPENMP
@@ -3617,9 +3271,9 @@ SEXP semiCov_Ct(SEXP y_r,
 		
 			//Index[N*threadID] = t1;
 
-#ifdef _OPENMP
-#pragma omp parallel for private(i, j, dt1, dt2, ck, threadID) reduction(+:s11, s12, s13, s22, s23, s33, a1, a2, a3)
-#endif
+// #ifdef _OPENMP
+// #pragma omp parallel for private(i, j, dt1, dt2, ck, threadID) reduction(+:s11, s12, s13, s22, s23, s33, a1, a2, a3)
+// #endif
 			for(s = 0; s < n; s++){
 // #ifdef _OPENMP
     // threadID = omp_get_thread_num();
@@ -3672,29 +3326,20 @@ SEXP semiCov_Ct(SEXP y_r,
    
    // variance 
    
-   double *b = (double *) R_alloc(2*nThreads, sizeof(double)); //zeros(b, 2*nThreads);
-   double *S2 = (double *) R_alloc(4*nThreads, sizeof(double)); //zeros(S2, 4*nThreads);
+   double *b = (double *) R_alloc(2, sizeof(double)); zeros(b, 2);
+   double *S2 = (double *) R_alloc(4, sizeof(double)); zeros(S2, 4);
    p = 2; 
-   
-#ifdef _OPENMP
-#pragma omp parallel for private(s, i, dt1,  ck, threadID, s11, s12, s22, a1, a2)
-#endif 
    for(t = 0; t < Nt; t++){
-#ifdef _OPENMP
-    threadID = omp_get_thread_num();
-#endif
-
 	a1 = 0.0; a2 = 0.0;
 	s11 = 0.0; s12 = 0.0; 
-	s22 = 0.0;  
-	
+	s22 = 0.0;    
 #ifdef _OPENMP
 #pragma omp parallel for private(i, dt1, ck, threadID) reduction(+:s11, s12, s22, a1, a2)
 #endif
 	 for(s = 0; s < n; s++){
-// #ifdef _OPENMP
-    // threadID = omp_get_thread_num();
-// #endif
+#ifdef _OPENMP
+    threadID = omp_get_thread_num();
+#endif
 	  for(i = 0; i < Nt; i++){
 			dt1 = (Time[i] - Time[t]);
 			ck = spCor(dt1, h2, nu, Kernel, &bk[threadID*nb]);		
@@ -3707,235 +3352,14 @@ SEXP semiCov_Ct(SEXP y_r,
 		 }
 	}
 	
-	b[p*threadID + 0] = a1;
-	b[p*threadID +1] = a2;
-	S2[p*p*threadID +0] = s11; S2[p*p*threadID + 2] = s12;
-	S2[p*p*threadID +1] = s12; S2[p*p*threadID + 3] = s22;
-	
-	F77_NAME(dposv)(lower, &p, &inc, &S2[p*p*threadID], &p, &b[p*threadID], &p, &info);
-	F77_NAME(dcopy)(&inc, &b[p*threadID], &inc, &REAL(Var_r)[t], &inc);
-   }
-   
-   
-    //make return object
-  SEXP result_r, resultName_r;
-  int nResultListObjs = 2;
-  PROTECT(result_r = Rf_allocVector(VECSXP, nResultListObjs)); nProtect++;
-  PROTECT(resultName_r = Rf_allocVector(VECSXP, nResultListObjs)); nProtect++;
-  
-  SET_VECTOR_ELT(result_r, 0, Cov_r);
-  SET_VECTOR_ELT(resultName_r, 0, Rf_mkChar("Cov"));
-
-  SET_VECTOR_ELT(result_r, 1, Var_r);
-  SET_VECTOR_ELT(resultName_r, 1, Rf_mkChar("Var"));
-  
-  // SET_VECTOR_ELT(result_r, 1, Index_r);
-  // SET_VECTOR_ELT(resultName_r, 1, Rf_mkChar("Index"));
-  
- 
-  
-  Rf_namesgets(result_r, resultName_r);
-  //unprotect
-  UNPROTECT(nProtect);
-
-  return(result_r);
-}
-
-
-// [[Rcpp::export]]
-SEXP semiCov_Cst(SEXP y_r,
-			  SEXP Time_r, 
-			  SEXP Coord_r,
-			  SEXP CvIndex_r, 
-			  SEXP n_r, 
-			  SEXP Nt_r,
-			  SEXP Cv_r,
-			  SEXP Kernel_r,
-			  SEXP h_r, 
-			  SEXP d_r,
-			  SEXP m_r,
-			  SEXP nuUnifb_r,
-			  SEXP nu_r,
-			  SEXP nThreads_r){
-	const int inc = 1;
-	const double one = 1.0;
-	const double zero = 0.0;
-	char const *lower = "L";
-	char const *ntran = "N";
-	char Trans = 'T';
-	int info, nProtect=0;
-	int p = 3;  
-    int pp = p*p;
-  
-	double *y = REAL(y_r);
-	double *Time = REAL(Time_r);
-	double *Coord = REAL(Coord_r);
-	int *CvIndex = INTEGER(CvIndex_r);
-	
-	int n = INTEGER(n_r)[0];
-	int Nt = INTEGER(Nt_r)[0];
-	int N = INTEGER(Cv_r)[0];
-	int Kernel = INTEGER(Kernel_r)[0];
-	double *h = REAL(h_r);
-	double *d = REAL(d_r);
-	int m = INTEGER(m_r)[0];
-	
-	
-	
-	
-	int nuUnifb = INTEGER(nuUnifb_r)[0];
-	double nu = REAL(nu_r)[0];
-	int nThreads = INTEGER(nThreads_r)[0];
-	// int nuUnifb = 0;
-	double *bk = (double *) R_alloc(nThreads*(1.0+static_cast<int>(floor(nuUnifb))), sizeof(double));
-	int nb = 1+static_cast<int>(floor(nuUnifb));
-		int threadID = 0;
-#ifdef _OPENMP
-  omp_set_num_threads(nThreads);
-#else
-  if(nThreads > 1){
-    warning("n.omp.threads > %i, but source not compiled with OpenMP support.", nThreads);
-    nThreads = 1;
-  }
-#endif
-    //int N = Nt*(Nt - 1)/2;
-	
-    int t, s, i, j, k;
-	double *a = (double *) R_alloc(p*nThreads, sizeof(double)); zeros(a, p*nThreads);
-	double *S1 = (double *) R_alloc(p*p*nThreads, sizeof(double)); zeros(S1, p*p*nThreads);
-	double *Index = (double *) R_alloc(N*nThreads, sizeof(double)); zeros(Index, N*nThreads);
-	
-	
-	double Kt_1, dt1, dt2, dt3, s11, s12, s13, s22, s23, s33, a1, a2, a3;
-   // s11 = n*Nt*(Nt - 1); a1 =  n*Nt*(Nt - 1);
-	SEXP S_r, Cov_r, Index_r, Var_r;
-    PROTECT(S_r = Rf_allocMatrix(REALSXP, p, p)); nProtect++;
-	PROTECT(Cov_r = Rf_allocVector(REALSXP, N)); nProtect++;
-	PROTECT(Index_r = Rf_allocVector(REALSXP, N)); nProtect++;//INTSXP
-	PROTECT(Var_r = Rf_allocMatrix(REALSXP, Nt, m)); nProtect++;
-	
-	//double *Index = REAL(Index_r);
-	// zeros(S, p*p);
-	// k = 0;
-	 double ck, cs;
-	 
-   int s1, s2;
-   for(k = 0; k < m; k++){
-// #ifdef _OPENMP
-// #pragma omp parallel for private(s, i, j, dt1, dt2, ck, threadID, s11, s12, s13, s22, s23, s33, a1, a2, a3)
-// #endif 
-	for(t = 0; t < N; t++){//(Nt - 1)
-// #ifdef _OPENMP
-    // threadID = omp_get_thread_num();
-// #endif		
-		//for(t2 = t1 + 1; t2 < Nt; t2++){ //Nt
-			s11 = 0.0; s12 = 0.0; s13 = 0.0;
-			s22 = 0.0; s23 = 0.0; s33 = 0.0;
-			a1 = 0.0; a2 = 0.0; a3 = 0.0;
-		
-			//Index[N*threadID] = t1;
-
-// #ifdef _OPENMP
-// #pragma omp parallel for private(i, j, dt1, dt2, ck, threadID) reduction(+:s11, s12, s13, s22, s23, s33, a1, a2, a3)
-// #endif
-		for(s1 = 0; s1 < n; s1++){
-		  for(s2 = 0; s2 < n; s2++){
-// #ifdef _OPENMP
-    // threadID = omp_get_thread_num();
-// #endif
-			  dt3 = dist2(Coord[s1], Coord[s1 + n], Coord[s2], Coord[s2 + n]) - d[k];
-			  cs = spCor(dt3, h[3], nu, Kernel, &bk[threadID*nb]);	
-				for(i = 0; i < Nt; i++){
-					for(j = 0; j < Nt; j++){
-						if(j!=i){
-							dt1 = Time[i] - Time[CvIndex[t] - 1];
-							dt2 = Time[j] - Time[CvIndex[t + N] - 1];
-							//Rprintf("i = %i, j = %i, CvIndex[t1]: %i; CvIndex[t1 + N]: %3.5f; \n", i , j, 
-							//CvIndex[t1], Time[CvIndex[t1 + N]]);	
-							ck = spCor(dt1, h[0], nu, Kernel, &bk[threadID*nb])*spCor(dt2, h[0], nu, Kernel, &bk[threadID*nb]);
-							s11 += ck*cs;
-							s12 += ck*cs*dt1/(h[0]*h[3]);
-							s13 += ck*cs*dt2/(h[0]*h[3]);
-							s22 += ck*cs*pow(dt1/(h[0]*h[3]), 2);
-							s23 += ck*cs*dt1*dt2/pow((h[0]*h[3]), 2);
-							s33 += ck*cs*pow(dt2/(h[0]*h[3]), 2);
-							
-							a1 += ck*cs*y[s1 + n*i]*y[s2 + n*j];
-							a2 += ck*cs*y[s1 + n*i]*y[s2 + n*j]*dt1/pow((h[0]*h[3]), 1);	
-							a3 += ck*cs*y[s1 + n*i]*y[s2 + n*j]*dt2/pow((h[0]*h[3]), 1);	
-//Rprintf("i = %i, j = %i, dt2: %3.5f; a[0]: %3.5f; a[1]: %3.5f; a[2]: %3.5f;  \n", i , j, dt2/h1, a1, a2, a3);						
-						}
-					}	
-				}	
-			}
-		  }
-		}		  
-		a[p*threadID + 0] = a1;	
-		a[p*threadID + 1] = a2;	
-		a[p*threadID + 2] = a3;
-		//Rprintf("a[0]: %3.10f; a[1]: %3.10f; a[2]: %3.10f \n", a[0], a[1], a[2]);
-		
-		S1[pp*threadID + 0] = s11; S1[pp*threadID + 3] = s12; S1[pp*threadID + 6] = s13;	
-		S1[pp*threadID + 1] = s12; S1[pp*threadID + 4] = s22; S1[pp*threadID + 7] = s23;
-		S1[pp*threadID + 2] = s13; S1[pp*threadID + 5] = s23; S1[pp*threadID + 8] = s33;	
-		
-		//Rprintf("S[0]: %3.10f; S[1]: %3.10f; S[2]: %3.10f \n", a[0], a[1], a[2]);
-		F77_NAME(dposv)(lower, &p, &inc, &S1[pp*threadID], &p, &a[p*threadID], &p, &info);
-		//Rprintf("S[0]: %3.10f; S[1]: %3.10f; S[2]: %3.10f \n", a[0], a[1], a[2]);
-		
-		 //F77_NAME(dgemm)(ntran, &Trans, &p, &p, &inc, &one, S1, &p, S1, &inc, &zero, S, &p);
-		 //F77_NAME(dcopy)(&p, S, &inc, &REAL(S_r)[p*p], &inc);
-		F77_NAME(dcopy)(&inc, &a[p*threadID], &inc, &REAL(Cov_r)[t*k], &inc);
-        //Rprintf("k: %i \n", k);
-		//k+=1;
-   }
-   
-   // variance 
-   
-   double *b = (double *) R_alloc(2, sizeof(double)); zeros(b, 2);
-   double *S2 = (double *) R_alloc(4, sizeof(double)); zeros(S2, 4);
-   p = 2; 
-   
-
-   //int s1, s2;
-   for(k = 0; k < m; k++){
-    for(t = 0; t < Nt; t++){
-		a1 = 0.0; a2 = 0.0;
-		s11 = 0.0; s12 = 0.0; 
-		s22 = 0.0;    
-// #ifdef _OPENMP
-// #pragma omp parallel for private(i, dt1, ck, threadID) reduction(+:s11, s12, s22, a1, a2)
-// #endif
-	 for(s1 = 0; s1 < n; s1++){
-		for(s2 = 0; s2 < n; s2++){
-// #ifdef _OPENMP
-    // threadID = omp_get_thread_num();
-// #endif
-      dt2 = dist2(Coord[s1], Coord[s1 + n], Coord[s2], Coord[s2 + n]) - d[k];
-	  cs = spCor(dt2, h[2], nu, Kernel, &bk[threadID*nb]);	
-	  for(i = 0; i < Nt; i++){
-			dt1 = (Time[i] - Time[t]);
-			
-			ck = spCor(dt1, h[1], nu, Kernel, &bk[threadID*nb]);		
-			a1 += pow(y[s1 + n*i], 2)*ck*cs;	
-			a2 += pow(y[s2 + n*i], 2)*ck*cs*dt1/(h[1]*h[2]);	  
-			
-			s11 += ck*cs;
-			s12 += ck*cs*dt1/(h[1]*h[2]);
-			s22 += ck*cs*pow(dt1/(h[1]*h[2]), 2);
-		 }
-	  }
-	}
-   }
-   
 	b[0] = a1;
 	b[1] = a2;
 	S2[0] = s11; S2[2] = s12;
 	S2[1] = s12; S2[3] = s22;
 	
 	F77_NAME(dposv)(lower, &p, &inc, S2, &p, b, &p, &info);
-	F77_NAME(dcopy)(&inc, &b[0], &inc, &REAL(Var_r)[t*k], &inc);
-  }
+	F77_NAME(dcopy)(&inc, &b[0], &inc, &REAL(Var_r)[t], &inc);
+   }
    
    
     //make return object
@@ -3961,15 +3385,6 @@ SEXP semiCov_Cst(SEXP y_r,
 
   return(result_r);
 }
-
-
-
-
-
-
-
-
-
 
 // [[Rcpp::export]]
 SEXP stSemiVary_C(SEXP y_r, SEXP Z_r,
