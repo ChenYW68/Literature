@@ -155,9 +155,12 @@ for(iter in 1:length(seed))
   cat("..........................................\n")
   print(round(colMeans(Result[, c(1:5, 8, 11:13)]), 4))
   
+  if(iter == length(seed)){
+    save(alpha.est, file = paste0("./data/",
+                                  tab, "_alpha_est.RData"))
+  }
 }
-save(alpha.est, file = paste0("./data/",
-                              tab, "_alpha_est.RData"))
+
 
 
 # system.time({
