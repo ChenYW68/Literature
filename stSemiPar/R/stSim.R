@@ -30,12 +30,11 @@ Inde <- F
 method <- 1
 n <- 100
 Nt <- 20
-Phis <- 0.8
-Phit <- 0.8
+Phis <- 0.2
+Phit <- 0.2
 delta <- 0.1
 tab <- paste0(Inde, "_", method, "_", n, "_", Nt, "_", 
-              substr(Phis, 3, 3), "_",  
-              substr(Phit, 3, 3)) 
+              substr(Phis, 3, 3), "D") 
 alpha.est <- matrix(NA, nrow = 2*Nt, ncol = length(seed))
 nIter = 20
 Max <- vector()
@@ -49,9 +48,9 @@ for(iter in 1:length(seed))
                     delta = delta,
                     para = list(tau.sq = 1, 
                                 Phis = as.numeric(Phis), 
-                                nu = 1, 
-                                sigma.sq.s = 1,
-                                sigma.sq.t = 1, 
+                                nu = c(0.5, 0.5), 
+                                sigma.sq.s = c(2, 1),
+                                sigma.sq.t = c(1, 1), 
                                 Phit = as.numeric(Phit),
                                 rho = 0.1,
                                 beta = c(1, 5)))
@@ -81,7 +80,7 @@ for(iter in 1:length(seed))
                 loc = simDa$loc,
                 theta = simDa$theta,
                 time = simDa$time,
-                Vc = NULL#(simDa$Vc)
+                Vc = 0#(simDa$Vc)
   )
   data <- Train
   H = expand.grid(meanH = seq(1E-2, 2E-1,, 5),
@@ -113,7 +112,6 @@ for(iter in 1:length(seed))
  # })
   # end_time <- Sys.time()
   # end_time - start_time
-  
   pdf(file = paste0("./figure", "/semiTemp", ".pdf"),
       width = 10, height = 7)
   par(mfrow = c(2, 2))
@@ -135,7 +133,7 @@ for(iter in 1:length(seed))
       alpha.est[((i - 1)*Nt + 1):((i)*Nt), iter] <- fit$theta$alpha[, i]
     }
   }
-
+  temp0$ITER <- iter
   Result = rbind(Result, temp0)
   rownames(Result) <- NULL
   if (iter == 1) {
@@ -156,8 +154,7 @@ for(iter in 1:length(seed))
   print(round(colMeans(Result[, c(1:5, 8, 11:13)]), 4))
   
   if(iter == length(seed)){
-    save(alpha.est, file = paste0("./data/",
-                                  tab, "_alpha_est.RData"))
+    save(alpha.est, file = paste0("./data/", tab, "_alpha_est.RData"))
   }
 }
 
@@ -188,5 +185,5 @@ for(iter in 1:length(seed))
 # spT.validation(simDa$theta[, 1], fit$theta$alpha[, 1])
 # spT.validation(simDa$theta[, 2], fit$theta$alpha[, 2])
 # fit$beta
-mean(Max)
-mean(Min)
+# mean(Max)
+# mean(Min)

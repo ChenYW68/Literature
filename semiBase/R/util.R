@@ -562,11 +562,10 @@ theta_fun <- function(y_ts = Y_ts$Y_ts,
   k <- 1
   
   Z.s <- matrix(0, nrow = Nt, ncol = 2*Pz)
- 
   S <- matrix(0, nrow = n*Nt, ncol = n*Nt)
   alpha <- matrix(NA, nrow = Nt, ncol = Pz)
   # y.fit <- matrix(0, nrow = n, ncol = Nt)
-  for (t in 1:Nt) {
+  for (t in 1:Nt){
     S2.s <- 0
     S11.s <- NULL
     dt <- (Time - Time[t])/h
@@ -580,21 +579,19 @@ theta_fun <- function(y_ts = Y_ts$Y_ts,
       # for(i in 1:Pz){
       #   Z.s <- cbind(Z.s, dt*(z_ts[i, s, ])/h)
       # }
-     
-      Z.s[, 1:Pz] <- t(z_ts[1:Pz, s, ])
-      Z.s[,(Pz + 1):(2*Pz)] <-  dt*t(z_ts[1:Pz, s, ])
-
+      Z.s[ , 1:Pz] <- t(z_ts[1:Pz, s, ])
+      Z.s[ , (Pz + 1):(2*Pz)] <-  dt*t(z_ts[1:Pz, s, ])
       
-      S1.s <- t(Z.s) %*% K %*% Q %*% K
+      S1.s <- Matrix::crossprod(Z.s, K) %*% Q %*% K
+      # S1.s <- t(Z.s) %*% K %*% Q %*% K
       S11.s <- cbind(S11.s, S1.s)
-      S2.s <- S2.s + (S1.s %*% Z.s)
+      S2.s <- S2.s + S1.s %*% Z.s
     }
-    
     A <- solve(S2.s) %*% S11.s
     # y_s(t) = h_s(t)Y
-    for (s in 1:n) { 
+    for(s in 1:n){ 
       for(l in 1:Pz){
-         S[k, ] <- S[k, ] + z_ts[l, s, t]*A[l, ]# + z_ts[2, j, t]*A[2, ]
+        S[k, ] <- S[k, ] + z_ts[l, s, t]*A[l, ]# + z_ts[2, j, t]*A[2, ]
       }
       k <- k + 1;
     }
@@ -603,12 +600,10 @@ theta_fun <- function(y_ts = Y_ts$Y_ts,
     # for(j in 1:Pz){
     #   y.fit[, t] <- y.fit[, t] + z_ts[j,, t]*alpha[t, j]
     # }
-    
     # y.fit1[, t] <- z_ts[1,,t] + z_ts[2,,t]
   }
    y.fit <- matrix(S %*% Y, nrow = n, ncol = Nt)
   # all.equal(as.vector(t(y.fit1)), as.vector(y.fit))
-  
   return(list(S = S, alpha = alpha, 
               Y = Y, #y.fit = y.fit, 
               y.fit = y.fit))
@@ -742,7 +737,8 @@ theta_est <- function(y_ts = simDa$Y_ts,
   storage.mode(nThreads) <- "integer"
   
   fit <- theta_Est_Ct(y, Z, Time, Q, n, Nt, Pz, 
-                      Kernel, h, nuUnifb, nu, nThreads)
+                      Kernel, h, nuUnifb, nu, 
+                      nThreads)
   
   index <- rep(1:(Nt), each  = n*Nt)
   ind = split(1:length(index), index)
@@ -766,15 +762,10 @@ theta_est <- function(y_ts = simDa$Y_ts,
   return(list(S = S, alpha = alpha, y.fit = y.fit))
 }
 
-semiCovs <- function( y, 
-                     Coord,
-                     Kernel,
-                     h, 
-                     d = NULL,
-                     prob = 1,
-                     nuUnifb,
-                     nu,
-                     nThreads){
+semiCovs <- function(y, Coord, Kernel,
+                     h, d = NULL,
+                     prob = 1, nuUnifb,
+                     nu, nThreads){
   n <- nrow(y)
   Nt <- ncol(y)
   if(is.null(d)){
@@ -801,17 +792,10 @@ semiCovs <- function( y,
   nu <- as.double(nu)
   nThreads <- as.integer(nThreads)
   
-  C <- semiCov_Cs( y, 
-                   Coord,
-                   n,
-                   m,
-                   Nt,
-                   Kernel,
-                   h, 
-                   d,
-                   nuUnifb,
-                   nu,
-                   nThreads)
+  C <- semiCov_Cs( y, Coord, n, m,
+                   Nt, Kernel,
+                   h, d, nuUnifb,
+                   nu, nThreads)
   Cov <- rep(0, m1)
   Cov[index.upp] <- 0
   Cov[index.low] <- C$C[-1]
@@ -837,16 +821,9 @@ semiCovs <- function( y,
   # return(modify.Cov(Cmat, Var)), Mcov = modify.Cov(Cmat1, Var))
 }
 
-
-
-
-semiCovt <- function( y,
-                     Time, 
-                     Kernel,
-                     h, 
-                     nuUnifb,
-                     nu,
-                     nThreads){
+semiCovt <- function(y, Time, Kernel,
+                     h, nuUnifb,
+                     nu, nThreads){
   n <- nrow(y)
   Nt <- ncol(y)
   y <- as.matrix(y)
@@ -874,8 +851,9 @@ semiCovt <- function( y,
   cv_index <- as.integer(cv_index)
   cv_len <- as.integer(cv_len)
   
-  Cov <- semiCov_Ct(y, Time, cv_index, n, Nt, cv_len, Kernel, h, 
-                   nuUnifb, nu, nThreads)
+  Cov <- semiCov_Ct(y, Time, cv_index, n, Nt,
+                    cv_len, Kernel, h, 
+                    nuUnifb, nu, nThreads)
   
   # Cmat <- matrix(0, nrow = Nt, ncol = Nt)
   Cmat[cv_index.0] <- Cov$Cov
@@ -895,10 +873,9 @@ semiCovt <- function( y,
   Cmat <- as.double(Cmat)
   return(list(ModCov = ModCov(Cmat, Var, Nt), Var.st = Var))
 }
-stSemiVary <- function( y, Z, Time, Q,
-                     Kernel = 0, 
-                     h, nuUnifb = 1, nu = 0,
-                     nThreads = 10){
+stSemiVary <- function(y, Z, Time, Q, Kernel = 0, 
+                       h, nuUnifb = 1, nu = 0,
+                       nThreads = 10){
   n = nrow(y)
   Nt = ncol(y)
   y <- as.double(y)

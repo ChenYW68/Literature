@@ -51,43 +51,70 @@ siMuIncF <- function(n = 1e2, Nt = 10,
                                         as.character(1:Nt)
                                         
                         ))
+  x.phi <- 0.2*max(D)
+  
+  L <- Matrix::chol(Matern(d = D, range = x.phi, 
+                           smoothness = 0.5, phi = 1))
 
   for(t in 1:Nt){
     X_ts[1, , t] <- rep(n, 1)#rgamma(n, 10, 1)
    
-    X_ts[2, , t] <- mvnfast::rmvn(1, rep(0, n), 
-                  sigma = exp(- D/quantile(D, probs = 0.25)), 
-                  ncores = 10)
+    X_ts[2, , t] <- Matrix::crossprod(L, rep(rnorm(n)))
+      # mvnfast::rmvn(1, rep(0, n), 
+      #             sigma = exp(- D/(x.phi)),  #quantile(D, probs = 0.2)
+      #             ncores = 10)
     mu[, t] <- as.vector(t(X_ts[1:2, , t]) %*% para$beta)
     
-    Z_ts[1, , t] <- rnorm(n, 3, 5)
-    Z_ts[2, , t] <- rnorm(n, 1, 2)
+    Z_ts[1, , t] <- rnorm(n, 0, 1)
+    Z_ts[2, , t] <- rnorm(n, 0, 1)
     
     thetaF[1, , t] <- Z_ts[1, , t]*f1(time[t])
     thetaF[2, , t] <- Z_ts[2, , t]*f2(time[t])
  
-  
   }
   
   library(RandomFields)
-  if(para$Phis == 0){
-    Vs <-  diag(n) 
-  }else{
+  # if(para$Phis == 0){
+  #   Vs <-  diag(n) 
+  # }else{
+  #   Vs <- Matern(d = D, range = para$Phis,
+  #                smoothness = para$nu,
+  #                phi = para$sigma.sq.s) 
+  # }
+  # 
+  # ## Time covariance -- phi = 0.8
+  # Vt <- diag(Nt) 
+  # Vt <- para$sigma.sq.t * para$Phit^abs(row(Vt) - col(Vt))/(1 - para$Phit^2)
+  # 
+  # ## Cross covariance
+  # Vc <- kronecker(Vs, Vt)
+  # 
+  # W_ts <- t(matrix(Matrix::crossprod(Matrix::chol(Vc), rep(rnorm(n * Nt))) + 
+  #                    rnorm(n * Nt, 0, sd = sqrt(para$tau.sq)),
+  #                  nrow = Nt, ncol = n))
+
+  #K-L expansion
+  W_st <- 0
+  p <- 2
+  # Vs <- list(p)
+  for(i in 1:p){
     Vs <- Matern(d = D, range = para$Phis,
-                 smoothness = para$nu,
-                 phi = para$sigma.sq.s) 
+                 smoothness = para$nu[i],
+                 phi = para$sigma.sq.s[i]) 
+    # Vs.2 <- Matern(d = D, range = para$Phis[2],
+    #                smoothness = para$nu[2],
+    #                phi = para$sigma.sq.s[2]) 
+    Ws <- Matrix::crossprod(Matrix::chol(Vs), rep(rnorm(n)))
+    # Ws.2 <- Matrix::crossprod(Matrix::chol(Vs.2), rep(rnorm(n)))
+    if(i == 1){
+      Wt <- rep(1, Nt)
+    }else{
+      Wt <- sqrt(2)*cos(2*pi*(1:Nt))
+    }
+    
+   W_st <- W_st + tensor::tensor(as.vector(Ws), Wt)
   }
- 
-  ## Time covariance -- phi = 0.8
-  Vt <- diag(Nt) 
-  Vt <- para$sigma.sq.t * para$Phit^abs(row(Vt) - col(Vt))/(1 - para$Phit^2)
   
-  ## Cross covariance
-  Vc <- kronecker(Vs, Vt)
-  
-  W_ts <- t(matrix(crossprod(chol(Vc), rep(rnorm(n * Nt)))+ 
-                     rnorm(n * Nt, 0, sd = sqrt(para$tau.sq)),
-                   nrow = Nt, ncol = n))
   
   
   # model <- RMnsst(phi = RMexp(scale = para$Phis, 
@@ -103,7 +130,9 @@ siMuIncF <- function(n = 1e2, Nt = 10,
   # W_ts <- RFsimulate(model, x = Coords[, 1],
   #                y = Coords[, 2], T = 1:Nt)
   
-  y <-  thetaF[1,,] + thetaF[2,,] + mu + W_ts
+  y <-  thetaF[1,,] + thetaF[2,,] + mu + W_st + 
+        matrix(rnorm(n*Nt, sd = sqrt(para$tau.sq)), 
+               nrow = n, ncol = Nt)
   
   theta <- matrix(0, nrow = Nt, ncol = 2)
   for (i in 1:2) {
@@ -129,9 +158,9 @@ siMuIncF <- function(n = 1e2, Nt = 10,
                   theta = theta, 
                   D = D,
                   loc = Coords,
-                  W_ts = W_ts,
-                  Vt = Vt,
-                  Vs = Vs,
-                  Vc = Vc)
+                  W_ts = W_st,
+                  Vt = NULL,
+                  Vs = NULL,
+                  Vc = NULL)
   return(Yts_Xts)
 }

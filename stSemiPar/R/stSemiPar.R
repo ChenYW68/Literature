@@ -61,9 +61,9 @@ fix.semi.residuals <- fix.residuals - theta$y.fit
 varH <- 1
 error <- 1
 curr.alpha <- theta$alpha[, 1:2]
-if(!is.null(Vc)){
-  Q <- solve(Vc)
-}
+# if(!is.null(Vc)){
+#   Q <- solve(Vc)
+# }
 # DQ = gpuR::eigen(Q)
 # L = DQ$vectors %*% sqrt(diag(DQ$values)) %*% t(DQ$vectors)
 # L <- solve(t(chol(Vc)))
@@ -74,7 +74,7 @@ while((iter < nIter) & (error > 1e-3)){
   varZ <- time
   residual.sq <- as.vector(colMeans(fix.semi.residuals)^2)
   # varH <- KernSmooth::dpill(varZ, residual.sq)
-  if(is.null(Vc)){
+  if(Vc == 1){
   # if(is.na(varH)){
    varH <- lokern::glkerns(varZ, residual.sq)$bandwidth
   # }
@@ -116,6 +116,15 @@ while((iter < nIter) & (error > 1e-3)){
    Q <- kronecker(Matrix::solve(Cs$ModCov$Cov),
                   Matrix::solve(Ct$ModCov$Cov))
    #Q = kronecker(diag(n), solve(Ct$Cmat))
+  }else{
+    Ct <- semiCovt(fix.semi.residuals,
+                   Time = time, 
+                   Kernel = 0,
+                   h = c(h[3], varH),
+                   nuUnifb = 1,
+                   nu = 0.8,
+                   nThreads = 10)
+    Q <- Matrix::solve(Ct$ModCov$Cov)
   }
     
   if(Inde){
@@ -125,21 +134,22 @@ while((iter < nIter) & (error > 1e-3)){
     
   #2. Update beta
   if(!is.null(Px)){
-    # if(is.null(Vc)){
-    # XX <- XY <- 0
-    # for(s in 1:n){
-    #  XX <- XX + x_ts[, s, ] %*% Q %*% t(x_ts[, s, ])
-    #  XY <- XY + x_ts[, s, ] %*% Q %*% (y_ts[s, ] - theta$y.fit[s, ])
-    # }
-    # beta <- solve(XX) %*% XY
-    # }else{
+    if(Vc == 1){
       XX <- NULL
       for(i in 1:Px){
         XX <- cbind(XX, as.vector(t(x_ts[i, , ])))
       }
-      beta <- solve(t(XX) %*% Q %*% XX) %*% t(XX) %*% Q %*% as.vector(t((y_ts - theta$y.fit)))
+      beta <- solve(t(XX) %*% Q %*% XX) %*% t(XX) %*% Q %*% 
+        as.vector(t((y_ts - theta$y.fit)))
       # beta <- as.vector(beta)
-    # }
+    }else{
+      XX <- XY <- 0
+      for(s in 1:n){
+        XX <- XX + x_ts[, s, ] %*% Q %*% t(x_ts[, s, ])
+        XY <- XY + x_ts[, s, ] %*% Q %*% (y_ts[s, ] - theta$y.fit[s, ])
+      }
+      beta <- solve(XX) %*% XY
+    }
     # beta[1:2, 1] <- c(1, 5) 
     fix.effect.fit <- X_ts_Transf(Nt, x_ts, beta)
     fix.residuals <- y_ts - fix.effect.fit
@@ -162,21 +172,22 @@ while((iter < nIter) & (error > 1e-3)){
     
   #3. Update theta
   if(method == 1){
-    # theta <- theta_fun(y_ts = fix.residuals,
-    #                    z_ts = z_ts,
-    #                    Time = time,
-    #                    Q = Q, #diag(Nt)
-    #                    h = h[2]
-    #                   )
-    theta <- theta_est(y_ts = fix.residuals, 
-               z_ts = z_ts,
-               Time = time,
-               Q =  Q,
-               Kernel = 0,
-               h = h[1],
-               nuUnifb = 0,
-               nu = 0,
-               nThreads = 10)
+    theta <- theta_fun(y_ts = fix.residuals,
+                       z_ts = z_ts,
+                       Time = time,
+                       Q = Q, #diag(Nt)
+                       h = h[1]
+                      )
+    
+    # theta <- theta_est(y_ts = fix.residuals, 
+    #            z_ts = z_ts,
+    #            Time = time,
+    #            Q =  Q,
+    #            Kernel = 0,
+    #            h = h[1],
+    #            nuUnifb = 0,
+    #            nu = 0,
+    #            nThreads = 10)
     
     # theta <- theta_Cov_fun(y_ts = fix.residuals,
     #               z_ts = z_ts,
@@ -253,8 +264,10 @@ while((iter < nIter) & (error > 1e-3)){
 # all.equal(fix.effect.fit, fit)
 # 
 
-return(list(beta = beta, theta = theta, #C = kronecker(Cs$ModCov$Cov,
-                                                     # Ct$ModCov$Cov), 
+return(list(beta = beta, theta = theta, 
+            Cs = NULL, #Cs$ModCov$Cov,
+            Ct = Ct$ModCov$Cov,
+            #C = kronecker(Cs$ModCov$Cov, Ct$ModCov$Cov), 
             # S = theta$S + S.beta - theta$S %*% S.beta,
             fit.value = fix.effect.fit + theta$y.fit,
             y_ts = y_ts, fix.effect.fit = fix.effect.fit,
