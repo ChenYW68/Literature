@@ -12,17 +12,26 @@ f2 <- function(t){
   z = (1 - cos(t*pi))#cos((sqrt((x - 0.5)^2 + (y - 0.5)^2))*pi)#+f2d(x)#exp(-((x - 0.5)^2+ (y - 0.5)^2)/100)
   return(z)
 }
+f3 <- function(x)
+{
+  g <- function(z)
+    return(exp( - (z - 1)^2) + exp( -0.8 * (z + 1)^2)
+           - 0.05 * sin(8 * (z + 0.1)))
+  g(x)
+}
 # t = seq(0, 1,, 10)
 # plot(t, f2(t))
 siMuIncF <- function(n = 1e2, Nt = 10, 
                      x.0 = c(0),
                      y.0 = c(0), 
                      delta = 0.1,
-                     para = list(tau.sq = 0.5, Phis = 0.3, 
-                                 nu = 1, sigma.sq.s = 1,
+                     para = list(Phis = 0.3, 
+                                 nu = 1, 
+                                 sigma.sq.s = 1,
                                  sigma.sq.t = 1, 
-                                 Phit = 0.8,
-                                 rho = 0.1,
+                                 # Phit = 0.8,
+                                 # rho = 0.1,
+                                 tau.sq = 0.5, 
                                  beta = c(1, 1)),
                      nRatio = 0.8){
   x.coords <- seq(0, 1, , n)#x.0 + (1:(n - 1))*delta
@@ -45,8 +54,9 @@ siMuIncF <- function(n = 1e2, Nt = 10,
                                   c(1:n),
                                   as.character(1:Nt)              
                 ))
-  Z_ts <- thetaF <- array(0, dim = c(2, nrow(Coords), Nt),
-                        dimnames = list(c("Intercept", "ThetaZ"), 
+  Pz <- 1
+  Z_ts <- thetaF <- array(0, dim = c(Pz, nrow(Coords), Nt),
+                        dimnames = list(paste0("Z", 1:Pz), 
                                         c(1:n), 
                                         as.character(1:Nt)
                                         
@@ -57,7 +67,7 @@ siMuIncF <- function(n = 1e2, Nt = 10,
                            smoothness = 0.5, phi = 1))
 
   for(t in 1:Nt){
-    X_ts[1, , t] <- rep(n, 1)#rgamma(n, 10, 1)
+    X_ts[1, , t] <- rnorm(n, 0, 1)#rnorm(n, 0, 1) #rep(1, n)#
    
     X_ts[2, , t] <- Matrix::crossprod(L, rep(rnorm(n)))
       # mvnfast::rmvn(1, rep(0, n), 
@@ -65,11 +75,11 @@ siMuIncF <- function(n = 1e2, Nt = 10,
       #             ncores = 10)
     mu[, t] <- as.vector(t(X_ts[1:2, , t]) %*% para$beta)
     
-    Z_ts[1, , t] <- rnorm(n, 0, 1)
-    Z_ts[2, , t] <- rnorm(n, 0, 1)
+    Z_ts[1, , t] <- rep(1, n)#rnorm(n, 0, 1)#rnorm(n, 0, 1)
+    # Z_ts[2, , t] <- Matrix::crossprod(L, rep(rnorm(n)))
     
     thetaF[1, , t] <- Z_ts[1, , t]*f1(time[t])
-    thetaF[2, , t] <- Z_ts[2, , t]*f2(time[t])
+    # thetaF[2, , t] <- Z_ts[2, , t]*f2(time[t])
  
   }
   
@@ -95,7 +105,7 @@ siMuIncF <- function(n = 1e2, Nt = 10,
 
   #K-L expansion
   W_st <- 0
-  p <- 2
+  p <- 1
   # Vs <- list(p)
   for(i in 1:p){
     Vs <- Matern(d = D, range = para$Phis,
@@ -106,15 +116,15 @@ siMuIncF <- function(n = 1e2, Nt = 10,
     #                phi = para$sigma.sq.s[2]) 
     Ws <- Matrix::crossprod(Matrix::chol(Vs), rep(rnorm(n)))
     # Ws.2 <- Matrix::crossprod(Matrix::chol(Vs.2), rep(rnorm(n)))
-    if(i == 1){
-      Wt <- rep(1, Nt)
-    }else{
-      Wt <- sqrt(2)*cos(2*pi*(1:Nt))
-    }
+    # if(i == 1){
+    #   Wt <- rep(1, Nt)
+    # }else{
+      Wt <- sqrt(2)*cos(2*pi*time)
+    # }
     
    W_st <- W_st + tensor::tensor(as.vector(Ws), Wt)
   }
-  
+  Vt <-  2*para$sigma.sq.s[1]*tensor::tensor(cos(2*pi*time), cos(2*pi*time))
   
   
   # model <- RMnsst(phi = RMexp(scale = para$Phis, 
@@ -130,17 +140,20 @@ siMuIncF <- function(n = 1e2, Nt = 10,
   # W_ts <- RFsimulate(model, x = Coords[, 1],
   #                y = Coords[, 2], T = 1:Nt)
   
-  y <-  thetaF[1,,] + thetaF[2,,] + mu + W_st + 
-        matrix(rnorm(n*Nt, sd = sqrt(para$tau.sq)), 
-               nrow = n, ncol = Nt)
-  
-  theta <- matrix(0, nrow = Nt, ncol = 2)
-  for (i in 1:2) {
+  y <-  thetaF[1,,] +  mu + W_st #+   thetaF[2,,] +
+        # matrix(rnorm(n*Nt, sd = sqrt(para$tau.sq)), 
+        #        nrow = n, ncol = Nt)
+  p.theta = 1
+  theta <- matrix(0, nrow = Nt, ncol = p.theta)
+  for (i in 1:p.theta) {
     if(i == 1){
       theta[, i] <- f1(time)
     }
     if(i == 2){
-      theta[, i] <- f2(time)
+      theta[, i] <- f3(time)
+    }
+    if(i == 3){
+      theta[, i] <- f1(time)
     }
   }
   
@@ -159,8 +172,8 @@ siMuIncF <- function(n = 1e2, Nt = 10,
                   D = D,
                   loc = Coords,
                   W_ts = W_st,
-                  Vt = NULL,
-                  Vs = NULL,
+                  Vt = Vt,
+                  Vs = Vs,
                   Vc = NULL)
   return(Yts_Xts)
 }

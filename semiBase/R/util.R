@@ -700,6 +700,54 @@ modify.Cov <- function(est.Cov, est.Var){
   diag(Cmat) <- est.Var
   return(Cmat)
 }
+#######################################################
+#######################################################
+X_ts_Transf <- function(X_ts, beta)
+{
+  Nt <- dim(X_ts)[3]
+  p <- dim(X_ts)[1]
+  t = seq_len(Nt)
+  beta <- matrix(beta, ncol = p)
+  if(nrow(beta) == 1){
+    if(p != 1){
+      x_ts = sapply(t, function(t) t(X_ts[, , t]) %*% as.vector(beta)
+                    , simplify = "matrix")
+    }else{
+      x_ts = sapply(t, function(t) X_ts[1, , t] * as.vector(beta)
+                    , simplify = "matrix")
+    }
+    
+  }else{
+    if(p != 1){
+      x_ts = sapply(t, function(t) t(X_ts[, , t]) %*% as.vector(beta[t, ])
+                  , simplify = "matrix")
+    }else{
+      x_ts = sapply(t, function(t) X_ts[1, , t] * beta[t, 1]
+                    , simplify = "matrix")
+    }
+  }
+  
+  return(x_ts)
+}
+theta.WLS <- function(y, X, Q = NULL, n, Px, Pz){
+  if(is.null(Q)){
+    H0 <- solve(t(X) %*% X) %*% t(X)
+  }else{
+    H0 <- solve(t(X) %*% Q %*% X) %*% t(X) %*% Q
+  }
+  H <- X %*% H0
+  
+  est <- H0 %*% as.vector(y)
+  if(!is.null(Px)){
+    beta <- est[1:Px]
+    alpha <- matrix(est[-c(1:Px), 1], nrow = Pz) %>% t()
+  }else{
+    alpha <- matrix(est[, 1], nrow = Pz) %>% t()
+    beta <- NULL
+  }
+  y.fit <- matrix(H %*% as.vector(y),  nrow = n)
+  return(list(beta = beta, alpha = alpha, y.fit = y.fit, S = H))
+}
 
 theta_est <- function(y_ts = simDa$Y_ts, 
                       z_ts = simDa$Z_ts,
@@ -762,18 +810,22 @@ theta_est <- function(y_ts = simDa$Y_ts,
   return(list(S = S, alpha = alpha, y.fit = y.fit))
 }
 
-semiCovs <- function(y, Coord, Kernel,
-                     h, d = NULL,
-                     prob = 1, nuUnifb,
-                     nu, nThreads){
+semiCovs <- function(y, Coord, Kernel = 0,
+                     h = 1e-1, d = NULL,
+                     prob = 1, nuUnifb = 1,
+                     nu = 0.5, nThreads = 10){
   n <- nrow(y)
   Nt <- ncol(y)
+  thresh <- 1
   if(is.null(d)){
     d <- fields::rdist(Coord, Coord)
+    thresh <- max(d)*prob
+    rho.space <- fields::Wendland(d, theta = thresh , dimension = 1, k =1)
+    # rho.space[which(rho.space > 0)] <- 1
     d <- d[lower.tri(d, diag = F)]
   }
   m1 <- length(d)
-  thresh <- max(d)*prob#quantile(d, probs = prob)
+  # thresh <- #quantile(d, probs = prob)
   index.upp <- which(d > thresh)
   index.low <- which(d <= thresh)
   
@@ -816,16 +868,25 @@ semiCovs <- function(y, Coord, Kernel,
   Var <- as.double(Var)
   Cmat <- as.double(Cmat)
   # a <- ModCov(Cmat, Var, n)
-  return(list(ModCov = ModCov(Cmat, Var, n), Var.s = C$C[1]))
+  ModCov.0 <- ModCov(Cmat, Var, n)
+  ModCov.0$Cov <- ModCov.0$Cov/C$C[1]
+  Cov <- rho.space * ModCov.0$Cov
+  return(list(ModCov = ModCov.0, Cov = Cov, Var.s = C$C[1]))
   # return(ModCov(Cmat, Var, n))
   # return(modify.Cov(Cmat, Var)), Mcov = modify.Cov(Cmat1, Var))
 }
 
-semiCovt <- function(y, Time, Kernel,
-                     h, nuUnifb,
-                     nu, nThreads){
+semiCovt <- function(y, Time, Kernel = 0,
+                     h = 1e-1, prob = 1, nuUnifb = 1,
+                     nu = 0.5, nThreads = 10){
   n <- nrow(y)
   Nt <- ncol(y)
+  
+  # Vt <- diag(Nt)
+  # Vt <- abs(row(Vt) - col(Vt))
+  Vt <- rdist(Time , Time)
+  thresh <- max(Vt)*prob
+  rho.time <- fields::Wendland(Vt, theta = thresh , dimension = 1, k =1)
   y <- as.matrix(y)
   y <- as.double(y)
   Time <- as.double(Time)
@@ -844,8 +905,16 @@ semiCovt <- function(y, Time, Kernel,
 
   # cv_index <- (which(lower.tri(Cmat), arr.ind = T))
   # data.table::setorderv(cv_index, c("row", "col"))
+  # method 1
+  lower <- which(lower.tri(rho.time), arr.ind = T)
+  index <- data.frame(as.data.frame(lower), value = rho.time[lower])
+  cv_index.0 <- cv_index <- as.matrix(index[index$value!=0, 1:2])
+  index.upp <- as.matrix(index[index$value==0, 1:2])
   
-  cv_index.0 <- cv_index <- which(lower.tri(Cmat), arr.ind = T)
+  # method 2
+  # cv_index.0 <- cv_index <- which(lower.tri(Cmat), arr.ind = T)
+  
+  
   cv_len <- nrow(cv_index)
   
   cv_index <- as.integer(cv_index)
@@ -857,6 +926,7 @@ semiCovt <- function(y, Time, Kernel,
   
   # Cmat <- matrix(0, nrow = Nt, ncol = Nt)
   Cmat[cv_index.0] <- Cov$Cov
+  Cmat[index.upp] <- 0
   # print(Cmat)
   
   # Cmat <- (t(Cmat) + Cmat)
@@ -871,8 +941,141 @@ semiCovt <- function(y, Time, Kernel,
   Var <- Cov$Var
   Var <- as.double(Var)
   Cmat <- as.double(Cmat)
-  return(list(ModCov = ModCov(Cmat, Var, Nt), Var.st = Var))
+  ModCov.0 <- ModCov(Cmat, Var, Nt)
+  Cov <- rho.time * ModCov.0$Cov
+  return(list(ModCov = ModCov.0, Cov = Cov, Var.t = Var))
 }
+semiCovst <- function(y, Time, Coord,
+                      Kernel = 0, h = 0.1, d = NULL,
+                      prob = 1, nuUnifb = 1,
+                      nu = 0.5, nThreads = 10){
+  
+  # y = simDa$Y_ts
+  # Time <- simDa$time
+  # Coord <- simDa$loc
+  # Kernel <- 0
+  # h <- 0.1
+  # d = NULL
+  # prob = 1
+  # nuUnifb = 1
+  # nu = 0.5
+  # nThreads = 1
+  
+  y <- as.matrix(y)
+  n <- nrow(y)
+  Nt <- ncol(y)
+  
+  thresh.s <- 1
+  if(is.null(d)){
+    d <- fields::rdist(Coord, Coord)
+    thresh.s <- max(d)*prob[1]
+    rho.space <- fields::Wendland(d, theta = thresh.s , dimension = 1, k =1)
+    # rho.space[which(rho.space > 0)] <- 1
+    # lower.s <- which(lower.tri(d), arr.ind = T)
+    # d <- d[lower.tri(d, diag = F)]
+    
+    
+    lower.s <- which(lower.tri(rho.space), arr.ind = T)
+    index <- data.frame(as.data.frame(lower.s),
+                        value = rho.space[lower.s])
+    index.low.s <- as.matrix(index[index$value!=0, 1:2])
+    index.upp.s <- as.matrix(index[index$value==0, 1:2])
+  }
+  # m1 <- length(d)
+  # thresh <- #quantile(d, probs = prob)
+  # index.upp <- which(d > thresh.s)
+  # index.low <- which(d <= thresh.s)
+  
+  d <- c(d[index.low.s])
+  m <- length(d)
+  
+  
+  Vt <- rdist(Time , Time)#diag(Nt)
+  # Vt <- abs(row(Vt) - col(Vt))
+  thresh.t <- max(Vt)*prob[2]
+  rho.time <- fields::Wendland(Vt, theta = thresh.t , dimension = 1, k =1)
+  
+  if(length(h)!=4){h <- rep(h, 4)}
+  
+  Cmat <- matrix(0, nrow = n*Nt, ncol= n*Nt)
+  
+  # cv_index <- (which(lower.tri(Cmat), arr.ind = T))
+  # data.table::setorderv(cv_index, c("row", "col"))
+  # method 1
+  lower.t <- which(lower.tri(rho.time), arr.ind = T)
+  index <- data.frame(as.data.frame(lower.t), value = rho.time[lower.t])
+  cv_index.0 <- CvIndex <- as.matrix(index[index$value!=0, 1:2])
+  index.upp <- as.matrix(index[index$value==0, 1:2])
+  
+  
+  
+  # method 2
+  # cv_index.0 <- cv_index <- which(lower.tri(Cmat), arr.ind = T)
+  
+  
+  cv_len <- nrow(CvIndex)
+  
+  storage.mode(y) <- "double"
+  storage.mode(Time) <- "double"
+  storage.mode(Coord) <- "double"
+  
+  storage.mode(CvIndex) <- "integer"
+  storage.mode(n) <- "integer"
+  storage.mode(Nt) <- "integer"
+  storage.mode(cv_len) <- "integer"
+  storage.mode(Kernel) <- "integer"
+  
+  storage.mode(h) <- "double"
+  storage.mode(d) <- "double"
+  storage.mode(m) <- "integer"
+  storage.mode(nuUnifb) <- "integer"
+  storage.mode(nu) <- "double"
+  storage.mode(nThreads) <- "integer"
+  Rcpp::sourceCpp("E:/Literature/semiBase/src/nonPara.cpp")
+  Cst <- semiCov_Cst( y, Time, Coord, CvIndex, 
+                      n, Nt, cv_len, Kernel, h, 
+                      d, m, nuUnifb, nu, nThreads)
+  
+  Ct <- semiCovt(y, Time, Kernel, h,
+                 prob = 1, nuUnifb, 
+                 nu, nThreads)
+  
+  
+  for(i in 1:nrow(index.low.s)){
+    temp <- matrix(0, nrow = Nt, ncol= Nt)
+    temp[cv_index.0] <- Cst$Cov[, i]
+    temp <- temp + t(temp)
+    diag(temp) <- Cst$Var[, i]
+    
+
+    Cmat[((index.low.s[i, 1] - 1)*Nt + 1):(index.low.s[i, 1]*Nt), 
+         ((index.low.s[i, 2] - 1)*Nt + 1):(index.low.s[i, 2]*Nt)] <- temp
+  }
+  Cmat <- t(Cmat) + Cmat
+  for(i in 1:n){
+    Cmat[((i - 1)*Nt + 1):(i*Nt), ((i - 1)*Nt + 1):(i*Nt)] <- Ct$Cov
+  }
+  Cmat0 <- Cmat
+  Var <- diag(Cmat)
+  diag(Cmat) <- 0
+  Var <- as.double(Var)
+  Cmat <- as.double(Cmat)
+  # a <- ModCov(Cmat, Var, n)
+  ModCov.0 <- ModCov(Cmat, Var, n*Nt)
+  Cov <- ModCov.0$Cov * kronecker(rho.space, rho.time)
+  return(list(ModCov = ModCov.0, Cov = Cov, C = Cmat0, Var.st = Var))
+}
+
+
+
+
+
+
+
+
+
+
+
 stSemiVary <- function(y, Z, Time, Q, Kernel = 0, 
                        h, nuUnifb = 1, nu = 0,
                        nThreads = 10){

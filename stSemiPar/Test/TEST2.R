@@ -1,23 +1,29 @@
 source("./R/PSTVB_Packages.R")
 source("./R/SetSimuModel.R")
 source("E:/Literature/semiBase/R/util.R")
-simDa <- siMuIncF(n = 100, Nt = 20, 
+Rcpp::sourceCpp("E:/Literature/semiBase/src/nonPara.cpp")
+n = 100
+Nt = 20
+simDa <- siMuIncF(n = n, Nt = Nt, 
                   x.0 = c(0),
                   y.0 = c(0), 
                   delta = 0.1,
-                  para = list(tau.sq = 0.5, 
-                              Phis = 0.8, 
-                              nu = 1, 
-                              sigma.sq.s = 10,
-                              sigma.sq.t = 1, 
-                              Phit = 0.5,
-                              rho = 0.5,
-                              beta = c(1, 5)))
+                  para = list(
+                    Phis = as.numeric(0.2), 
+                    nu = c(0.5, 0.5), 
+                    sigma.sq.s = c(5e-1, 1e-1),
+                    sigma.sq.t = c(1, 1), 
+                    # Phit = as.numeric(Phit),
+                    # rho = 0.1,
+                    # tau.sq = 0, 
+                    beta = c(1, 5)))
+D <- fields::rdist(simDa$loc, simDa$loc)
 simDa$Vt
 simDa$Vc
 simDa$Vs
 
-dd <- simDa$D[upper.tri(simDa$D)]
+dd <- simDa$D[lower.tri(simDa$D)]
+range(dd)
 Time <- simDa$time
 t1 = Time[1]
 t2 = Time[2]
@@ -27,6 +33,14 @@ coord = simDa$loc
 CovEst <- function(t1, t2, y = simDa$W_ts,
                    coord = simDa$loc, d, 
                    Time, h = c(5e-1, 5e-1)){
+  
+  # t1 = Time[t] 
+  # t2 = Time[t] 
+  # y = simDa$Y_ts 
+  # coord = simDa$loc
+  # dd <- simDa$D[upper.tri(simDa$D)]
+  # d = dd[k]
+  # t1 = t2 = 0
   # y = Y_ts$W_ts
   Nt <- ncol(y)
   n <- nrow(y)
@@ -41,9 +55,9 @@ CovEst <- function(t1, t2, y = simDa$W_ts,
   
   K2 <- exp(-abs(d2)/h[2])
   
-  A1 <- A2 <- 0
+  A11 <- A12 <- A21 <- A22 <- 0
   R1 <- matrix(c(1, NA, NA), ncol = 1)
- 
+  R2 <- matrix(c(1, NA), ncol = 1)
   # for(k in 1:m){
     for(s1 in 1:n){
       for(s2 in 1:n){
@@ -51,43 +65,82 @@ CovEst <- function(t1, t2, y = simDa$W_ts,
         for(i in 1:Nt){
           for(j in 1:Nt){
             if(j!=i){
-              
               R1[2, 1] <- (Time[i] - t1)/h[2]
               R1[3, 1] <- (Time[j] - t2)/h[2]
               # cat(R1[3, 1], "\n")
-              A1 <- A1 + (R1%*% t(R1))*K1[i]*K2[j]*cs
-              A2 <- A2 + R1*K1[i]*K2[j]*cs*y[s1, i]*y[s2, j]
+              A11 <- A11 + (R1%*% t(R1))*K1[i]*K2[j]*cs
+              A12 <- A12 + R1*K1[i]*K2[j]*cs*y[s1, i]*y[s2, j]
               #print(round(c(i - 1, j -1,  R1[3, 1], as.vector(A2)), 3))
+            }else{
+              R2[2, 1] <- (Time[i] - t1)/h[2]
+              # cat(R1[3, 1], "\n")
+              A21 <- A21 + (R2%*% t(R2))*K1[i]*cs
+              A22 <- A22 + R2*K1[i]*cs*y[s1, i]*y[s2, i]
             }
           }
         }
       }
     # }
-  alpha <- solve(A1) %*% A2
+    }
+  # (solve(A21) %*% A22)[1]  
+  
+return(list(alpha1 = (solve(A11) %*% A12)[1],
+            alpha2 = (solve(A21) %*% A22)[1]
+            ))
 }
-return(alpha[1])
-}
-h <- c(5e-1, 5e-1)
+h <- c(1e-1, 1e-1)
 Nt <- ncol(simDa$W_ts)
 Cov <- matrix(NA, nrow = Nt, ncol = Nt)
 Time <- simDa$time
-Vc <- simDa$Vc[(Nt + 1):(2*Nt), 1:Nt]
+# Vc <- simDa$Vc[(Nt + 1):(2*Nt), 1:Nt]
+Var <- vector()
 for(k in 1:1){
 for(t1 in 1:(Nt - 1)){
   for(t2 in (t1 + 1):Nt){
-    Cov[t1, t2] <- CovEst(Time[t1], Time[t2], y = simDa$W_ts, 
+    Cov[t1, t2] <- CovEst(t1 = Time[t1], t2 = Time[t2],
+                          y = simDa$Y_ts,
                           coord = simDa$loc, d = dd[k],
-                          Time = Time, h = h)
-    cat("t = ", t1, "Cov = ",  Cov[t1, t2],
-        "; True = ", Vc[t1, t2],"\n")
-    # if(t == (s + 1)){
-    plot(Vc[1:t1, ], Cov[1:t1, ])
+                          Time = Time, h = h)$alpha1
+    # cat("t = ", t1, "Cov = ",  Cov[t1, t2],
+    #     "; True = ", Vc[t1, t2],"\n")
+    # # if(t == (s + 1)){
+    # plot(Vc[1:t1, ], Cov[1:t1, ])
     # }
     # points(simDa$train.sigmaMat[s, (s + 1):t],
     #      Cov[s, (s + 1):t])
   }
+  # Var[t] <- CovEst(t1 = Time[t], t2 = Time[t], y = simDa$Y_ts, 
+  #                       coord = simDa$loc, d = dd[k],
+  #                       Time = Time, h = h)$alpha2
+  
  }
 }
+
+source("E:/Literature/semiBase/R/util.R")
+Rcpp::sourceCpp("E:/Literature/semiBase/src/nonPara.cpp")
+start_time <- Sys.time()
+C1 <- semiCovst(y = simDa$Y_ts, Time = Time, 
+                Coord = simDa$loc,
+                      Kernel = 0, h = h, d = NULL,
+                      prob = 0.1, nuUnifb = 1,
+                      nu = 0.5, nThreads = 10)
+end_time <- Sys.time()
+end_time - start_time
+# all.equal(C1$C, C2$C)
+# A21
+# A22
+Cov
+C2$C[5:8, 1:4]
+# C0$Var.st[, 4]
+
+
+
+
+
+
+
+
+
 
 
 source("./R/PSTVB_Packages.R")

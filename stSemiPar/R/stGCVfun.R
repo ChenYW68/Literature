@@ -8,8 +8,8 @@ stGCVfun <- function(X){
                    loc = data$loc,
                    Vc =  data$Vc,
                    time = data$time,
-                   h = c(H[X, 1], H[X, 2], H[X, 3]),
-                   Inde = Inde,
+                   h = as.vector(H[X, ]),
+                   prob = prob,
                    method = method,
                    nIter = nIter)
   # plot(fit$fit.value, fit$y_ts)
@@ -59,7 +59,7 @@ stGCVfun <- function(X){
   #     C2 <- Matrix::bdiag(C2, C1)
   #   }
   # }else{
-    # C2 <- fit$C  %*% fit$C
+    # C2 <- fit$C  %*% fit$C%*% fit$C
   # }
   
   
@@ -79,7 +79,8 @@ stGCVfun <- function(X){
 
 GCVparaSemi <- function(data, H = expand.grid(covH = seq(1E-2, 1,, 5),
                              meanH = seq(1E-2, 1,, 5)), 
-                        Inde = T, method = 1, nIter = 10, 
+                        prob = c(1, 1), 
+                        method = 1, nIter = 10, 
                         nThreads = 5)
 {
   
@@ -88,10 +89,12 @@ GCVparaSemi <- function(data, H = expand.grid(covH = seq(1E-2, 1,, 5),
   parallel::clusterEvalQ(cl, library(dplyr))
   parallel::clusterEvalQ(cl, library(data.table))
   parallel::clusterEvalQ(cl, library(Matrix))
+  parallel::clusterEvalQ(cl, library(fields))
+  
   # parallel::clusterEvalQ(cl, library(semiBase))
   
   parallel::clusterExport(cl = cl
-                          , varlist = c("data", "H", "Inde"
+                          , varlist = c("data", "H", "prob"
                                         , "method" ,"nIter"
                                         , "spT.validation")
                           , envir = environment())
