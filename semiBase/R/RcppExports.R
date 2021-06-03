@@ -69,3 +69,31 @@ semiPred <- function(y_r, Z_r, TestZ_r, n_r, nTest_r, coords_r, TestCoords_r, B_
     .Call(`_semiBase_semiPred`, y_r, Z_r, TestZ_r, n_r, nTest_r, coords_r, TestCoords_r, B_r, F_r, Q_r, nnIndx_r, nnIndxLU_r, Kernel_r, h_r, GeomVariable_r, nThreads_r)
 }
 
+theta_Wang_Cst <- function(y_r, Z_r, Time_r, Q_r, H_r, n_r, Nt_r, Pz_r, Kernel_r, h_r, nuUnifb_r, nu_r, nThreads_r) {
+    .Call(`_semiBase_theta_Wang_Cst`, y_r, Z_r, Time_r, Q_r, H_r, n_r, Nt_r, Pz_r, Kernel_r, h_r, nuUnifb_r, nu_r, nThreads_r)
+}
+
+theta_Est_Ct <- function(y_r, Z_r, Time_r, Q_r, n_r, Nt_r, Pz_r, Kernel_r, h_r, nuUnifb_r, nu_r, nThreads_r) {
+    .Call(`_semiBase_theta_Est_Ct`, y_r, Z_r, Time_r, Q_r, n_r, Nt_r, Pz_r, Kernel_r, h_r, nuUnifb_r, nu_r, nThreads_r)
+}
+
+ModCov <- function(C_r, Var_r, n_r) {
+    .Call(`_semiBase_ModCov`, C_r, Var_r, n_r)
+}
+
+semiCov_Cs <- function(y_r, Coord_r, n_r, m_r, N_r, Kernel_r, h_r, d_r, nuUnifb_r, nu_r, nThreads_r) {
+    .Call(`_semiBase_semiCov_Cs`, y_r, Coord_r, n_r, m_r, N_r, Kernel_r, h_r, d_r, nuUnifb_r, nu_r, nThreads_r)
+}
+
+semiCov_Ct <- function(y_r, Time_r, CvIndex_r, n_r, Nt_r, Cv_r, Kernel_r, h_r, nuUnifb_r, nu_r, nThreads_r) {
+    .Call(`_semiBase_semiCov_Ct`, y_r, Time_r, CvIndex_r, n_r, Nt_r, Cv_r, Kernel_r, h_r, nuUnifb_r, nu_r, nThreads_r)
+}
+
+semiCov_Cst <- function(y_r, Time_r, Coord_r, CvIndex_r, n_r, Nt_r, Cv_r, Kernel_r, h_r, d_r, m_r, nuUnifb_r, nu_r, nThreads_r) {
+    .Call(`_semiBase_semiCov_Cst`, y_r, Time_r, Coord_r, CvIndex_r, n_r, Nt_r, Cv_r, Kernel_r, h_r, d_r, m_r, nuUnifb_r, nu_r, nThreads_r)
+}
+
+stSemiVary_C <- function(y_r, Z_r, Time_r, Q_r, n_r, Nt_r, Pz_r, Kernel_r, h_r, nuUnifb_r, nu_r, nThreads_r) {
+    .Call(`_semiBase_stSemiVary_C`, y_r, Z_r, Time_r, Q_r, n_r, Nt_r, Pz_r, Kernel_r, h_r, nuUnifb_r, nu_r, nThreads_r)
+}
+

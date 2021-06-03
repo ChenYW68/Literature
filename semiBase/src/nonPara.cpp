@@ -478,7 +478,7 @@ double spCor(double &d, double &phi, double &nu, int &covModel, double *bk){
     } 
   }else if(covModel == 3){//gaussian
     
-    return exp(-1.0*(pow(D, 2)/phi));
+    return exp(-1.0*pow(D/phi, 2));
     
   }else{
 	 if(D > 0 && D <= phi){
@@ -3137,6 +3137,250 @@ SEXP semiPred(SEXP y_r,
 }
 
 // [[Rcpp::export]]
+SEXP theta_Wang_Cst(SEXP y_r, SEXP Z_r, SEXP Time_r,  SEXP Q_r,
+                   SEXP H_r, 
+                   SEXP n_r, SEXP Nt_r, SEXP Pz_r, 
+				   SEXP Kernel_r, SEXP h_r, SEXP nuUnifb_r,
+				   SEXP nu_r, SEXP nThreads_r){
+	int info, nProtect=0;
+	const int inc = 1;
+	const double one = 1.0;
+	const double zero = 0.0;
+	char const *lower = "L";
+	char const *ntran = "N";
+	char Trans = 'T';
+	
+	
+	double *y = REAL(y_r);
+    double *Z = REAL(Z_r);	
+	double *Time = REAL(Time_r);
+	//double *Time = REAL(Time_r);
+	double *Q = REAL(Q_r);
+	double *H = REAL(H_r);
+	
+	int n = INTEGER(n_r)[0];
+	int Nt = INTEGER(Nt_r)[0];
+	int Pz = INTEGER(Pz_r)[0];
+	int Kernel = INTEGER(Kernel_r)[0];
+	
+	double h = REAL(h_r)[0];
+	int nuUnifb = INTEGER(nuUnifb_r)[0];
+	double nu = REAL(nu_r)[0];
+	int nThreads = INTEGER(nThreads_r)[0];
+	// int nuUnifb = 0;
+	double *bk = (double *) R_alloc(nThreads*(1.0+static_cast<int>(floor(nuUnifb))), sizeof(double));
+	int nb = 1+static_cast<int>(floor(nuUnifb));
+	int threadID = 0;
+	
+	int t, s, it, i, j, k, l, nn = n*Nt;
+	
+	double dtt, Ker;
+	
+	int p = 2*Pz;
+	int pp = p*p;
+	int Ps = p*nn;
+	int Ps0 = Pz*nn;
+	int nnn = n*nn;
+	int nnnn = nn*nn;
+	double *dt = (double *) R_alloc(Nt*nThreads, sizeof(double)); //zeros(dt, nn*nThreads);
+	double *G = (double *) R_alloc(Ps*nThreads, sizeof(double)); //
+	double *Q_K = (double *) R_alloc(nnnn*nThreads, sizeof(double)); 
+	double *H_t = (double *) R_alloc(nnnn*nThreads, sizeof(double)); 
+	double *St = (double *) R_alloc(Ps*nThreads, sizeof(double)); //zeros(S, Ps*nThreads);
+	
+	double *S0 = (double *) R_alloc(Ps*nThreads, sizeof(double)); //zeros(S0, Ps*nThreads);
+	double *S1 = (double *) R_alloc(Ps*nThreads, sizeof(double)); //zeros(S1, Ps*nThreads);
+	double *S11 = (double *) R_alloc(nnn*nThreads, sizeof(double)); //zeros(S11, Ps*nThreads);
+	double *S2 = (double *) R_alloc(pp*nThreads, sizeof(double)); //zeros(S2, pp*nThreads);
+	
+	double *Mat = (double *) R_alloc(pp*nThreads, sizeof(double)); //zeros(Mat, pp*nThreads);
+	double *alpha = (double *) R_alloc(p*nThreads, sizeof(double));
+	
+	SEXP S_r, alpha_r;
+    PROTECT(S_r = Rf_allocMatrix(REALSXP, n, nn*Nt)); nProtect++;
+	PROTECT(alpha_r = Rf_allocMatrix(REALSXP, p, Nt)); nProtect++;
+    
+	
+	 
+	 
+#ifdef _OPENMP
+  omp_set_num_threads(nThreads);
+#else
+  if(nThreads > 1){
+    warning("n.omp.threads > %i, but source not compiled with OpenMP support.", nThreads);
+    nThreads = 1;
+  }
+#endif	
+	
+
+
+#ifdef _OPENMP
+#pragma omp parallel for private(it, k, dtt, Ker, s, i, j, threadID)
+#endif 
+	for(t = 0; t < Nt; t++){
+#ifdef _OPENMP
+    threadID = omp_get_thread_num();
+#endif
+		
+		for(it = 0; it < Nt; it++){dt[Nt*threadID + it] = Time[it] - Time[t];}
+	
+	// wang
+		//zeros(S0[Ps*threadID], Ps);
+		zeros(&S1[Ps*threadID], Ps);
+		zeros(&S2[pp*threadID], pp);
+		
+//#ifdef _OPENMP
+//#pragma omp parallel for private(dtt, Ker, s, i, j)
+//#endif 
+		for(k = 0; k < Nt; k++){
+			//zeros(&Q_K[nnnn*threadID], nnnn);
+			F77_NAME(dcopy)(&nnnn, H, &inc, &H_t[nnnn*threadID], &inc);
+			 dtt = abs(dt[Nt*threadID + k]);
+			 Ker = spCor(dtt, h, nu, Kernel, &bk[threadID*nb])/h;	
+			// calculate G matrix
+			zeros(&G[Ps*threadID], Ps);
+			for(s = 0; s < n; s++){
+			  for(j = 0; j < Pz; j++){
+				 G[Ps*threadID + s*Nt + k + j*nn] = Z[s*Nt + k + j*nn];
+				 G[Ps*threadID + s*Nt + k + (j + Pz)*nn] = dt[Nt*threadID + k]*Z[s*Nt + k + (j + Pz)*nn]/h;  			 
+			   }
+			  
+			  //hat matrix of the step one 
+				for(j = 0; j < nn; j++){ H_t[nnnn*threadID + s*Nt + k + nn*j] = 0.0;}  
+			}	
+				
+			//K[k]*Q
+			for(i = 0; i < nn; i++){
+			  for(j = i; j < nn; j++){
+				Q_K[nnnn*threadID + i + nn*j] = Q[i + nn*j]*pow(Ker, 1);
+				Q_K[nnnn*threadID + j + nn*i] = Q[i + nn*j]*pow(Ker, 1);
+				}
+			}
+		   //S1 += St
+		  //  zeros(&St[Ps*threadID], Ps);
+		   F77_NAME(dgemm)(&Trans, ntran, &p, &nn, &nn, &one, &G[Ps*threadID], &nn, &Q_K[nnnn*threadID], &nn, &zero, &St[Ps*threadID], &p);
+		   //S2 += Mat
+		   //zeros(&Mat[pp*threadID], pp);
+		   F77_NAME(dgemm)(ntran, ntran, &p, &p, &nn, &one, &St[Ps*threadID], &p, &G[Ps*threadID], &nn, &zero, &Mat[pp*threadID], &p);
+			 for(i = 0; i < p; i++){
+			   for(j = 0; j < p; j++){
+				 S2[pp*threadID + i + p*j] += Mat[pp*threadID + i + p*j];
+				 //Rprintf("St[%i] =  %3.5f;\n", l + 1, Mat[pp*threadID + i + p*j]);
+				} 					
+			 }
+			 
+		  // zeros(&S0[Ps*threadID], Ps);
+		   F77_NAME(dgemm)(ntran, ntran, &p, &nn, &nn, &one, &St[Ps*threadID], &p, &H_t[nnnn*threadID], &nn, &zero, &S0[Ps*threadID], &p);
+		   
+			for(i = 0; i < p; i++){
+			   for(j = 0; j < nn; j++){
+				 S1[Ps*threadID + i + p*j] += St[Ps*threadID + i + p*j] - S0[Ps*threadID + i + p*j];
+				} 
+			 }
+		}
+	//Rprintf("S2[0] =  %3.2f; S2[1] =  %3.2f;S2[2] =  %3.2f;S2[3] =  %3.2f;  \n", S2[pp*threadID], S2[pp*threadID + 1], S2[pp*threadID+ 2], S2[pp*threadID + 3]);
+	 // Rprintf("t = %i; S2[0] =  %3.2f; S2[1] =  %3.2f;S2[2] =  %3.2f;S2[3] =  %3.2f;  \n", t, S1[Ps*threadID], S1[Ps*threadID + 1], S1[Ps*threadID+ 2], S1[Ps*threadID + 3]);	
+	F77_NAME(dposv)(lower, &p, &nn, &S2[pp*threadID], &p, &S1[Ps*threadID], &p, &info); //if(info != 0){error("c++ error: dpotrf failed\n");}
+	//F77_NAME(dtrtrs)(lower, ntran, ntran, &p, &nn, &S2[pp*threadID], &p, &S1[Ps*threadID], &p, &info);
+	if(info != 0){
+		F77_NAME(dtrtrs)(lower, ntran, ntran, &p, &nn, &S2[pp*threadID], &p, &S1[Ps*threadID], &p, &info);
+	// F77_NAME(dtrtrs)(lower, ntran, ntran, &p, &nn, &S2[pp*threadID], &p, &S1[Ps*threadID], &p, &info);
+		// F77_NAME(dpotrf)(lower, &p, &S2[pp*threadID], &p, &info); if(info != 0){error("c++ error: dpotrf failed\n");}
+        // F77_NAME(dpotri)(lower, &p, &S2[pp*threadID], &p, &info); if(info != 0){error("c++ error: dpotri failed\n");}
+		
+		// F77_NAME(dgemm)(ntran, ntran, &p, &p, &p, &one, &S2[pp*threadID], &p, &S1[Ps*threadID], &p, &zero, &S1[Ps*threadID], &p);
+		
+	 // char const *FAC  = "N";
+	 // int ff = 0;
+	 // double *AF = (double *) R_alloc(p*p, sizeof(double));
+	 // double *SS = (double *) R_alloc(p, sizeof(double));
+	 // double *XX = (double *) R_alloc(Ps, sizeof(double));
+	 // double RCOND = 0;
+	 // double *FERR = (double *) R_alloc(nn, sizeof(double));
+	 // for(j = 0; j < nn; j++){FERR[j] = 1;} 
+	 // double *WORK = (double *) R_alloc(Ps, sizeof(double));
+	 // int *IWORK = (int *) R_alloc(p, sizeof(int));
+	 // double *SWORK = (double *) R_alloc(p*(p + nn), sizeof(double));
+	// int ITER;
+	// F77_NAME(dppsv)(lower, &p, &nn, &S2[pp*threadID], &S1[Ps*threadID], &p, &info);
+	//  F77_NAME(dsposv)(lower, &p, &nn, &S2[pp*threadID], &p, &S1[Ps*threadID],  &p, XX, &p, WORK, SWORK, &ITER, &info);
+	
+	//F77_NAME(dpotrs)(lower,&p, &nn, &S2[pp*threadID], &p, &S1[Ps*threadID], &p, &info);
+	  //int *IWORK = (int *) R_alloc(p, sizeof(int));
+	//double *D = (double *) R_alloc(p + 1, sizeof(double));
+	
+	// D[(p + 1)*threadID] = S2[pp*threadID];
+	// D[(p + 1)*threadID + 1] = S2[pp*threadID + 1];
+	// D[(p + 1)*threadID + 2] = S2[pp*threadID + 3];
+	 
+	//F77_NAME(dpotrs)(lower, &p, &nn, &D[(p + 1)*threadID], &p, &S1[Ps*threadID], &p, &info);
+	
+    //F77_NAME(dsytrs)(lower, &p, &nn, &S2[pp*threadID], &p, IWORK, &S1[Ps*threadID], &p, &info);
+	
+	//F77_NAME(dsptrs)(lower,&p, &nn, &S2[pp*threadID], IWORK, &S1[Ps*threadID], &p, &info);
+	//F77_NAME(dpptrs)(lower,&p, &nn, &S2[pp*threadID], &S1[Ps*threadID], &p, &info);
+	
+	//Rprintf("info = %i; \n", info);
+   // F77_NAME(dposvx)(&ff, lower, &p, &nn, &S2[pp*threadID], &p, AF, &p, FAC, SS, &S1[Ps*threadID],  &p, XX, &p, &RCOND, FERR, FERR, WORK, IWORK, &info);
+	 
+	 //Rprintf("t = %i; S2[0] =  %3.10f; S2[1] =  %3.10f;S2[2] =  %3.10f;S5[3] =  %3.5f;  \n", t, XX[0], XX[1], XX[2], XX[3]);
+	 // Rprintf("t = %i; S2[0] =  %3.10f; S2[1] =  %3.10f;S2[2] =  %3.10f;S2[3] =  %3.10f;  \n", t, S1[Ps*threadID], S1[Ps*threadID + 1], S1[Ps*threadID+ 2], S1[Ps*threadID + 3]);
+	}
+	
+	// Rprintf("S2[0] =  %3.2f; S2[1] =  %3.2f;S2[2] =  %3.2f;S2[3] =  %3.2f;  \n\n", S1[Ps*threadID], S1[Ps*threadID + 1], S1[Ps*threadID+ 2], S1[Ps*threadID + 3]);
+	// if(info != 0){
+		// int LW = 3*p -1;
+	// double *Vec = (double *) R_alloc(LW, sizeof(double)); zeros(Vec, LW);
+	// double *Eig = (double *) R_alloc(p, sizeof(double)); zeros(Eig, p);
+	// char const *JO = "V";
+	
+	// F77_NAME(dsyev)(JO, lower, &p, &S2[pp*threadID], &p, Eig, Vec, &LW, &info);
+	// Rprintf("Vec[0] =  %3.2f; Vec[1] =  %3.2f;Vec[2] =  %3.2f;Vec[3] =  %3.2f;  \n\n", S2[pp*threadID], S2[pp*threadID + 1], S2[pp*threadID+ 2], S2[pp*threadID + 3]);
+	
+	// }
+	
+	
+	
+	
+	
+    F77_NAME(dgemv)(ntran, &p, &nn, &one, &S1[Ps*threadID], &p, y, &inc, &zero, &alpha[p*threadID], &inc);	
+    F77_NAME(dcopy)(&p, &alpha[p*threadID], &inc, &REAL(alpha_r)[t*p], &inc);
+
+     zeros(&S11[nnn*threadID], nnn);
+	 for(s = 0; s < n; s++){
+		for(j = 0; j < nn; j++){
+	       for(i = 0; i < Pz; i++){
+			S11[nnn*threadID + s + j*n] += S1[Ps*threadID + i + j*p]*Z[t + s*Nt + i*nn]; 
+		 }		
+	  }
+	 }
+	F77_NAME(dcopy)(&nnn, &S11[nnn*threadID], &inc, &REAL(S_r)[t*nnn], &inc);
+   }	
+
+	// Rprintf("Q_K[0] =  %3.5f;  \n", Q_K[nn*nn*threadID + 5]);		
+
+	   //make return object
+  SEXP result_r, resultName_r;
+  int nResultListObjs = 2;
+  PROTECT(result_r = Rf_allocVector(VECSXP, nResultListObjs)); nProtect++;
+  PROTECT(resultName_r = Rf_allocVector(VECSXP, nResultListObjs)); nProtect++;
+  
+  SET_VECTOR_ELT(result_r, 0, alpha_r);
+  SET_VECTOR_ELT(resultName_r, 0, Rf_mkChar("alpha"));
+
+  SET_VECTOR_ELT(result_r, 1, S_r);
+  SET_VECTOR_ELT(resultName_r, 1, Rf_mkChar("S"));
+  
+
+  Rf_namesgets(result_r, resultName_r);
+  //unprotect
+  UNPROTECT(nProtect);
+
+  return(result_r);	
+}
+
+
+// [[Rcpp::export]]
 SEXP theta_Est_Ct(SEXP y_r, SEXP Z_r, SEXP Time_r,  SEXP Q_r, 
                    SEXP n_r, SEXP Nt_r, SEXP Pz_r, 
 				   SEXP Kernel_r, SEXP h_r, SEXP nuUnifb_r,
@@ -3223,14 +3467,14 @@ SEXP theta_Est_Ct(SEXP y_r, SEXP Z_r, SEXP Time_r,  SEXP Q_r,
 			 Zs[Ps*threadID + i + j*nn] = Z[i + j*nn];
 			 Zs[Ps*threadID + i + (j + Pz)*nn] = dt[nn*threadID + i]*Z[i + (j + Pz)*nn]/h;	
 		   }
-      //Q*K
+      //K*Q
 		 dtt = abs(dt[nn*threadID + i]);
 		 Ker = spCor(dtt, h, nu, Kernel, &bk[threadID*nb])/h;	
 		for(j = 0; j < nn; j++){
 		  Q_K[nn*nn*threadID + i + nn*j] = Q[i + nn*j]*pow(Ker, 0.5);
 		 }    		
    }	
-		//K*Q
+		//Q*K
 	for(i = 0; i < nn; i++){
 		dtt = abs(dt[nn*threadID + i]);
 		Ker = spCor(dtt, h, nu, Kernel, &bk[threadID*nb])/h;	
@@ -3244,7 +3488,9 @@ SEXP theta_Est_Ct(SEXP y_r, SEXP Z_r, SEXP Time_r,  SEXP Q_r,
    F77_NAME(dgemm)(&Trans, ntran, &p, &nn, &nn, &one, &Zs[Ps*threadID], &nn, &Q_K[nn*nn*threadID], &nn, &zero, &S[Ps*threadID], &p);
    F77_NAME(dgemm)(ntran, ntran, &p, &p, &nn, &one, &S[Ps*threadID], &p, &Zs[Ps*threadID], &nn, &zero, &Mat[p*p*threadID], &p);
    F77_NAME(dposv)(lower, &p, &nn, &Mat[p*p*threadID], &p, &S[Ps*threadID], &p, &info); //if(info != 0){error("c++ error: dpotrf failed\n");}
-   
+   if(info!=0){
+		F77_NAME(dtrtrs)(lower, ntran, ntran, &p, &nn, &Mat[p*p*threadID], &p, &S[Ps*threadID], &p, &info);
+	}
    F77_NAME(dgemv)(ntran, &p, &nn, &one, &S[Ps*threadID], &p, y, &inc, &zero, &alpha[p*threadID], &inc);	
    F77_NAME(dcopy)(&p, &alpha[p*threadID], &inc, &REAL(alpha_r)[t*p], &inc);
 	
@@ -3467,33 +3713,33 @@ SEXP semiCov_Cs(SEXP y_r,
 
 	
 #ifdef _OPENMP
-#pragma omp parallel for private(threadID, a0, a1, a00, a01, a11, ds, ck,  i, j)
+#pragma omp parallel for private(threadID, a0, a1, a00, a01, a11, ds, ck,  i, j, Ker, Kerr, t)
 #endif 
 	for(s = 0; s < m; s++){
 #ifdef _OPENMP
 	threadID = omp_get_thread_num();
 #endif 
-	//Ker = 0.0; Kerr = 0.0;
+	// Ker = 0.0; Kerr = 0.0;
 	// for(t = 0; t < N; t++){
 	  // for(i = 0; i < n; i++){
 	   // for(j = 0; j < n; j++){
-		   // dt = dist2(Coord[i], Coord[i + n], Coord[j], Coord[j + n]) - d[s];
-	       // ck = spCor(dt, h, nu, Kernel, &bk[threadID*nb]);
+		   // ds = dist2(Coord[i], Coord[i + n], Coord[j], Coord[j + n]) - d[s];
+	       // ck = spCor(ds, h, nu, Kernel, &bk[threadID*nb]);
 		   // Ker += ck; 
-		   // Kerr += y[i]*y[j]*ck;  
+		   // Kerr += y[i+ t*n]*y[j+ t*n]*ck;  
 		// }
 	  // }
 	// }
 	  // Cd[m*threadID] = Kerr/Ker;
-	  // F77_NAME(dcopy)(&p, &Cd[m*threadID], &inc, &REAL(C_r)[s], &inc);
+	  // F77_NAME(dcopy)(&inc, &Cd[m*threadID], &inc, &REAL(C_r)[s], &inc);
 	
 	a0 = 0.0; a1 = 0.0;
 	a00 = 0.0; a01 = 0.0; 
 	a11 = 0.0;
 	
-#ifdef _OPENMP
-#pragma omp parallel for private(i, j, ds, ck, threadID) reduction(+:a00, a01, a11, a0, a1)
-#endif
+// #ifdef _OPENMP
+// #pragma omp parallel for private(i, j, ds, ck) reduction(+:a00, a01, a11, a0, a1)
+// #endif
 	for(i = 0; i < n; i++){
 	   for(j = 0; j < n; j++){
 		   ds = dist2(Coord[i], Coord[i + n], Coord[j], Coord[j + n]) - d[s];
@@ -3510,6 +3756,10 @@ SEXP semiCov_Cs(SEXP y_r,
 	a[p*threadID] = a0; a[p*threadID + 1] = a1;
 	S[p*p*threadID] = a00; S[p*p*threadID + 1] = a01; S[p*p*threadID + 2] = a01; S[p*p*threadID + 3] = a11; 
 	F77_NAME(dposv)(lower, &p, &inc, &S[p*p*threadID], &p, &a[p*threadID], &p, &info);
+	if(info!=0){
+		F77_NAME(dtrtrs)(lower, ntran, ntran, &p, &inc, &S[p*p*threadID], &p, &a[p*threadID], &p, &info);
+	 }
+		
 	F77_NAME(dcopy)(&inc, &a[p*threadID], &inc, &REAL(C_r)[s], &inc);  	
 	}
 
@@ -3617,9 +3867,9 @@ SEXP semiCov_Ct(SEXP y_r,
 		
 			//Index[N*threadID] = t1;
 
-#ifdef _OPENMP
-#pragma omp parallel for private(i, j, dt1, dt2, ck, threadID) reduction(+:s11, s12, s13, s22, s23, s33, a1, a2, a3)
-#endif
+// #ifdef _OPENMP
+// #pragma omp parallel for private(i, j, dt1, dt2, ck) reduction(+:s11, s12, s13, s22, s23, s33, a1, a2, a3)
+// #endif
 			for(s = 0; s < n; s++){
 // #ifdef _OPENMP
     // threadID = omp_get_thread_num();
@@ -3660,7 +3910,9 @@ SEXP semiCov_Ct(SEXP y_r,
 		//Rprintf("S[0]: %3.10f; S[1]: %3.10f; S[2]: %3.10f \n", a[0], a[1], a[2]);
 		F77_NAME(dposv)(lower, &p, &inc, &S1[pp*threadID], &p, &a[p*threadID], &p, &info);
 		//Rprintf("S[0]: %3.10f; S[1]: %3.10f; S[2]: %3.10f \n", a[0], a[1], a[2]);
-		
+		if(info!=0){
+		F77_NAME(dtrtrs)(lower, ntran, ntran, &p, &inc, &S1[pp*threadID], &p, &a[p*threadID], &p, &info);
+	    }
 		 //F77_NAME(dgemm)(ntran, &Trans, &p, &p, &inc, &one, S1, &p, S1, &inc, &zero, S, &p);
 		 //F77_NAME(dcopy)(&p, S, &inc, &REAL(S_r)[p*p], &inc);
 		F77_NAME(dcopy)(&inc, &a[p*threadID], &inc, &REAL(Cov_r)[t], &inc);
@@ -3688,9 +3940,9 @@ SEXP semiCov_Ct(SEXP y_r,
 	s11 = 0.0; s12 = 0.0; 
 	s22 = 0.0;  
 	
-#ifdef _OPENMP
-#pragma omp parallel for private(i, dt1, ck, threadID) reduction(+:s11, s12, s22, a1, a2)
-#endif
+// #ifdef _OPENMP
+// #pragma omp parallel for private(i, dt1, ck, threadID) reduction(+:s11, s12, s22, a1, a2)
+// #endif
 	 for(s = 0; s < n; s++){
 // #ifdef _OPENMP
     // threadID = omp_get_thread_num();
@@ -3713,6 +3965,9 @@ SEXP semiCov_Ct(SEXP y_r,
 	S2[p*p*threadID +1] = s12; S2[p*p*threadID + 3] = s22;
 	
 	F77_NAME(dposv)(lower, &p, &inc, &S2[p*p*threadID], &p, &b[p*threadID], &p, &info);
+	if(info!=0){
+		F77_NAME(dtrtrs)(lower, ntran, ntran, &p, &inc, &S2[p*p*threadID], &p, &b[p*threadID], &p, &info);
+	    }
 	F77_NAME(dcopy)(&inc, &b[p*threadID], &inc, &REAL(Var_r)[t], &inc);
    }
    
@@ -3883,7 +4138,9 @@ SEXP semiCov_Cst(SEXP y_r,
 		//Rprintf("S[0]: %3.10f; S[1]: %3.10f; S[2]: %3.10f \n", a[0], a[1], a[2]);
 		F77_NAME(dposv)(lower, &p, &inc, &S1[pp*threadID], &p, &a[p*threadID], &p, &info);
 		//Rprintf("S[0]: %3.10f; S[1]: %3.10f; S[2]: %3.10f \n", a[0], a[1], a[2]);
-		
+		if(info!=0){
+		F77_NAME(dtrtrs)(lower, ntran, ntran, &p, &inc, &S1[pp*threadID], &p, &a[p*threadID], &p, &info);
+	    }
 		 //F77_NAME(dgemm)(ntran, &Trans, &p, &p, &inc, &one, S1, &p, S1, &inc, &zero, S, &p);
 		 //F77_NAME(dcopy)(&p, S, &inc, &REAL(S_r)[p*p], &inc);
 		F77_NAME(dcopy)(&inc, &a[p*threadID], &inc, &REAL(Cov_r)[t + k*N], &inc);
@@ -3942,6 +4199,9 @@ SEXP semiCov_Cst(SEXP y_r,
 	S2[4*threadID + 1] = s12; S2[4*threadID + 3] = s22;
 	
 	F77_NAME(dposv)(lower, &p, &inc, &S2[4*threadID], &p, &b[2*threadID], &p, &info);
+	if(info!=0){
+		F77_NAME(dtrtrs)(lower, ntran, ntran, &p, &inc, &S2[4*threadID], &p, &b[2*threadID], &p, &info);
+	}
 	F77_NAME(dcopy)(&inc, &b[2*threadID], &inc, &REAL(Var_r)[t + k*Nt], &inc);
 	l = l + 1;
    }

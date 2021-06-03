@@ -49,30 +49,28 @@ siMuIncF <- function(n = 1e2, Nt = 10,
   time <- seq(0, 1,, Nt)
   
   mu <- matrix(NA, nrow = n, ncol = Nt)
-  X_ts <-  array(0, dim = c(2,  nrow(Coords), Nt),
-                  dimnames = list(c("Intercept", "BetaX"),
-                                  c(1:n),
-                                  as.character(1:Nt)              
-                ))
+  X_ts <-  array(0, dim = c(2, nrow(Coords), Nt),
+                 dimnames = list(c("Intercept", "BetaX"),
+                                 c(1:n), as.character(1:Nt)              
+                 ))
   Pz <- 1
   Z_ts <- thetaF <- array(0, dim = c(Pz, nrow(Coords), Nt),
-                        dimnames = list(paste0("Z", 1:Pz), 
-                                        c(1:n), 
-                                        as.character(1:Nt)
-                                        
-                        ))
+                          dimnames = list(paste0("Z", 1:Pz), 
+                                          c(1:n), as.character(1:Nt)
+                                          
+                          ))
   x.phi <- 0.2*max(D)
   
   L <- Matrix::chol(Matern(d = D, range = x.phi, 
                            smoothness = 0.5, phi = 1))
-
+  
   for(t in 1:Nt){
     X_ts[1, , t] <- rnorm(n, 0, 1)#rnorm(n, 0, 1) #rep(1, n)#
-   
+    
     X_ts[2, , t] <- Matrix::crossprod(L, rep(rnorm(n)))
-      # mvnfast::rmvn(1, rep(0, n), 
-      #             sigma = exp(- D/(x.phi)),  #quantile(D, probs = 0.2)
-      #             ncores = 10)
+    # mvnfast::rmvn(1, rep(0, n), 
+    #             sigma = exp(- D/(x.phi)),  #quantile(D, probs = 0.2)
+    #             ncores = 10)
     mu[, t] <- as.vector(t(X_ts[1:2, , t]) %*% para$beta)
     
     Z_ts[1, , t] <- rep(1, n)#rnorm(n, 0, 1)#rnorm(n, 0, 1)
@@ -80,7 +78,7 @@ siMuIncF <- function(n = 1e2, Nt = 10,
     
     thetaF[1, , t] <- Z_ts[1, , t]*f1(time[t])
     # thetaF[2, , t] <- Z_ts[2, , t]*f2(time[t])
- 
+    
   }
   
   library(RandomFields)
@@ -102,31 +100,40 @@ siMuIncF <- function(n = 1e2, Nt = 10,
   # W_ts <- t(matrix(Matrix::crossprod(Matrix::chol(Vc), rep(rnorm(n * Nt))) + 
   #                    rnorm(n * Nt, 0, sd = sqrt(para$tau.sq)),
   #                  nrow = Nt, ncol = n))
-
+  
   #K-L expansion
   W_st <- 0
   p <- 1
   # Vs <- list(p)
   for(i in 1:p){
-    Vs <- Matern(d = D, range = para$Phis,
-                 smoothness = para$nu[i],
-                 phi = para$sigma.sq.s[i]) 
-    # Vs.2 <- Matern(d = D, range = para$Phis[2],
-    #                smoothness = para$nu[2],
-    #                phi = para$sigma.sq.s[2]) 
-    Ws <- Matrix::crossprod(Matrix::chol(Vs), rep(rnorm(n)))
+    if(para$Phis !=0){
+      Vs <- Matern(d = D, range = para$Phis,
+                   smoothness = para$nu[i],
+                   phi = para$sigma.sq.s[i]) 
+      # Vs.2 <- Matern(d = D, range = para$Phis[2],
+      #                smoothness = para$nu[2],
+      #                phi = para$sigma.sq.s[2]) 
+      Ws <- Matrix::crossprod(Matrix::chol(Vs), rep(rnorm(n)))
+    }else{
+      Vs = NULL
+      Ws <- rnorm(n, 0 , sd = sqrt(para$sigma.sq.s[i]))
+    }
+    
     # Ws.2 <- Matrix::crossprod(Matrix::chol(Vs.2), rep(rnorm(n)))
     # if(i == 1){
     #   Wt <- rep(1, Nt)
     # }else{
-      Wt <- sqrt(2)*cos(2*pi*time)
+    Wt <- sqrt(2)*cos(2*pi*time)
     # }
     
-   W_st <- W_st + tensor::tensor(as.vector(Ws), Wt)
+    W_st <- W_st + tensor::tensor(as.vector(Ws), Wt)
   }
-  Vt <-  2*para$sigma.sq.s[1]*tensor::tensor(cos(2*pi*time), cos(2*pi*time))
-  
-  
+  Vt <- 2*para$sigma.sq.s[1]*tensor::tensor(cos(2*pi*time), cos(2*pi*time)) #+ para$sigma.sq.t[1]*diag(Nt) #para$sigma.sq.s[1]*
+  if(para$Phis !=0){
+    Vc <- kronecker(Vs, Vt)/para$sigma.sq.s[1]#tensor::tensor(Wt, Wt))
+  }else{
+    Vc <- NULL
+  }
   # model <- RMnsst(phi = RMexp(scale = para$Phis, 
   #                             var = para$sigma.sq.s),
   #                 psi = RMfbm(alpha = 1, 
@@ -141,8 +148,8 @@ siMuIncF <- function(n = 1e2, Nt = 10,
   #                y = Coords[, 2], T = 1:Nt)
   
   y <-  thetaF[1,,] +  mu + W_st #+   thetaF[2,,] +
-        # matrix(rnorm(n*Nt, sd = sqrt(para$tau.sq)), 
-        #        nrow = n, ncol = Nt)
+  # matrix(rnorm(n*Nt, sd = sqrt(para$tau.sq)), 
+  #        nrow = n, ncol = Nt)
   p.theta = 1
   theta <- matrix(0, nrow = Nt, ncol = p.theta)
   for (i in 1:p.theta) {
@@ -157,23 +164,24 @@ siMuIncF <- function(n = 1e2, Nt = 10,
     }
   }
   
-  
   # y <- mu + t(matrix(W_ts@data[["variable1"]], nrow = n, ncol = Nt)) + 
   #      Z_ts[1,,] + Z_ts[2,,] + 
   #             matrix(rnorm(Nt*n, 0, sd = sqrt(para$tau.sq)),
   #                          nrow = Nt, ncol = n)
-
+  
   colnames(y) <- 1:Nt
   rownames(y) <- 1:n
-  Yts_Xts <- list(Y_ts = y, X_ts = X_ts, 
+  Yts_Xts <- list(Y_ts = y, 
+                  X_ts = X_ts, 
                   Z_ts = Z_ts, 
                   time = time,
-                  theta = theta, 
+                  theta = theta,
+                  thetaF = thetaF,
                   D = D,
                   loc = Coords,
                   W_ts = W_st,
                   Vt = Vt,
                   Vs = Vs,
-                  Vc = NULL)
+                  Vc = Vc)
   return(Yts_Xts)
 }

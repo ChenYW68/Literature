@@ -2,16 +2,37 @@ stGCVfun <- function(X){
   source("E:/Literature/semiBase/R/util.R")
   Rcpp::sourceCpp("E:/Literature/semiBase/src/nonPara.cpp")
   source("./R/stSemiPar.R")
+  source("./R/stSemiPar_WLS.R")
+  # source("./R/PSTVB_Packages.R")
+  if(method %nin% c("WLS")){
   fit <- stSemiPar(y_ts = data$Y_ts, 
                    x_ts = data$X_ts, 
                    z_ts = data$Z_ts,
                    loc = data$loc,
-                   Vc =  data$Vc,
                    time = data$time,
-                   h = as.vector(H[X, ]),
-                   prob = prob,
                    method = method,
+                   Kernel = Kernel,
+                   h = as.vector(H[X, 1:3]),
+                   prob = c(as.vector(H[X, 4]), prob[2]),
+                   nuUnifb = nuUnifb,
+                   nu = nu,
+                   nThreads = nThreads,
                    nIter = nIter)
+  }else{
+    # for (X in 1:50) {
+    #  cat("X = ", X, "\n")
+    fit <- stSemi_WLS(y_ts = data$Y_ts,
+                      x_ts = data$X_ts,
+                      z_ts = data$Z_ts,
+                      loc = data$loc,
+                      time = data$time,
+                      prob = c(as.vector(H[X, 4]), prob[2]),
+                      Kernel = Kernel,
+                      h =  as.vector(H[X, 1:3]),
+                      nThreads = nThreads,
+                      nIter = nIter)
+     # }
+  }
   # plot(fit$fit.value, fit$y_ts)
   y.fitted.error <- spT.validation(fit$fit.value, fit$y_ts)
   y.fitted.error <- matrix(y.fitted.error, nrow = 1)
@@ -63,39 +84,45 @@ stGCVfun <- function(X){
   # }
   
   
-  GCV = y.fitted.error[1]^2/(mean(diag(1 - fit$theta$S)))^2 #%*% C2
+  GCV = y.fitted.error[1]^2/(mean(diag(1 - fit$theta$St)))^2 #%*% C2
   
   da <- as.data.frame(cbind(da.Beta, da.theta, bias.theta, y.fitted.error))
   rownames(da) <- NULL
   da <- data.frame(meanH = H[X, 1], 
                    covHs = H[X, 2], 
                    covHt = H[X, 3], 
-                   da, GCV = GCV, 
+                   taper_s = H[X, 4],
+                   da, Var.s = fit$Var.s,
+                   GCV = GCV, 
                    nIter = fit$nIter)
   
   return(da)
 }
 
 
-GCVparaSemi <- function(data, H = expand.grid(covH = seq(1E-2, 1,, 5),
-                             meanH = seq(1E-2, 1,, 5)), 
-                        prob = c(1, 1), 
-                        method = 1, nIter = 10, 
-                        nThreads = 5)
+GCVparaSemi <- function(data, H = expand.grid(meanH = seq(1E-2, 1,, 5),
+                                              covHs = seq(1E-2, 1,, 5),
+                                              covHt = seq(1E-2, 1,, 5)), 
+                        prob = c(1, 1), method = "WI", Kernel = c(0, 0),
+                        nuUnifb = 1, nu = 0.5, nThreads = 10,
+                        nIter = 10)
 {
   
-  cl <- parallel::makeCluster(getOption("cl.cores", nThreads))
+  cl <- parallel::makeCluster(getOption("cl.cores", 
+                                        ceil(nThreads/2)))#ceil(nThreads/2)
   parallel::clusterEvalQ(cl, library(plyr))
   parallel::clusterEvalQ(cl, library(dplyr))
   parallel::clusterEvalQ(cl, library(data.table))
   parallel::clusterEvalQ(cl, library(Matrix))
   parallel::clusterEvalQ(cl, library(fields))
-  
+  parallel::clusterEvalQ(cl, library(Hmisc))
   # parallel::clusterEvalQ(cl, library(semiBase))
   
   parallel::clusterExport(cl = cl
                           , varlist = c("data", "H", "prob"
-                                        , "method" ,"nIter"
+                                        , "method", "Kernel"
+                                        , "nuUnifb", "nu"
+                                        , "nThreads", "nIter"
                                         , "spT.validation")
                           , envir = environment())
   temp <- parallel::parLapply(cl, X = 1:nrow(H), fun = stGCVfun)

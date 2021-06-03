@@ -388,98 +388,7 @@ theta_Wang1_fun <- function(y_ts = Y_ts$Y_ts,
               y.fit = y.fit))
 }
 
-theta_Wang_fun <- function(y_ts = Y_ts$Y_ts, 
-                           z_ts = Y_ts$Z_ts,
-                           Time = Y_ts$time,
-                           Q = diag(ncol(Y_ts$Y_ts)),
-                           S0 = S,
-                           pre_theta = NULL,
-                           h = 5e-1){
-  Nt <- ncol(y_ts)
-  n <- nrow(y_ts)
-  Pz <- dim(z_ts)[1]
-  alpha <- matrix(NA, nrow = Nt, ncol = Pz)
-  Y <- as.vector(t(y_ts))
-  k <- 1
-  S <- matrix(0, nrow = n*Nt, ncol = n*Nt)
-  y.fit <- matrix(0, nrow = n, ncol = Nt)
-  if(is.null(pre_theta)){
-    pre_theta = matrix(1, nrow = Nt, ncol = Pz)
-    }
-  for (t in 1:Nt) {
-    S0.s <- S2.s <- 0
-    dt <- (Time - Time[t])
-    K <- (exp(-abs(dt)/h))/h
-    A1.s <- A2.s <- NULL
-    A1.s <- matrix(NA, nrow = 2*Pz, ncol = Nt*n)
-    for(s in 1:n){
-      # Z.s <- NULL
-      
-      ys <- y_ts[s, ]
-      index <- NULL
-      for(i in 1:(Nt)){
-        index <- c(index, s + n*(i - 1))
-      }
-      Sc <- S0[index, ]   #((s - 1)*Nt + 1):(s*Nt)
-      # Sc %*% Y
-      
-      # y.fit <- matrix(S0 %*% Y, nrow = n, ncol = Nt)
-      # plot(t(y.fit), Y)
-      
-      S1.s <- 0 
-      for(j in 1:Nt){
-        Z.s <- matrix(0, nrow = 2*Pz, ncol = Nt)
-        Z.s[1:Pz, j] <- z_ts[1:Pz, s, j]
-        Z.s[(Pz + 1):(2*Pz), j] <-  dt[j]*z_ts[1:Pz, s, j]/h
-        
-        # 1
-        # lam <- 0
-        # for(i in 1:Pz){
-        #   lam <- lam + pre_theta[, i]*z_ts[i, s, ] 
-        # }
-        # Yj <- y - lam
-        # Yj[j] <- y[j]
-        
-        Sj <- Sc
-        Sj[j, ] <- 0
-        
-        c0 <- K[j]*Z.s %*% Q
-        # 1
-        S0.s <- S0.s + c0 %*% Sj
-        # 2
-        S1.s <- S1.s + c0 
-        # 2
-        S2.s <- S2.s + c0 %*% t(Z.s)
-      }
-      # sec.1-y
-      # A1.s <- cbind(A1.s, S1.s) 
-      A1.s[, ((s - 1)*Nt + 1):(s*Nt)] <- S1.s 
-    }
-    
-    A <- solve(S2.s) %*% (A1.s - S0.s)
-    # y_s(t) = h_s(t)
-    
-    
-    for (s in 1:n) {
-      for(l in 1:Pz){
-          S[k, ] <- S[k, ] + z_ts[l, s, t]*A[l, ] #+ z_ts[2, j, t]*A[2, ]
-      }
-      k <- k + 1;
-    }
-    alpha[t, ] <- (A %*% Y)[1:Pz]
-    # y.fit[, t] <-  z_ts[1,, t]*alpha[t, 1] + z_ts[2,, t]*alpha[t, 2]
-    for(j in 1:Pz){
-      y.fit[, t] <- y.fit[, t] + z_ts[j,, t]*alpha[t, j]
-    }
-    
-    # y.fit1[, t] <- z_ts[1,,t] + z_ts[2,,t]
-  }
-  y.fit1 <- matrix(S %*% Y, nrow = n, ncol = Nt)
-  all.equal(as.vector((y.fit1)), as.vector(y.fit))
-  
-  return(list(S = S, alpha = alpha, 
-              y.fit = y.fit))
-}
+
 
 
 theta_Wang2_fun <- function(y_ts = Y_ts$Y_ts, 
@@ -549,11 +458,81 @@ theta_Wang2_fun <- function(y_ts = Y_ts$Y_ts,
               y.fit = y.fit))
 }
 
+semPar.space.time <- function(y_ts, z_ts, Time,
+                              Q = NULL, S = NULL, 
+                               Kernel = 0, h = 0.1, 
+                               nuUnifb = 1,
+                               nu = 0.5,
+                               nThreads = 1,
+                               method = "WI") {
+  switch(method,
+         # 1: independent space-time
+         WI = theta_WI(y_ts = y_ts,
+                        z_ts = z_ts,
+                        Time = Time,
+                        Q = diag(Q)*diag(ncol(y_ts)), #
+                        Kernel = Kernel,
+                        h = h),
+         
+         # 2: dependent time
+         WEC_t = theta_WI(y_ts = y_ts,
+                       z_ts = z_ts,
+                       Time = Time,
+                       Q = Q, #diag(Nt)
+                       Kernel = Kernel,
+                       h = h),
+         #3: dependent time with wang's(2003) method 
+         # WDt =  theta_Wang_Space_Inde(y_ts = y_ts,
+         #                       z_ts = z_ts,
+         #                       Time = Time,
+         #                       Q = Q, #diag(Nt)
+         #                       S0 = S,
+         #                       Kernel = Kernel,
+         #                       h = h
+         #                      ),
+         WEC_tw = theta_stWang( y_ts = y_ts,
+                             z_ts = z_ts,
+                             Time = Time,
+                             Q = Q, S = S,
+                             Kernel = Kernel,
+                             h = h, nuUnifb = nuUnifb,
+                             nu = nu, nThreads = nThreads),
+         #4: dependence space-time by inserting 
+         # spatial-temporal covariance function
+         WEC_st = theta_st_not_Wang(y_ts = y_ts,
+                            z_ts = z_ts,
+                            Time = Time,
+                            Q =  Q,
+                            Kernel = Kernel,
+                            h = h,
+                            nuUnifb = nuUnifb,
+                            nu = nu, nThreads = nThreads),
+         #5: dependence space-time by inserting 
+         # spatial-temporal covariance function and 
+         # combining it with  Wang's method(2003)
+         WEC_stw = theta_stWang( y_ts = y_ts,
+                              z_ts = z_ts,
+                              Time = Time,
+                              Q = Q, S = S,
+                              Kernel = Kernel,
+                              h = h, nuUnifb = nuUnifb,
+                              nu = nu, nThreads = nThreads)
+         # WDstR = stWang(y_ts = y_ts,
+         #                    z_ts = z_ts,
+         #                    Time = Time,
+         #                    Q = Q,
+         #                    theta_St = S,
+         #                    h = h)
+         # 4: dependence space-time byWLS
+  )
+}
 
-theta_fun <- function(y_ts = Y_ts$Y_ts, 
+
+theta_WI <- function(y_ts = Y_ts$Y_ts, 
                       z_ts = Y_ts$Z_ts,
                       Time = Y_ts$time,
                       Q = diag(ncol(Y_ts$Y_ts)),
+                      Kernel = 0,
                       h = 5e-1){
   Nt <- ncol(y_ts)
   n <- nrow(y_ts)
@@ -562,14 +541,19 @@ theta_fun <- function(y_ts = Y_ts$Y_ts,
   k <- 1
   
   Z.s <- matrix(0, nrow = Nt, ncol = 2*Pz)
-  S <- matrix(0, nrow = n*Nt, ncol = n*Nt)
+  St <- S <- matrix(0, nrow = n*Nt, ncol = n*Nt)
   alpha <- matrix(NA, nrow = Nt, ncol = Pz)
   # y.fit <- matrix(0, nrow = n, ncol = Nt)
   for (t in 1:Nt){
     S2.s <- 0
     S11.s <- NULL
     dt <- (Time - Time[t])/h
-    K <- sqrt(diag(exp(-abs(dt)))/h)
+    if(Kernel == 0){
+      K <- sqrt(diag(exp(-abs(dt)))/h)
+    }else{
+      K <- sqrt(diag(exp(-(dt)^2))/h)
+    }
+    
     for(s in 1:n){
       # Z.s <- NULL
       # for(i in 1:Pz){
@@ -592,6 +576,7 @@ theta_fun <- function(y_ts = Y_ts$Y_ts,
     for(s in 1:n){ 
       for(l in 1:Pz){
         S[k, ] <- S[k, ] + z_ts[l, s, t]*A[l, ]# + z_ts[2, j, t]*A[2, ]
+        St[(s - 1)*Nt + t, ] <- St[(s - 1)*Nt + t, ]+ z_ts[l, s, t]*A[l, ]
       }
       k <- k + 1;
     }
@@ -604,9 +589,382 @@ theta_fun <- function(y_ts = Y_ts$Y_ts,
   }
    y.fit <- matrix(S %*% Y, nrow = n, ncol = Nt)
   # all.equal(as.vector(t(y.fit1)), as.vector(y.fit))
-  return(list(S = S, alpha = alpha, 
+  return(list(St = St, S = S, alpha = alpha, 
               Y = Y, #y.fit = y.fit, 
               y.fit = y.fit))
+}
+theta_st_not_Wang <- function(y_ts = simDa$Y_ts, 
+                              z_ts = simDa$Z_ts,
+                              Time = simDa$time,
+                              Q = solve(simDa$Vc),
+                              Kernel = 0,
+                              h = 5e-1,
+                              nuUnifb = 0,
+                              nu = 0,
+                              nThreads = 1){
+  Nt <- ncol(y_ts)
+  n <- nrow(y_ts)
+  
+  y <- as.vector(t(y_ts))
+  Pz <- dim(z_ts)[1]
+  Z <- matrix(0, nrow = n*Nt, ncol = 2*Pz)
+  dt = 1
+  for(j in 1:Pz){
+    Z[, (Pz + j)] <-  Z[, j] <- as.vector(t(z_ts[j, , ])) 
+  }
+  
+  storage.mode(y) <- "double"
+  storage.mode(Z) <- "double"
+  storage.mode(Time) <- "double"
+  storage.mode(Q) <- "double"
+  
+  storage.mode(n) <- "integer"
+  storage.mode(Nt) <- "integer"
+  storage.mode(Pz) <- "integer"
+  storage.mode(Kernel) <- "integer"
+  storage.mode(h) <- "double"
+  
+  storage.mode(nuUnifb) <- "integer"
+  storage.mode(nu) <- "double"
+  storage.mode(nThreads) <- "integer"
+  
+  fit <- theta_Est_Ct(y, Z, Time, Q, n, Nt, Pz, 
+                      Kernel, h, nuUnifb, nu, 
+                      nThreads)
+  
+  index <- rep(1:(Nt), each  = n*Nt)
+  ind = split(1:length(index), index)
+  
+  
+  S<- lapply(X = 1:Nt, stFun, S = fit$S, ind)
+  S <- do.call("rbind", S)#%>% setDF() %>% as.matrix()
+  # S <- rbindlist(S1, use.names = F, fill = F) %>% as.matrix()
+  alpha <- t(fit$alpha)
+  # y.fit1 <- matrix(0, nrow = n, ncol = Nt)
+  # for(t in 1:Nt){
+  #   for(l in 1:Pz){
+  #     y.fit1[, t] <- y.fit1[, t] + z_ts[l,, t]*alpha[t, l]
+  #   }
+  # }
+  
+  y.fit <- matrix(S %*% y, nrow = n, ncol = Nt)
+  
+  St <- matrix(NA, nrow = n*Nt, ncol = n*Nt)
+  for(t in 1:Nt){
+    for(s in 1:n){
+      St[(s - 1)*Nt + t, ] <- S[(t - 1)*n + s, ]
+    }
+  }
+  return(list(St = St, S = S, alpha = alpha, y.fit = y.fit))
+}
+
+theta_stWang <- function(y_ts, z_ts, 
+                         Time, Q,
+                         S, 
+                         Kernel = 0,
+                         h = 5e-1,
+                         nuUnifb = 0,
+                         nu = 0,
+                         nThreads = 1){
+  Nt <- ncol(y_ts)
+  n <- nrow(y_ts)
+  
+  y <- as.vector(t(y_ts))
+  Pz <- dim(z_ts)[1] 
+  Z <- matrix(0, nrow = n*Nt, ncol = 2*Pz)
+  dt = 1
+  for(j in 1:Pz){
+    Z[, (Pz + j)] <-  Z[, j] <- as.vector(t(z_ts[j, , ])) 
+  }
+  
+  storage.mode(y) <- "double"
+  storage.mode(Z) <- "double"
+  storage.mode(Time) <- "double"
+  storage.mode(Q) <- "double"
+  storage.mode(S) <- "double"
+  storage.mode(n) <- "integer"
+  storage.mode(Nt) <- "integer"
+  storage.mode(Pz) <- "integer"
+  storage.mode(Kernel) <- "integer"
+  storage.mode(h) <- "double"
+  
+  storage.mode(nuUnifb) <- "integer"
+  storage.mode(nu) <- "double"
+  storage.mode(nThreads) <- "integer"
+  
+  st.theta <- theta_Wang_Cst( y, Z, Time, Q,
+                              S, n, Nt, Pz, 
+                              Kernel, h, nuUnifb,
+                              nu, nThreads)
+  
+  index <- rep(1:(Nt), each  = n*Nt)
+  ind = split(1:length(index), index)
+  
+  
+  S <- lapply(X = 1:Nt, stFun, S = st.theta$S, ind)
+  S <- do.call("rbind", S)
+  y.fit <- matrix(S %*% y, nrow = n, ncol = Nt)
+  
+  St <- matrix(NA, nrow = n*Nt, ncol = n*Nt)
+  for(t in 1:Nt){
+    for(s in 1:n){
+      St[(s - 1)*Nt + t, ] <- S[(t - 1)*n + s, ]
+    }
+  }
+  return(list(St = St, S = S, alpha = t(st.theta$alpha), y.fit = y.fit))
+}
+
+# this is a R-vesion of theta_stWang function 
+stWang_R <- function(y_ts = simDa$Y_ts,
+                   z_ts = simDa$Z_ts,
+                   Time = simDa$time,
+                   Q = diag(ncol(simDa$Y_ts)),
+                   theta_St = theta$St,
+                   Kernel = 0,
+                   h = 5e-1){
+  # y_ts <- simDa$Y_ts 
+  # z_ts <- simDa$Z_ts
+  # Time <- simDa$time
+  # Q = solve(simDa$Vc)#diag(n*Nt)#solve(simDa$Vc)#diag(ncol(simDa$Y_ts))
+  # S0 <- theta$S
+  
+  Nt <- ncol(y_ts)
+  n <- nrow(y_ts)
+  Pz <- dim(z_ts)[1]
+  alpha <- matrix(NA, nrow = Nt, ncol = Pz)
+  Y <- as.vector(t(y_ts))
+  i <- 1
+  S <- Ss <- matrix(0, nrow = n*Nt, ncol = n*Nt)
+  y.fit <- matrix(0, nrow = n, ncol = Nt)
+  
+  for (t in 1:Nt) {
+    S0 <- S1 <- S2 <- S3 <- 0
+    dt <- (Time - Time[t])
+    # Ker <- exp(-abs(dt)/h)/h
+    if(Kernel == 0){
+      Ker <- ((exp(-abs(dt/h)))/h)
+    }else{
+      Ker <- ((exp(-(dt/h)^2))/h)
+    }
+    #构建G
+    for(k in 1:Nt){
+      Gt <- matrix(0, nrow = 2*Pz, ncol = n*Nt)
+      Sk <- theta_St#theta$St
+      for(s in 1:n){
+        Gt[1:Pz, (s - 1)*Nt + k] <- z_ts[1:Pz, s, k]
+        Gt[(Pz + 1):(2*Pz), (s - 1)*Nt + k] <- dt[k]*z_ts[1:Pz, s, k]/h
+        Sk[(s - 1)*Nt + k, ] <- 0
+      }
+      # Ker <-  sqrt(diag(K))
+      # KQK <- Ker * Q %*% Ker
+      KQ <- Ker[k] * Q
+      
+      St <- Gt %*% KQ
+      # 1
+      S0 <- S0 + St %*% Sk 
+      # if((max(abs(S0))) >0) {print(range(S0));break;}
+      # 2#cross-product
+      S1 <- S1 + St 
+      #3 #X^T %*% Q %*% X
+      S2 <- S2 + St %*% t(Gt)  
+      # cat("S[1]", S1[1:4], "\n")
+      # tem <- St %*% Sk 
+      # cat("S[1]", "\n")
+      # print(Sk[1, 1:20])
+      S3 <- S3 + St - St %*% Sk
+    }
+    # cat("S2", S2[1:4], "\n")
+    # cat("S3", S3[1:4], "\n")
+    
+    # print(S0)
+    # cat( "\n")# 
+    A <- solve(S2) %*% (S1 - S0)
+    # cat("A", A[1:4], "\n\n")
+    # cat("detS", det(S2), "\n\n")
+    # cat("detS+", det(S2 + 1E3*diag(2)), "\n\n")
+    # print(eigen(S2)$vector)
+    # print(eigen(S2)$value)
+    # cat("\n\n-------\n")
+    # value <- eigen(S2)$value
+    # vec <- eigen(S2)$vector
+    # ind <- which(abs(value) == max(abs(value)))
+    # S2[1, 1] <- value[ind]*vec[1, ind]*vec[1, ind]
+    # S2[1, 2] <- S2[2, 1] <- value[ind]*vec[1, ind]*vec[2, ind]
+    # S2[2, 2] <- value[ind]*vec[2, ind]*vec[2, ind]
+    # print(eigen(S2)$vector)
+    # print(eigen(S2)$value)
+    
+    for (s in 1:n) {
+      for(l in 1:Pz){
+        S[i, ] <- S[i, ] + z_ts[l, s, t]*A[l, ] #+ z_ts[2, j, t]*A[2, ]
+        Ss[(s - 1)*Nt + t, ] <- Ss[(s - 1)*Nt + t, ]+ z_ts[l, s, t]*A[l, ]
+      }
+      i <- i + 1;
+    }
+    alpha[t, ] <- (A %*% Y)[1:Pz]
+    # y.fit[, t] <-  z_ts[1,, t]*alpha[t, 1] + z_ts[2,, t]*alpha[t, 2]
+    for(j in 1:Pz){
+      y.fit[, t] <- y.fit[, t] + z_ts[j,, t]*alpha[t, j]
+    } 
+  }
+  return(list(St = Ss, S = S, alpha = alpha, y.fit = y.fit))
+} 
+# this is a R-vesion of theta_stWang function 
+# under the assumption on independent space
+theta_Wang_Space_Inde <- function(y_ts = Y_ts$Y_ts, 
+                           z_ts = Y_ts$Z_ts,
+                           Time = Y_ts$time,
+                           Q = diag(ncol(Y_ts$Y_ts)),
+                           S0 = S, Kernel = 0,
+                           h = 5e-1){
+  Nt <- ncol(y_ts)
+  n <- nrow(y_ts)
+  Pz <- dim(z_ts)[1]
+  alpha <- matrix(NA, nrow = Nt, ncol = Pz)
+  Y <- as.vector(t(y_ts))
+  k <- 1
+  S <- St <- matrix(0, nrow = n*Nt, ncol = n*Nt)
+  y.fit <- matrix(0, nrow = n, ncol = Nt)
+  # if(is.null(pre_theta)){
+  #   pre_theta = matrix(1, nrow = Nt, ncol = Pz)
+  #   }
+  for (t in 1:Nt) {
+    S0.s <- S2.s <- 0
+    dt <- (Time - Time[t])
+    # K <- (exp(-abs(dt)/h))/h
+    if(Kernel == 0){
+      K <- ((exp(-abs(dt/h)))/h)
+    }else{
+      K <- ((exp(-(dt/h)^2))/h)
+    }
+    A1.s <- A2.s <- NULL
+    A1.s <- matrix(NA, nrow = 2*Pz, ncol = Nt*n)
+    for(s in 1:n){
+      # Z.s <- NULL
+      
+      ys <- y_ts[s, ]
+      index <- NULL
+      for(i in 1:(Nt)){
+        index <- c(index, i + Nt*(s - 1))
+        #index <- c(index, s + n*(i - 1))
+      }
+      Sc <- S0[index, ]   #((s - 1)*Nt + 1):(s*Nt)
+      # Sc %*% Y
+      
+      # y.fit <- matrix(S0 %*% Y, nrow = n, ncol = Nt)
+      # plot(t(y.fit), Y)
+      
+      S1.s <- 0 
+      for(j in 1:Nt){
+        Z.s <- matrix(0, nrow = 2*Pz, ncol = Nt)
+        Z.s[1:Pz, j] <- z_ts[1:Pz, s, j]
+        Z.s[(Pz + 1):(2*Pz), j] <-  dt[j]*z_ts[1:Pz, s, j]/h
+        
+        # 1
+        # lam <- 0
+        # for(i in 1:Pz){
+        #   lam <- lam + pre_theta[, i]*z_ts[i, s, ] 
+        # }
+        # Yj <- y - lam
+        # Yj[j] <- y[j]
+        
+        Sj <- Sc
+        Sj[j, ] <- 0
+        
+        c0 <- K[j]*Z.s %*% Q
+        # 1
+        S0.s <- S0.s + c0 %*% Sj
+        # 2
+        S1.s <- S1.s + c0 
+        # 2
+        S2.s <- S2.s + c0 %*% t(Z.s)
+      }
+      # sec.1-y
+      # A1.s <- cbind(A1.s, S1.s) 
+      A1.s[, ((s - 1)*Nt + 1):(s*Nt)] <- S1.s 
+    }
+    # print(max(abs(S0.s)))
+    A <- solve(S2.s) %*% (A1.s - S0.s)
+    # y_s(t) = h_s(t)
+    
+    
+    for (s in 1:n) {
+      for(l in 1:Pz){
+        S[k, ] <- S[k, ] + z_ts[l, s, t]*A[l, ] #+ z_ts[2, j, t]*A[2, ]
+        St[(s - 1)*Nt + t, ] <- St[(s - 1)*Nt + t, ]+ z_ts[l, s, t]*A[l, ]
+      }
+      k <- k + 1;
+    }
+    alpha[t, ] <- (A %*% Y)[1:Pz]
+    # y.fit[, t] <-  z_ts[1,, t]*alpha[t, 1] + z_ts[2,, t]*alpha[t, 2]
+    # for(j in 1:Pz){
+    #   y.fit[, t] <- y.fit[, t] + z_ts[j,, t]*alpha[t, j]
+    # }
+    
+    # y.fit1[, t] <- z_ts[1,,t] + z_ts[2,,t]
+  }
+  y.fit <- matrix(S %*% Y, nrow = n, ncol = Nt)
+  # all.equal(as.vector((y.fit1)), as.vector(y.fit))
+  
+  return(list(St = St, S = S, alpha = alpha, 
+              y.fit = y.fit))
+}
+
+#######################################################
+X_ts_Transf <- function(X_ts, beta)
+{
+  Nt <- dim(X_ts)[3]
+  p <- dim(X_ts)[1]
+  t = seq_len(Nt)
+  beta <- matrix(beta, ncol = p)
+  if(nrow(beta) == 1){
+    if(p != 1){
+      x_ts = sapply(t, function(t) t(X_ts[, , t]) %*% as.vector(beta)
+                    , simplify = "matrix")
+    }else{
+      x_ts = sapply(t, function(t) X_ts[1, , t] * as.vector(beta)
+                    , simplify = "matrix")
+    }
+    
+  }else{
+    if(p != 1){
+      x_ts = sapply(t, function(t) t(X_ts[, , t]) %*% as.vector(beta[t, ])
+                    , simplify = "matrix")
+    }else{
+      x_ts = sapply(t, function(t) X_ts[1, , t] * beta[t, 1]
+                    , simplify = "matrix")
+    }
+  }
+  
+  return(x_ts)
+}
+theta.WLS <- function(y_ts, X, Q = NULL, Px, Pz){
+  n <- nrow(y_ts)
+  Nt <- ncol(y_ts)
+  if(is.null(Q)){
+    H0 <- solve(Matrix::t(X) %*% X) %*% Matrix::t(X)
+  }else{
+    H0 <- solve(Matrix::t(X) %*% Q %*% X) %*% Matrix::t(X) %*% Q
+  }
+  H <- X %*% H0
+  
+  est <- H0 %*% as.vector((y_ts))
+  if(!is.null(Px)){
+    beta <- est[1:Px]
+    alpha <- matrix(est[-c(1:Px), 1], nrow = Pz) %>% t()
+  }else{
+    alpha <- matrix(est[, 1], nrow = Pz) %>% t()
+    beta <- NULL
+  }
+  y.fit <- matrix(H %*% as.vector((y_ts)),  nrow = n)
+  
+  St <- matrix(NA, nrow = n*Nt, ncol = n*Nt)
+  for(t in 1:Nt){
+    for(s in 1:n){
+      St[(s - 1)*Nt + t, ] <- H[(t - 1)*n + s, ]
+    }
+  }
+  return(list(St = St,  S = H, beta = beta, alpha = alpha, y.fit = y.fit))
 }
 
 theta_Cov_fun <- function(y_ts = simDa$Y_ts, 
@@ -701,114 +1059,18 @@ modify.Cov <- function(est.Cov, est.Var){
   return(Cmat)
 }
 #######################################################
-#######################################################
-X_ts_Transf <- function(X_ts, beta)
-{
-  Nt <- dim(X_ts)[3]
-  p <- dim(X_ts)[1]
-  t = seq_len(Nt)
-  beta <- matrix(beta, ncol = p)
-  if(nrow(beta) == 1){
-    if(p != 1){
-      x_ts = sapply(t, function(t) t(X_ts[, , t]) %*% as.vector(beta)
-                    , simplify = "matrix")
-    }else{
-      x_ts = sapply(t, function(t) X_ts[1, , t] * as.vector(beta)
-                    , simplify = "matrix")
-    }
-    
-  }else{
-    if(p != 1){
-      x_ts = sapply(t, function(t) t(X_ts[, , t]) %*% as.vector(beta[t, ])
-                  , simplify = "matrix")
-    }else{
-      x_ts = sapply(t, function(t) X_ts[1, , t] * beta[t, 1]
-                    , simplify = "matrix")
-    }
-  }
-  
-  return(x_ts)
-}
-theta.WLS <- function(y, X, Q = NULL, n, Px, Pz){
-  if(is.null(Q)){
-    H0 <- solve(t(X) %*% X) %*% t(X)
-  }else{
-    H0 <- solve(t(X) %*% Q %*% X) %*% t(X) %*% Q
-  }
-  H <- X %*% H0
-  
-  est <- H0 %*% as.vector(y)
-  if(!is.null(Px)){
-    beta <- est[1:Px]
-    alpha <- matrix(est[-c(1:Px), 1], nrow = Pz) %>% t()
-  }else{
-    alpha <- matrix(est[, 1], nrow = Pz) %>% t()
-    beta <- NULL
-  }
-  y.fit <- matrix(H %*% as.vector(y),  nrow = n)
-  return(list(beta = beta, alpha = alpha, y.fit = y.fit, S = H))
+
+ 
+
+
+
+
+stFun <- function(S, i, ind){
+  return(S[, ind[[i]]])
+  # return(as.data.table(S[, ind[[i]]]))
 }
 
-theta_est <- function(y_ts = simDa$Y_ts, 
-                      z_ts = simDa$Z_ts,
-                      Time = simDa$time,
-                      Q = solve(simDa$Vc),
-                      Kernel = 0,
-                      h = 5e-1,
-                      nuUnifb = 0,
-                      nu = 0,
-                      nThreads = 1){
-  Nt <- ncol(y_ts)
-  n <- nrow(y_ts)
-  
-  y <- as.vector(t(y_ts))
-  Pz <- dim(z_ts)[1]
-  Z <- matrix(0, nrow = n*Nt, ncol = 2*Pz)
-  dt = 1
-  for(j in 1:Pz){
-    Z[, (Pz + j)] <-  Z[, j] <- as.vector(t(z_ts[j, , ])) 
-  }
-  
-  storage.mode(y) <- "double"
-  storage.mode(Z) <- "double"
-  storage.mode(Time) <- "double"
-  storage.mode(Q) <- "double"
-  
-  storage.mode(n) <- "integer"
-  storage.mode(Nt) <- "integer"
-  storage.mode(Pz) <- "integer"
-  storage.mode(Kernel) <- "integer"
-  storage.mode(h) <- "double"
-  
-  storage.mode(nuUnifb) <- "integer"
-  storage.mode(nu) <- "double"
-  storage.mode(nThreads) <- "integer"
-  
-  fit <- theta_Est_Ct(y, Z, Time, Q, n, Nt, Pz, 
-                      Kernel, h, nuUnifb, nu, 
-                      nThreads)
-  
-  index <- rep(1:(Nt), each  = n*Nt)
-  ind = split(1:length(index), index)
-  stFun <- function(S, i, ind){
-    return(S[, ind[[i]]])
-    # return(as.data.table(S[, ind[[i]]]))
-  }
-  
-  S<- lapply(X = 1:Nt, stFun, S = fit$S, ind)
-  S <- do.call("rbind", S)#%>% setDF() %>% as.matrix()
-  # S <- rbindlist(S1, use.names = F, fill = F) %>% as.matrix()
-  alpha <- t(fit$alpha)
-  # y.fit1 <- matrix(0, nrow = n, ncol = Nt)
-  # for(t in 1:Nt){
-  #   for(l in 1:Pz){
-  #     y.fit1[, t] <- y.fit1[, t] + z_ts[l,, t]*alpha[t, l]
-  #   }
-  # }
-  
-  y.fit <- matrix(S %*% y, nrow = n, ncol = Nt)
-  return(list(S = S, alpha = alpha, y.fit = y.fit))
-}
+
 
 semiCovs <- function(y, Coord, Kernel = 0,
                      h = 1e-1, d = NULL,
@@ -819,6 +1081,8 @@ semiCovs <- function(y, Coord, Kernel = 0,
   thresh <- 1
   if(is.null(d)){
     d <- fields::rdist(Coord, Coord)
+    #Cov <- 0.5*exp(-d)
+    
     thresh <- max(d)*prob
     rho.space <- fields::Wendland(d, theta = thresh , dimension = 1, k =1)
     # rho.space[which(rho.space > 0)] <- 1
@@ -860,8 +1124,8 @@ semiCovs <- function(y, Coord, Kernel = 0,
   # cv_index.0 <- as.matrix(cv_index)
   # Cmat[cv_index.0] <- Cov
   # 
-  # Cmat1 <- (t(Cmat) + Cmat)
-  # diag(Cmat) <- Var
+  Cmat1 <- (t(Cmat) + Cmat)
+  diag(Cmat1) <- C$C[1]
   # return(Cmat)
   
   Var <- rep(C$C[1], n)
@@ -869,14 +1133,18 @@ semiCovs <- function(y, Coord, Kernel = 0,
   Cmat <- as.double(Cmat)
   # a <- ModCov(Cmat, Var, n)
   ModCov.0 <- ModCov(Cmat, Var, n)
-  ModCov.0$Cov <- ModCov.0$Cov/C$C[1]
-  Cov <- rho.space * ModCov.0$Cov
-  return(list(ModCov = ModCov.0, Cov = Cov, Var.s = C$C[1]))
+  # ModCov.0$Cov <- ModCov.0$Cov
+  if(prob <= 1){
+    Cov <- rho.space * ModCov.0$Cov
+  }else{
+    Cov <- ModCov.0$Cov
+  }
+  return(list(estCov = Cmat1, ModCov = ModCov.0, Cov = Cov, Var.s = C$C[1]))
   # return(ModCov(Cmat, Var, n))
   # return(modify.Cov(Cmat, Var)), Mcov = modify.Cov(Cmat1, Var))
 }
 
-semiCovt <- function(y, Time, Kernel = 0,
+semiCovt <- function(y, Time, Var.s = NULL, Kernel = 0, 
                      h = 1e-1, prob = 1, nuUnifb = 1,
                      nu = 0.5, nThreads = 10){
   n <- nrow(y)
@@ -925,12 +1193,13 @@ semiCovt <- function(y, Time, Kernel = 0,
                     nuUnifb, nu, nThreads)
   
   # Cmat <- matrix(0, nrow = Nt, ncol = Nt)
+ 
   Cmat[cv_index.0] <- Cov$Cov
   Cmat[index.upp] <- 0
   # print(Cmat)
   
-  # Cmat <- (t(Cmat) + Cmat)
-  
+  Cmat1 <- (t(Cmat) + Cmat)
+  diag(Cmat1) <- Cov$Var
   # E <- eigen(Cmat)
   # index <- which(E$values > 0)
   # # print(E$values)
@@ -939,15 +1208,27 @@ semiCovt <- function(y, Time, Kernel = 0,
   # return(modify.Cov(Cmat, Cov$Var))
   # diag(Cmat) <- Cov$Var
   Var <- Cov$Var
+  if(!is.null(Var.s)){
+    Cmat <- Cmat/Var.s 
+    Var <- Var/Var.s
+    Cmat1 <- Cmat1/Var.s
+  }
+  
   Var <- as.double(Var)
   Cmat <- as.double(Cmat)
   ModCov.0 <- ModCov(Cmat, Var, Nt)
-  Cov <- rho.time * ModCov.0$Cov
-  return(list(ModCov = ModCov.0, Cov = Cov, Var.t = Var))
+  if(prob <= 1){
+    Cov <- rho.time * ModCov.0$Cov
+  }else{
+    Cov <- ModCov.0$Cov
+  }
+  
+  
+  return(list(estCov = Cmat1, ModCov = ModCov.0, Cov = Cov, Var.t = Var))
 }
-semiCovst <- function(y, Time, Coord,
+semiCovst <- function(y, Time, Coord, 
                       Kernel = 0, h = 0.1, d = NULL,
-                      prob = 1, nuUnifb = 1,
+                      prob = c(1, 1.5), nuUnifb = 1,
                       nu = 0.5, nThreads = 10){
   
   # y = simDa$Y_ts
@@ -1062,7 +1343,16 @@ semiCovst <- function(y, Time, Coord,
   Cmat <- as.double(Cmat)
   # a <- ModCov(Cmat, Var, n)
   ModCov.0 <- ModCov(Cmat, Var, n*Nt)
-  Cov <- ModCov.0$Cov * kronecker(rho.space, rho.time)
+ 
+  if(prob[2] > 1)
+  {
+    rho.time <-  matrix(1, Nt, Nt)
+  }
+  if(prob[1] <= 1){
+    Cov <- ModCov.0$Cov * kronecker(rho.space, rho.time)
+  }else{
+    Cov <- ModCov.0$Cov
+  }
   return(list(ModCov = ModCov.0, Cov = Cov, C = Cmat0, Var.st = Var))
 }
 

@@ -42,7 +42,7 @@ simDa <- siMuIncF(n = n, Nt = Nt,
   if(is.null(d)){
     d <- fields::rdist(Coord, Coord)
     thresh.s <- max(d)*prob
-    rho.space <- fields::Wendland(d, theta = thresh.s , dimension = 1, k =1)
+    rho.space <- fields::Wendland(d, theta = thresh.s, dimension = 1, k =1)
     # rho.space[which(rho.space > 0)] <- 1
     lower.s <- which(lower.tri(d), arr.ind = T)
     d <- d[lower.tri(d, diag = F)]
@@ -55,15 +55,12 @@ simDa <- siMuIncF(n = n, Nt = Nt,
   d <- c(d[index.low])
   m <- length(d)
   
-
   Vt <- diag(Nt)
   Vt <- abs(row(Vt) - col(Vt))
   thresh.t <- max(Vt)*prob
-  rho.time <- fields::Wendland(Vt, theta = thresh.t , dimension = 1, k =1)
+  rho.time <- fields::Wendland(Vt, theta = thresh.t, dimension = 1, k =1)
   
   if(length(h)!=4){h <- rep(h, 4)}
-  
-  
   
   # cv_index <- (which(lower.tri(Cmat), arr.ind = T))
   # data.table::setorderv(cv_index, c("row", "col"))
