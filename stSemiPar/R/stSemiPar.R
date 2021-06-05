@@ -82,6 +82,7 @@ theta <- theta_WI(y_ts = fix.residuals,
                    Kernel = Kernel[1],
                    h = h[1])
 fix.semi.residuals <- fix.residuals - theta$y.fit
+fix.semi.residuals <- fix.semi.residuals - mean(fix.semi.residuals)
 curr.alpha <- theta$alpha[, 1:Pz]
 # if(!is.null(Vc)){
 #   Q <- solve(Vc)
@@ -97,16 +98,17 @@ iter <- 0; error <- 1
 
 while((iter < nIter)&(error >=1e-3) ){ #& (error >=1e-3)
   # 1. Update covariance matrix
+  Ct <- semiCovt(fix.semi.residuals,
+                 Time = time, 
+                 Var.s = NULL,
+                 Kernel = Kernel[1],
+                 h = c(h[3], h[3]),
+                 prob = prob[2],
+                 nuUnifb = nuUnifb,
+                 nu = nu,
+                 nThreads = nThreads)
+  
   if(method %in% c("WI", "WEC_t")){  # only time dimension
-    Ct <- semiCovt(fix.semi.residuals,
-                   Time = time, 
-                   Kernel = Kernel[1],
-                   h = c(h[3], h[3]),
-                   prob = prob[2],
-                   nuUnifb = nuUnifb,
-                   nu = nu,
-                   nThreads = nThreads)
-    
     Q <- Matrix::solve(Ct$ModCov$Cov)
     # if(method %in% c("WI")){
     #   Q <- diag(Nt)*diag(Q)
@@ -116,15 +118,6 @@ while((iter < nIter)&(error >=1e-3) ){ #& (error >=1e-3)
   } 
   if(method %in% c("WEC_tw", "WEC_st", "WEC_stw")){ # space-time
     # h[1] <- 1E-3
-    Ct <- semiCovt(fix.semi.residuals,
-                   Time = time, 
-                   Var.s = NULL,
-                   Kernel = Kernel[1],
-                   h = c(h[3], h[3]),
-                   prob = prob[2],
-                   nuUnifb = nuUnifb,
-                   nu = nu,
-                   nThreads = nThreads)
     if(method %in% c("WEC_st", "WEC_stw")){
       Cs <- semiCovs(fix.semi.residuals, 
                      loc,     
@@ -168,15 +161,15 @@ while((iter < nIter)&(error >=1e-3) ){ #& (error >=1e-3)
       for(i in 1:Px){
         XX <- cbind(XX, as.vector(t(x_ts[i, , ])))
       }
-      beta <- solve(t(XX) %*% Q %*% XX) %*% t(XX) %*% Q %*%
-        as.vector(t((y_ts - theta$y.fit)))
+      # beta <- solve(t(XX) %*% Q %*% XX) %*% t(XX) %*% Q %*%
+      #   as.vector(t((y_ts - theta$y.fit)))
       
-      # SS <- theta$St
-      # Matrix::diag(SS) <- 1 - Matrix::diag(SS)
-      # # X^T %*% (I - SS)^T %*% Q %*% (I - SS)
-      # X.T <- Matrix::t(SS %*% XX ) %*% Q_temp# %*% SS
-      # beta <- solve(X.T %*% XX) %*% X.T %*% as.vector(t(y_ts - theta$y.fit))
-      # # beta <- as.vector(beta)
+      SS <- theta$St
+      Matrix::diag(SS) <- 1 - Matrix::diag(SS)
+      # X^T %*% (I - SS)^T %*% Q %*% (I - SS)- theta$y.fit
+      X.T <- Matrix::t(SS %*% XX ) %*% Q_temp
+      beta <- solve(X.T %*% XX) %*% X.T %*% as.vector(t(y_ts - theta$y.fit))
+      # # # beta <- as.vector(beta)
     }else{
       XX <- XY <- 0
       if(Px != 1){
@@ -199,10 +192,9 @@ while((iter < nIter)&(error >=1e-3) ){ #& (error >=1e-3)
     fix.effect.fit <- 0
     fix.residuals <- y_ts 
   }
- 
-  
-  
+
     fix.semi.residuals <- fix.residuals - theta$y.fit
+    fix.semi.residuals <- fix.semi.residuals - mean(fix.semi.residuals)
     # print(range(theta$alpha))
     if(!is.null(Px)){
       error <- mean(abs(curr.beta - beta)/abs(beta))

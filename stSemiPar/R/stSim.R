@@ -1,6 +1,6 @@
 rm(list=ls())
 source("./R/PSTVB_Packages.R")
-source("./R/SetSimuModel.R")
+source("./R/SetSimuModel1.R")
 source("./R/spT.validation.R")
 source("./R/stSemiPar.R")
 source("./R/stGCVfun.R")
@@ -31,7 +31,7 @@ DSN_01 <- odbcConnect(
 
 ##############################################################
 seed <- 1:50
-n <- 100
+n <- 50
 Nt <- 20
 M <- c("WI", "WEC_t", "WEC_tw", "WEC_st", "WEC_stw", "WLS")
 ##############################################################
@@ -42,13 +42,13 @@ prob = c(1.0e0, 1.5e0)
 Kernel <- c(0, 0)
 nIter = 20
 ##############################################################
-for(l in 1:3){
+for(l in c(5)){
   # l=5
   Result <- NULL
   method <- M[l]
   ##############################################################
   
-  tab <- paste0(method, "I_", substr(sigma.sq.s, 3, 3),"_", 
+  tab <- paste0(method, "DD_", substr(sigma.sq.s, 3, 3),"_", 
                 n, "_", Nt, "_", substr(Phis, 3, 3)) 
   alpha.est <- matrix(NA, nrow = 2*Nt, ncol = length(seed))
   # Max <- vector()
@@ -144,6 +144,7 @@ for(l in 1:3){
                        prob = c(temp0$taper_s, prob[2]),
                        method = method,
                        nIter = nIter)
+      # fit$beta
     }else{
       # fit$theta$alpha
       fit <- stSemi_WLS(y_ts = data$Y_ts,
@@ -220,11 +221,11 @@ for(l in 1:3){
                col= topo.colors(brk), #brewer.pal(5,"Spectral"), #tim.colors(10), 
                key=list(side=4, cex.axis=size), fmt.key="%.2f")
           
-          # plot(fit$Cs$ModCov$Cov, border = NA, main = "Vs.est",
-          #      # breaks= seq(M1, M2,, bk),  #
-          #      breaks=NULL, 
-          #      col= topo.colors(brk), #brewer.pal(5,"Spectral"), #tim.colors(10), 
-          #      key=list(side=4, cex.axis=size), fmt.key="%.2f")  
+          plot(fit$Cs$ModCov$Cov, border = NA, main = "Vs.est",
+               # breaks= seq(M1, M2,, bk),  #
+               breaks=NULL,
+               col= topo.colors(brk), #brewer.pal(5,"Spectral"), #tim.colors(10),
+               key=list(side=4, cex.axis=size), fmt.key="%.2f")
           plot(fit$Cs$Cov, border = NA, main = "Vs.taper", 
                # breaks= seq(M1, M2,, bk),  #
                breaks = NULL, 
@@ -287,9 +288,9 @@ for(l in 1:3){
       safer = TRUE,
       fast = TRUE
     )
-    print(round(Result[, c(1:7, 11, 15, 16)], 4))# c(1:5, 8, 10:14)])
-    cat("..........................................\n")
-    print(round(colMeans(Result[, c(1:7, 11, 15)]), 4))
+    print(round(Result[, c(1:6, 10, 13, 16)], 4))# c(1:5, 8, 10:14)])
+    cat("..................", tab, "..................\n")
+    print(round(colMeans(Result[, c(1:6, 10, 13, 15)]), 4))
     
     if(iter == length(seed)){
       save(alpha.est, file = paste0("./data/", tab, "_alpha_est.RData"))

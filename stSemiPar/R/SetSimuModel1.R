@@ -66,7 +66,7 @@ siMuIncF <- function(n = 1e2, Nt = 10,
                            smoothness = 0.5, phi = 1))
   
   for(t in 1:Nt){
-    X_ts[1, , t] <- rnorm(n, 0, 0.5)#10*time[t]^2 + rnorm(n, 0, 0.5)#rnorm(n, 0, 1)#
+    X_ts[1, , t] <- 10*time[t]^2 + rnorm(n, 0, 0.5)#10*time[t]^2 + rnorm(n, 0, 0.5)#rnorm(n, 0, 1)#
     if(Px > 1){
       X_ts[2, , t] <- Matrix::crossprod(L, rep(rnorm(n)))
       # mvnfast::rmvn(1, rep(0, n), 
@@ -76,7 +76,7 @@ siMuIncF <- function(n = 1e2, Nt = 10,
     }else{
       mu[, t] <-  X_ts[1, , t]*para$beta[1]
     }
-   
+    
     
     Z_ts[1, , t] <- rep(1, n)#rnorm(n, 0, 1)#rnorm(n, 0, 1)
     # Z_ts[2, , t] <- Matrix::crossprod(L, rep(rnorm(n)))

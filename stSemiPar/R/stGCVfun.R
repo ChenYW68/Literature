@@ -5,19 +5,32 @@ stGCVfun <- function(X){
   source("./R/stSemiPar_WLS.R")
   # source("./R/PSTVB_Packages.R")
   if(method %nin% c("WLS")){
-  fit <- stSemiPar(y_ts = data$Y_ts, 
-                   x_ts = data$X_ts, 
-                   z_ts = data$Z_ts,
-                   loc = data$loc,
-                   time = data$time,
-                   method = method,
-                   Kernel = Kernel,
-                   h = as.vector(H[X, 1:3]),
-                   prob = c(as.vector(H[X, 4]), prob[2]),
-                   nuUnifb = nuUnifb,
-                   nu = nu,
-                   nThreads = nThreads,
-                   nIter = nIter)
+
+ call <- function(X){
+   tryCatch(expr = {
+     return(stSemiPar(y_ts = data$Y_ts, 
+                               x_ts = data$X_ts, 
+                               z_ts = data$Z_ts,
+                               loc = data$loc,
+                               time = data$time,
+                               method = method,
+                               Kernel = Kernel,
+                               h = as.vector(H[X, 1:3]),
+                               prob = c(as.vector(H[X, 4]), prob[2]),
+                               nuUnifb = nuUnifb,
+                               nu = nu,
+                               nThreads = nThreads,
+                               nIter = nIter))
+   }, error = function(e){
+     return(NA)
+     
+   }
+   )
+ }
+   fit = NA
+   while(is.na(fit)){
+     fit <- call(X)
+   }
   }else{
     # for (X in 1:50) {
     #  cat("X = ", X, "\n")

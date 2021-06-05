@@ -79,7 +79,7 @@ source("./R/stSemiPar.R")
 source("./R/stGCVfun.R")
 source("E:/Literature/semiBase/R/util.R")
 
-n <- 100
+n <- 50
 Nt <- 20
 
 time <- seq(0, 1,, Nt)
@@ -100,14 +100,14 @@ sigma.sq.s <- 0.5
 #M <- c("WI", "WDt", "WDst", "WDstR")
 M <- c("WI", "WEC_t", "WEC_tw", "WEC_st", "WEC_stw", "WLS")
 method <- M[1]
-tab <- paste0(method, "_", substr(sigma.sq.s, 3, 3),"_", 
+tab <- paste0(method, "D_", substr(sigma.sq.s, 3, 3),"_", 
               n, "_", Nt, "_", substr(Phis, 3, 3)) 
 Result1 = sqlQuery(DSN_01, paste0("SELECT * FROM ", tab))
 load(paste0("./data/", tab, "_alpha_est.RData"))
 alpha.est1 <- alpha.est
 
 method <- M[2]
-tab <- paste0(method, "_", substr(sigma.sq.s, 3, 3),"_", 
+tab <- paste0(method, "I_", substr(sigma.sq.s, 3, 3),"_", 
               n, "_", Nt, "_", substr(Phis, 3, 3))  
 Result2 = sqlQuery(DSN_01, paste0("SELECT * FROM ", tab))
 
@@ -115,21 +115,21 @@ load(paste0("./data/", tab, "_alpha_est.RData"))
 alpha.est2 <- alpha.est
 
 method <- M[3]
-tab <- paste0(method, "_", substr(sigma.sq.s, 3, 3),"_", 
+tab <- paste0(method, "I_", substr(sigma.sq.s, 3, 3),"_", 
               n, "_", Nt, "_", substr(Phis, 3, 3))  
 Result3 = sqlQuery(DSN_01, paste0("SELECT * FROM ", tab))
 load(paste0("./data/", tab, "_alpha_est.RData"))
 alpha.est3 <- alpha.est
 
 method <- M[4]
-tab <- paste0(method, "I_", substr(sigma.sq.s, 3, 3),"_", 
+tab <- paste0(method, "DD_", substr(sigma.sq.s, 3, 3),"_", 
               n, "_", Nt, "_", substr(Phis, 3, 3))  
 Result4  <- sqlQuery(DSN_01, paste0("SELECT * FROM ", tab))
 load(paste0("./data/", tab, "_alpha_est.RData"))
 alpha.est4 <- alpha.est
 
 method <- M[5]
-tab <- paste0(method, "I_", substr(sigma.sq.s, 3, 3),"_", 
+tab <- paste0(method, "D_", substr(sigma.sq.s, 3, 3),"_", 
               n, "_", Nt, "_", substr(Phis, 3, 3))  
 Result5  <-sqlQuery(DSN_01, paste0("SELECT * FROM ", tab))
 load(paste0("./data/", tab, "_alpha_est.RData"))
@@ -151,41 +151,41 @@ r <- c(1e3, 1e3, 1e3)
                          Bias.1 = r[1]*(mean(Result1[, c1]) - b1), 
                          Sd.1 = r[2]*sd((Result1[, c1])^1), 
                          MSE.1 = r[3]*mean((Result1[, c1] - b1)^2),
-                         Bias.2 = r[1]*(mean(Result1[, c1 + 1]) - b2), 
-                         Sd.2 = r[2]*sd((Result1[, c1 + 1])^1), 
-                         MSE.2 = r[3]*mean((Result1[, c1 + 1] - b2)^2),
+                         # Bias.2 = r[1]*(mean(Result1[, c1 + 1]) - b2), 
+                         # Sd.2 = r[2]*sd((Result1[, c1 + 1])^1), 
+                         # MSE.2 = r[3]*mean((Result1[, c1 + 1] - b2)^2),
                          Bias.3 = mean(rowMeans(alpha.est1[1:Nt, ])- theta.1), 
                          Sd.3 = mean(sqrt(rowVar(alpha.est1[1:Nt, ]))), 
                          MSE.3 = mean((alpha.est1[1:Nt, ]- theta.1.1)^2)),
               
-              data.frame(method = "$\\text{WEC}_t$", 
-                         Bias.1 = r[1]*(mean(Result2[, c1]) - b1), 
-                         Sd.1 = r[2]*sd((Result2[, c1])^1), 
-                         MSE.1 = r[3]*mean((Result2[, c1] - b1)^2),
-                         Bias.2 = r[1]*(mean(Result2[, c1 + 1]) - b2), 
-                         Sd.2 = r[2]*sd((Result2[, c1 + 1])^1), 
-                         MSE.2 = r[3]*mean((Result2[, c1 + 1] - b2)^2),
-                         Bias.3 = mean(rowMeans(alpha.est2[1:Nt, ])- theta.1), 
-                         Sd.3 = mean(sqrt(rowVar(alpha.est2[1:Nt, ]))), 
-                         MSE.3 = mean((alpha.est2[1:Nt, ]- theta.1.1)^2)),
-              data.frame(method = "$\\text{WEC}_{tw}$", 
-                         Bias.1 = r[1]*(mean(Result3[, c1]) - b1), 
-                         Sd.1 = r[2]*sd((Result3[, c1])^1), 
-                         MSE.1 = r[3]*mean((Result3[, c1] - b1)^2),
-                         Bias.2 = r[1]*(mean(Result3[, c1 + 1]) - b2), 
-                         Sd.2 = r[2]*sd((Result3[, c1 + 1])^1), 
-                         MSE.2 = r[3]*mean((Result3[, c1 + 1] - b2)^2),
-                         Bias.3 = mean(rowMeans(alpha.est3[1:Nt, ])- theta.1), 
-                         Sd.3 = mean(sqrt(rowVar(alpha.est3[1:Nt, ]))), 
-                         MSE.3 = mean((alpha.est3[1:Nt, ]- theta.1.1)^2)),
+              # data.frame(method = "$\\text{WEC}_t$",
+              #            Bias.1 = r[1]*(mean(Result2[, c1]) - b1),
+              #            Sd.1 = r[2]*sd((Result2[, c1])^1),
+              #            MSE.1 = r[3]*mean((Result2[, c1] - b1)^2),
+              #            # Bias.2 = r[1]*(mean(Result2[, c1 + 1]) - b2),
+              #            # Sd.2 = r[2]*sd((Result2[, c1 + 1])^1),
+              #            # MSE.2 = r[3]*mean((Result2[, c1 + 1] - b2)^2),
+              #            Bias.3 = mean(rowMeans(alpha.est2[1:Nt, ])- theta.1),
+              #            Sd.3 = mean(sqrt(rowVar(alpha.est2[1:Nt, ]))),
+              #            MSE.3 = mean((alpha.est2[1:Nt, ]- theta.1.1)^2)),
+              # data.frame(method = "$\\text{WEC}_{tw}$",
+              #            Bias.1 = r[1]*(mean(Result3[, c1]) - b1),
+              #            Sd.1 = r[2]*sd((Result3[, c1])^1),
+              #            MSE.1 = r[3]*mean((Result3[, c1] - b1)^2),
+              #            # Bias.2 = r[1]*(mean(Result3[, c1 + 1]) - b2),
+              #            # Sd.2 = r[2]*sd((Result3[, c1 + 1])^1),
+              #            # MSE.2 = r[3]*mean((Result3[, c1 + 1] - b2)^2),
+              #            Bias.3 = mean(rowMeans(alpha.est3[1:Nt, ])- theta.1),
+              #            Sd.3 = mean(sqrt(rowVar(alpha.est3[1:Nt, ]))),
+              #            MSE.3 = mean((alpha.est3[1:Nt, ]- theta.1.1)^2)),
               
               data.frame(method = "$\\text{WEC}_{st}$", 
                          Bias.1 = r[1]*(mean(Result4[, c1]) - b1), 
                          Sd.1 = r[2]*sd((Result4[, c1])^1), 
                          MSE.1 = r[3]*mean((Result4[, c1] - b1)^2),
-                         Bias.2 = r[1]*(mean(Result4[, c1 + 1]) - b2), 
-                         Sd.2 = r[2]*sd((Result4[, c1 + 1])^1), 
-                         MSE.2 = r[3]*mean((Result4[, c1 + 1] - b2)^2),
+                         # Bias.2 = r[1]*(mean(Result4[, c1 + 1]) - b2), 
+                         # Sd.2 = r[2]*sd((Result4[, c1 + 1])^1), 
+                         # MSE.2 = r[3]*mean((Result4[, c1 + 1] - b2)^2),
                          Bias.3 = mean(rowMeans(alpha.est4[1:Nt, ])- theta.1), 
                          Sd.3 = mean(sqrt(rowVar(alpha.est4[1:Nt, ]))), 
                          MSE.3 = mean((alpha.est4[1:Nt, ]- theta.1.1)^2)),
@@ -193,9 +193,9 @@ r <- c(1e3, 1e3, 1e3)
                          Bias.1 = r[1]*(mean(Result5[, c1]) - b1), 
                          Sd.1 = r[2]*sd((Result5[, c1])^1), 
                          MSE.1 = r[3]*mean((Result5[, c1] - b1)^2),
-                         Bias.2 = r[1]*(mean(Result5[, c1 + 1]) - b2), 
-                         Sd.2 = r[2]*sd((Result5[, c1 + 1])^1), 
-                         MSE.2 = r[3]*mean((Result5[, c1 + 1] - b2)^2),
+                         # Bias.2 = r[1]*(mean(Result5[, c1 + 1]) - b2), 
+                         # Sd.2 = r[2]*sd((Result5[, c1 + 1])^1), 
+                         # MSE.2 = r[3]*mean((Result5[, c1 + 1] - b2)^2),
                          Bias.3 = mean(rowMeans(alpha.est5[1:Nt, ])- theta.1), 
                          Sd.3 = mean(sqrt(rowVar(alpha.est5[1:Nt, ]))), 
                          MSE.3 = mean((alpha.est5[1:Nt, ]- theta.1.1)^2))#,
@@ -211,6 +211,7 @@ r <- c(1e3, 1e3, 1e3)
               #            MSE.3 = mean((alpha.est6[1:Nt, ]- theta.1.1)^2))
   )
 }
+da[, -1] <- round(da[, -1], 4)
 da
 writexl::write_xlsx(da, path = "./data/Resum.xlsx")	   
 

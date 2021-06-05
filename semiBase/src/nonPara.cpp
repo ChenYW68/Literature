@@ -483,7 +483,7 @@ double spCor(double &d, double &phi, double &nu, int &covModel, double *bk){
   }else{
 	 if(D > 0 && D <= phi){
       return 0.75*(1.0 - pow(D/phi, 2));
-    }else if(D >= 1.0*phi){
+    }else if(D > 1.0*phi){
       return 0.0;
     }   
    // error("c++ error: cov.model is not correctly specified");
