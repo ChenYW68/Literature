@@ -81,12 +81,16 @@ ModCov <- function(C_r, Var_r, n_r) {
     .Call(`_semiBase_ModCov`, C_r, Var_r, n_r)
 }
 
+build_spCov_C <- function(Coord_r, n_r, J_r, range_r, sigma_r, nu_r, nuUnifb_r, CovModel_r, nThreads_r) {
+    .Call(`_semiBase_build_spCov_C`, Coord_r, n_r, J_r, range_r, sigma_r, nu_r, nuUnifb_r, CovModel_r, nThreads_r)
+}
+
 semiCov_Cs <- function(y_r, Coord_r, n_r, m_r, N_r, Kernel_r, h_r, d_r, nuUnifb_r, nu_r, nThreads_r) {
     .Call(`_semiBase_semiCov_Cs`, y_r, Coord_r, n_r, m_r, N_r, Kernel_r, h_r, d_r, nuUnifb_r, nu_r, nThreads_r)
 }
 
-semiCov_Ct <- function(y_r, Time_r, CvIndex_r, n_r, Nt_r, Cv_r, Kernel_r, h_r, nuUnifb_r, nu_r, nThreads_r) {
-    .Call(`_semiBase_semiCov_Ct`, y_r, Time_r, CvIndex_r, n_r, Nt_r, Cv_r, Kernel_r, h_r, nuUnifb_r, nu_r, nThreads_r)
+semiCov_Ct <- function(y_r, Time_r, CvIndex_r, n_r, Nt_r, estNt_r, Cv_r, Kernel_r, h_r, nuUnifb_r, nu_r, nThreads_r) {
+    .Call(`_semiBase_semiCov_Ct`, y_r, Time_r, CvIndex_r, n_r, Nt_r, estNt_r, Cv_r, Kernel_r, h_r, nuUnifb_r, nu_r, nThreads_r)
 }
 
 semiCov_Cst <- function(y_r, Time_r, Coord_r, CvIndex_r, n_r, Nt_r, Cv_r, Kernel_r, h_r, d_r, m_r, nuUnifb_r, nu_r, nThreads_r) {

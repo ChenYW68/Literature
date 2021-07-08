@@ -1,3 +1,46 @@
+rm(list=ls())
+source("./R/PSTVB_Packages.R")
+source("./R/SetSimuModel1.R")
+source("./R/spT.validation.R")
+source("./R/stSemiPar.R")
+source("./R/stGCVfun.R")
+source("./R/stSemiPar_WLS.R")
+# Y_ts <- siMuIncF(n = 100, Nt = 10,
+#                  x.0 = c(0),
+#                  y.0 = c(0),
+#                  delta = 0.1,
+#                  para = list(tau.sq = 0.001, Phis = 0.3,
+#                              nu = 1, sigma.sq.s = 1,
+#                              sigma.sq.t = 1,
+#                              Phit = 0.8,
+#                              rho = 0.1,
+#                              beta = c(1, 5)),
+#                  nRatio = 0.8)
+# range(Y_ts$D)
+source("E:/Literature/semiBase/R/util.R")
+Rcpp::sourceCpp("E:/Literature/semiBase/src/nonPara.cpp")
+# install.packages("E:/Literature/semiBase_1.0.zip", repos = NULL, type = "win.binary")
+# library(semiBase)
+DSN_01 <- odbcConnect(
+  "DSN_01",
+  uid = "myname",
+  pwd = "mypwd",
+  believeNRows = FALSE,
+  case = "toupper"
+)
+
+##############################################################
+seed <- 1:50
+n <- 20
+Nt <- 20
+M <- c("WI", "WEC_t", "WEC_tw", "WEC_st", "WEC_stw", "WLS")
+##############################################################
+Phis <- "0.2"
+sigma.sq.s <- 0.5
+##############################################################
+prob = c(1.0e0, 1.5e0)
+Kernel <- c(0, 0)
+nIter = 20
 set.seed(seed[39])
 simDa <- siMuIncF(n = n, Nt = Nt, 
                   x.0 = c(0),

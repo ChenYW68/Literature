@@ -2,35 +2,38 @@ stGCVfun <- function(X){
   source("E:/Literature/semiBase/R/util.R")
   Rcpp::sourceCpp("E:/Literature/semiBase/src/nonPara.cpp")
   source("./R/stSemiPar.R")
-  source("./R/stSemiPar_WLS.R")
+  # source("./R/stSemiPar_WLS.R")
   # source("./R/PSTVB_Packages.R")
   if(method %nin% c("WLS")){
 
- call <- function(X){
-   tryCatch(expr = {
-     return(stSemiPar(y_ts = data$Y_ts, 
-                               x_ts = data$X_ts, 
-                               z_ts = data$Z_ts,
-                               loc = data$loc,
-                               time = data$time,
-                               method = method,
-                               Kernel = Kernel,
-                               h = as.vector(H[X, 1:3]),
-                               prob = c(as.vector(H[X, 4]), prob[2]),
-                               nuUnifb = nuUnifb,
-                               nu = nu,
-                               nThreads = nThreads,
-                               nIter = nIter))
-   }, error = function(e){
-     return(NA)
-     
-   }
-   )
- }
-   fit = NA
-   while(is.na(fit)){
-     fit <- call(X)
-   }
+ # call <- function(X){
+ #   tryCatch(expr = {
+ #     return(
+    # assign("Q", as.matrix(data$Qst), envir = .GlobalEnv)
+    fit <- stSemiPar(y_ts = data$Y_ts, 
+                   x_ts = data$X_ts, 
+                   z_ts = data$Z_ts,
+                   loc = data$loc,
+                   time = data$time,
+                   method = method,
+                   Kernel = Kernel,
+                   h = H[X, ],
+                   # prob = c(as.vector(H[X, 4]), prob[2]),
+                   nuUnifb = nuUnifb,
+                   nu = nu,
+                   nThreads = nThreads,
+                   nIter = nIter)
+    # )
+ #   }, error = function(e){
+ #     return(NA)
+ #     
+ #   }
+ #   )
+ # }
+ #   fit = NA
+ #   while(is.na(fit)){
+ #     fit <- call(X)
+ #   }
   }else{
     # for (X in 1:50) {
     #  cat("X = ", X, "\n")
@@ -39,15 +42,15 @@ stGCVfun <- function(X){
                       z_ts = data$Z_ts,
                       loc = data$loc,
                       time = data$time,
-                      prob = c(as.vector(H[X, 4]), prob[2]),
+                      # prob = c(as.vector(H[X, 4]), prob[2]),
                       Kernel = Kernel,
-                      h =  as.vector(H[X, 1:3]),
+                      h =  as.vector(H[X]),
                       nThreads = nThreads,
                       nIter = nIter)
      # }
   }
   # plot(fit$fit.value, fit$y_ts)
-  y.fitted.error <- spT.validation(fit$fit.value, fit$y_ts)
+  y.fitted.error <- spT.validation(fit$fit.value, fit$y_ts)[c(2, 3, 9)]
   y.fitted.error <- matrix(y.fitted.error, nrow = 1)
   colnames(y.fitted.error) <- paste0("y", c("_RMSE", "_MAE", "_CRPS"))
   
@@ -62,7 +65,7 @@ stGCVfun <- function(X){
   da.theta <- bias.theta <- NULL
   if(!is.null(data$theta)){
     for(i in 1:ncol(data$theta)){
-      theta.error <- spT.validation(fit$theta$alpha[, i], data$theta[, i])
+      theta.error <- spT.validation(fit$theta$alpha[, i], data$theta[, i])[c(2, 3, 9)]
       da.theta <- c(da.theta, as.vector(theta.error))
       # bias.theta <- c(bias.theta, c(sum((fit$theta$alpha[, i] -  data$theta[, i])^2),
       #                               sd((fit$theta$alpha[, i] -  data$theta[, i])^2)
@@ -101,14 +104,26 @@ stGCVfun <- function(X){
   
   da <- as.data.frame(cbind(da.Beta, da.theta, bias.theta, y.fitted.error))
   rownames(da) <- NULL
-  da <- data.frame(meanH = H[X, 1], 
-                   covHs = H[X, 2], 
-                   covHt = H[X, 3], 
-                   taper_s = H[X, 4],
-                   da, Var.s = fit$Var.s,
-                   GCV = GCV, 
-                   nIter = fit$nIter)
-  
+  da <- list(summary = data.frame(H0 = H[X, 1], 
+                                  H1 = H[X, 2], 
+                   # covHs = H[X, 2],
+                   # covHt = H[X, 3],
+                   # taper_s = H[X, 4],
+                    da, #Var.s = fit$Var.s,
+                    sigma.sq.1 = fit$sigma.sq.s[1],
+                    sigma.sq.2 = fit$sigma.sq.s[2],
+                    range1 = fit$range_nugget[1],
+                    range2 = fit$range_nugget[2],
+                    tau_sq = fit$range_nugget[3],
+                    GCV = GCV,
+                    nIter = fit$nIter),
+             GCV = GCV, 
+             Cs = fit$Cs,
+             alpha = fit$theta$alpha,
+             Vt = fit$Vt,
+             fit.value = fit$fit.value,
+             y_ts = fit$y_ts
+             )
   return(da)
 }
 
@@ -116,7 +131,7 @@ stGCVfun <- function(X){
 GCVparaSemi <- function(data, H = expand.grid(meanH = seq(1E-2, 1,, 5),
                                               covHs = seq(1E-2, 1,, 5),
                                               covHt = seq(1E-2, 1,, 5)), 
-                        prob = c(1, 1), method = "WI", Kernel = c(0, 0),
+                        method = "WI", Kernel = c(0, 0),
                         nuUnifb = 1, nu = 0.5, nThreads = 10,
                         nIter = 10)
 {
@@ -130,17 +145,17 @@ GCVparaSemi <- function(data, H = expand.grid(meanH = seq(1E-2, 1,, 5),
   parallel::clusterEvalQ(cl, library(fields))
   parallel::clusterEvalQ(cl, library(Hmisc))
   # parallel::clusterEvalQ(cl, library(semiBase))
-  
+  # assign("Q_temp", data$Q_temp, envir = .GlobalEnv)"Q_temp",
   parallel::clusterExport(cl = cl
-                          , varlist = c("data", "H", "prob"
+                          , varlist = c("data",  "H"
                                         , "method", "Kernel"
                                         , "nuUnifb", "nu"
                                         , "nThreads", "nIter"
                                         , "spT.validation")
                           , envir = environment())
   temp <- parallel::parLapply(cl, X = 1:nrow(H), fun = stGCVfun)
-  # temp <- do.call("rbind", temp)
-  temp <- data.table::rbindlist(temp)
+  temp <- do.call("rbind", temp)
+  # temp <- data.table::rbindlist(temp)
   stopCluster(cl)
   
   # library(snowfall)

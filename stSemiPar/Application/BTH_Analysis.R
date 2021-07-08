@@ -9,22 +9,25 @@ Rcpp::sourceCpp("E:/Literature/semiBase/src/nonPara.cpp")
 #              Kernel = 0, h = 0.1, 
 #              nThreads = 10)
 source("./R/stSemiPar.R")
-col <- c(3:7)
+col <- c(2:7)
 Nt <- 20
-range(dist(Site[, 6:7]))
-M <- c("WI", "WDt", "WDst", "WDstR")
-method <- M[4]
+range(dist(Site[, 4:5]))
+M <- c("WI", "WEC_t", "WEC_tw", "WEC_st", "WEC_stw", "WLS")
+method <- M[5]
 fit <- stSemiPar(y_ts = t(sqrt(Yts_Xts$Y_ts[1:Nt, ])), 
                   x_ts = Yts_Xts$X_ts[col, , 1:Nt], 
                   z_ts = Yts_Xts$X_ts[1, , 1:Nt],
-                  loc = as.matrix(Site[, 6:7]),
-                  prob = c(1, 1.5),
+                  loc = as.matrix(Site[, 4:5]),
                   time = (0:(Nt - 1))/(Nt - 1),
-                  Kernel = 3,
-                  h = c(1e-1, 1e-2, 1e-1),
+                  Kernel = c(3, 0),
+                  h = c(3e-1, 3e-1),
                   method = method,
-                  nIter = 20)
+                  nIter = 5)
 
+matplot(fit$time, as.matrix(fit$Vt),xlab='time',ylab='PCs.Est',
+        lwd=2,lty=1,cex.lab=1.5,cex.axis=1.5,type='l')
+# legend(0.5,-0.05,c('PC1','PC2'),col=1:3,lty=0.1,lwd=1)
+title('Principle Component Functions')
 # fit <- stSemi_OLS(y_ts = t(sqrt(Yts_Xts$Y_ts[1:Nt, ])), 
 #                  x_ts = Yts_Xts$X_ts[col, , 1:Nt], 
 #                  z_ts = Yts_Xts$X_ts[1, , 1:Nt],
@@ -72,7 +75,8 @@ colnames(Da) <- c("y_ts", dimnames(Yts_Xts$X_ts)[[1]][2:7], "t")
 
 Fit <- mgcv::gam(y_ts ~  CMAQ_PM25_30 + REAL_LON_WIND +
                    REAL_TEMP + REAL_PRES + REAL_DEWP + 
-                   REAL_LAT_WIND + s(t), data = Da)
+                   REAL_LAT_WIND + s(t), data = Da,
+                 drop.intercept = F)
 
 plot(Fit)
 Fit$coefficients[1:2]

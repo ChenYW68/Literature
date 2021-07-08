@@ -2,11 +2,10 @@ stSemiPar <- function(y_ts = NULL,
                       x_ts = NULL, 
                       z_ts = NULL,
                       loc = NULL,
-                      prob = c(1.5, 1.5),
                       time = NULL,
                       method = c("WI"),
                       Kernel = c(0, 0),
-                      h = c(1e-1, 1e-1, 1e-1),
+                      h = 1e-1,
                       nuUnifb = 1,
                       nu = 0.8,
                       nThreads = 10,
@@ -17,9 +16,9 @@ stSemiPar <- function(y_ts = NULL,
   # z_ts = data$Z_ts
   # loc = data$loc
   # time = data$time
-  # 
-  # h = c(1e-1, 1e-1, 1e-1)
-  # # method <- M[1]
+  # #
+  # h = 1e-1
+  # # # method <- M[1]
   # nuUnifb = 1
   # nu = 0.8
   # nThreads = 10
@@ -60,7 +59,7 @@ if(!is.null(Px)){
                                           collapse = "+")))
   fit <- lm(fmla, data = lm.da)
   beta <- fit$coefficients
-  curr.beta <- beta
+  # curr.beta <- beta
   print(beta)
 }else{
   beta <- 0
@@ -81,8 +80,8 @@ theta <- theta_WI(y_ts = fix.residuals,
                    Q = diag(Nt), #solve(Y_ts$Vt)；diag(ncol(Y_ts$Y_ts))
                    Kernel = Kernel[1],
                    h = h[1])
-fix.semi.residuals <- fix.residuals - theta$y.fit
-fix.semi.residuals <- fix.semi.residuals - mean(fix.semi.residuals)
+
+# fix.semi.residuals <- fix.semi.residuals - mean(fix.semi.residuals)
 curr.alpha <- theta$alpha[, 1:Pz]
 # if(!is.null(Vc)){
 #   Q <- solve(Vc)
@@ -91,54 +90,67 @@ curr.alpha <- theta$alpha[, 1:Pz]
 # L = DQ$vectors %*% sqrt(diag(DQ$values)) %*% t(DQ$vectors)
 # L <- solve(t(chol(Vc)))
 
-varH <- 1
-Cs <- Ct <- NULL
+#   Stage 2
 S0 <- theta$St
-iter <- 0; error <- 1
+beta <- beta_est(y_ts, x_ts, theta, Q = NULL)
+curr.beta <- beta$beta
+fix.residuals <- beta$fix.residuals
+fix.semi.residuals <- fix.residuals - theta$y.fit
 
+iter <- 0; error <- 1
+# Q_temp0 <- Q_temp
+J <- 2
+D <- max(fields::rdist(loc, loc))
+# Q0 <- Q
+
+#   Stage 3
 while((iter < nIter)&(error >=1e-3) ){ #& (error >=1e-3)
+ 
   # 1. Update covariance matrix
-  Ct <- semiCovt(fix.semi.residuals,
-                 Time = time, 
-                 Var.s = NULL,
-                 Kernel = Kernel[1],
-                 h = c(h[3], h[3]),
-                 prob = prob[2],
-                 nuUnifb = nuUnifb,
-                 nu = nu,
-                 nThreads = nThreads)
-  
-  if(method %in% c("WI", "WEC_t")){  # only time dimension
-    Q <- Matrix::solve(Ct$ModCov$Cov)
-    # if(method %in% c("WI")){
-    #   Q <- diag(Nt)*diag(Q)
-    # }
-    Q_temp <- kronecker(Matrix::diag(n), Q)
-    type = 0
-  } 
-  if(method %in% c("WEC_tw", "WEC_st", "WEC_stw")){ # space-time
-    # h[1] <- 1E-3
-    if(method %in% c("WEC_st", "WEC_stw")){
-      Cs <- semiCovs(fix.semi.residuals, 
-                     loc,     
-                     Kernel = Kernel[2],
-                     h = h[2], 
-                     prob = prob[1],
-                     nuUnifb = nuUnifb,
-                     nu = nu,
-                     nThreads = nThreads)
-      # Cov.t <- Ct$ModCov$Cov  
-      # Matrix::diag(Ct$ModCov$Cov) <- Matrix::diag(Ct$ModCov$Cov)/ Cs$Var.s
-      cat("\n---------------\n")
-      cat("var: ", Round(Cs$Var.s, 4))
-      cat("\n---------------\n")
-      Q_temp <- Q <- kronecker(Matrix::solve(Cs$Cov/Cs$Var.s), #estCov/Cs$Var.s
-                     Matrix::solve(Ct$ModCov$Cov))#ModCov$Cov
-    }else{
-      Q_temp <- Q <- kronecker(Matrix::diag(n), #estCov
-                     Matrix::solve(Ct$ModCov$Cov)) #ModCov$Cov
-    }
-    type = 1
+  if(method %in% c("WI")){ 
+    Q <- diag(Nt)
+    # type <- 0
+  }
+  if(method %in% c("WEC_t", "WEC_tw", "WEC_st", "WEC_stw")){ # space-time
+    # source("E:/Literature/semiBase/R/util.R")
+  fd <- sp.FPCA(fix.semi.residuals, time = 0:(Nt - 1),
+                nharm = J, lambda = 1e3)
+  # fd$pca_fd$values[1:3]
+  # fd$PCA[, 1] %*% fd$PCA[, 1]
+  # for(j in 1:J){
+  #   c1 <- fd$PCA[, j] %*% fd$PCA[, j]
+  #   fd$PCA[, j] <-  fd$PCA[, j]/sqrt(as.vector(c1))
+  # }
+
+  Psi <- build_Psi_fun(Psi = fd$PCA, n = n, Nt = nrow(fd$PCA))
+  range_nugget <- exp(optim(rep(-2, J + 1), optim_semPara, 
+              method = "L-BFGS-B",#L-BFGS-B
+              y = fix.semi.residuals,
+              Coord = loc, 
+              Psi = Psi, 
+              # Phi.tem = Psi.crossprod,
+              J = J, sigma.sq.s = fd$pca_fd$values[1:J],
+              CovModel = Kernel[2],
+              lower = c(rep(log(0.01), J), log(0.1)), 
+              upper = c(rep(log(D*0.2), J), log(1.0)),
+              control = list(REPORT = 1,
+                             trace = 1))$par)
+  cat("**************************************\n")
+  cat("sigma.sq: ", round(fd$pca_fd$values[1:J], 3), "\n")
+  cat("range_nugget: ", round(range_nugget, 3), "\n")
+  Cs <- build_spCov(Coord = loc, J = J, 
+                    range = range_nugget[1:J],
+                    sigma.sq.s = fd$pca_fd$values[1:J],
+                    nu = rep(0.5, J), 
+                    CovModel = Kernel[2])
+  Q <- as.matrix(Solve_Cst(Cs, Psi, fd$pca_fd$values[J + 1])$inv.Cst)
+ 
+  }
+  type <- 1
+  if(method %in% c("WEC_t")){
+    method0 = "WI"
+  }else{
+    method0 = method
   }
   #3. Update theta 
   theta <- semPar.space.time( y_ts = fix.residuals,
@@ -147,15 +159,19 @@ while((iter < nIter)&(error >=1e-3) ){ #& (error >=1e-3)
                               Q = Q,
                               S = theta$St,
                               Kernel = Kernel[1],
-                              h = h[1],
+                              h = h[2],
                               nuUnifb = nuUnifb,
                               nu = nu,
                               nThreads = nThreads,
-                              method = method)
-  
-
+                              method = method0)
   #3. Update beta
   if(!is.null(Px)){
+    # if(method %in% c("WI")){
+    #   Q <- diag(n*Nt)
+    # }
+    # else{
+    #   Q0 <- Q
+    # }
     if(type){
       XX <- NULL
       for(i in 1:Px){
@@ -163,28 +179,35 @@ while((iter < nIter)&(error >=1e-3) ){ #& (error >=1e-3)
       }
       # beta <- solve(t(XX) %*% Q %*% XX) %*% t(XX) %*% Q %*%
       #   as.vector(t((y_ts - theta$y.fit)))
-      
-      SS <- theta$St
-      Matrix::diag(SS) <- 1 - Matrix::diag(SS)
+      SS <- diag(n*Nt) - theta$St
+      # SS <- theta$St
+      # Matrix::diag(SS) <- 1 - Matrix::diag(SS)
       # X^T %*% (I - SS)^T %*% Q %*% (I - SS)- theta$y.fit
-      X.T <- Matrix::t(SS %*% XX ) %*% Q_temp
-      beta <- solve(X.T %*% XX) %*% X.T %*% as.vector(t(y_ts - theta$y.fit))
-      # # # beta <- as.vector(beta)
-    }else{
-      XX <- XY <- 0
-      if(Px != 1){
-        for(s in 1:n){
-          XX <- XX + x_ts[, s, ] %*% Q %*% t(x_ts[, s, ])
-          XY <- XY + x_ts[, s, ] %*% Q %*% (y_ts[s, ] - theta$y.fit[s, ])
-        }
-      }else{
-        for(s in 1:n){
-          XX <- XX + t(cbind(x_ts[, s, ])) %*% Q %*% cbind(x_ts[, s, ])
-          XY <- XY + t(cbind(x_ts[, s, ])) %*% Q %*% (y_ts[s, ] - theta$y.fit[s, ])
-        }
-      }
-      beta <- solve(XX) %*% XY
+     
+      # X.T <- Matrix::t(SS %*% XX ) %*% Q0 #%*% SS
+      # beta <- solve(X.T %*% XX) %*% X.T %*% as.vector(t(y_ts - theta$y.fit))
+      # 
+      
+      X.tild <- Matrix::t(SS %*% XX)
+      beta <- solve(X.tild %*% Q %*% t(X.tild)) %*%
+        X.tild %*% Q %*% SS %*% as.vector(t(y_ts))
+
     }
+    # else{
+    #   XX <- XY <- 0
+    #   if(Px != 1){
+    #     for(s in 1:n){
+    #       XX <- XX + x_ts[, s, ] %*% Q %*% t(x_ts[, s, ])
+    #       XY <- XY + x_ts[, s, ] %*% Q %*% (y_ts[s, ] - theta$y.fit[s, ])
+    #     }
+    #   }else{
+    #     for(s in 1:n){
+    #       XX <- XX + t(cbind(x_ts[, s, ])) %*% Q %*% cbind(x_ts[, s, ])
+    #       XY <- XY + t(cbind(x_ts[, s, ])) %*% Q %*% (y_ts[s, ] - theta$y.fit[s, ])
+    #     }
+    #   }
+    #   beta <- solve(XX) %*% XY
+    # }
      # beta[1:2, 1] <- c(1, 5) 
     fix.effect.fit <- X_ts_Transf(x_ts, beta)
     fix.residuals <- y_ts - fix.effect.fit
@@ -194,7 +217,7 @@ while((iter < nIter)&(error >=1e-3) ){ #& (error >=1e-3)
   }
 
     fix.semi.residuals <- fix.residuals - theta$y.fit
-    fix.semi.residuals <- fix.semi.residuals - mean(fix.semi.residuals)
+    # fix.semi.residuals <- fix.semi.residuals - mean(fix.semi.residuals)
     # print(range(theta$alpha))
     if(!is.null(Px)){
       error <- mean(abs(curr.beta - beta)/abs(beta))
@@ -223,31 +246,47 @@ while((iter < nIter)&(error >=1e-3) ){ #& (error >=1e-3)
     )
     cat("**************************************\n")
     cat("--------------------------------------\n")
-    if(iter == 1){error <- 1}
+    # if(iter == 1){error <- 1}
     # plot(y_ts, fix.effect.fit + theta$y.fit)
  }
 
-if(method %in% c("WI")){
-  C = kronecker(diag(n), diag(Ct$ModCov$Cov)*diag(Nt))
-  Var.s <- NA
+# if(method %in% c("WI")){
+#   C = kronecker(diag(n), diag(Ct$ModCov$Cov)*diag(Nt))
+#   Var.s <- NA
+# }
+# if(method %in% c("WEC_t", "WEC_tw")){
+#   C = kronecker(diag(n), Ct$ModCov$Cov)
+#   Var.s <- NA
+# }
+# if(method %in% c("WEC_st", "WEC_stw")){
+#   C = kronecker(Cs$Cov, Ct$ModCov$Cov)/(Cs$Var.s)^0
+#   Var.s <- Cs$Var.s
+# }
+if(method %in% c("WEC_t", "WEC_tw", "WEC_st", "WEC_stw")){
+  return(list(beta = beta, theta = theta, 
+              St = theta$St,
+              Q = as(Q, "sparseMatrix"),
+              Cs = Cs,
+              Psi = Psi,
+              Vt = fd$PCA,
+              range_nugget = range_nugget,
+              sigma.sq.s = fd$pca_fd$values,
+              fit.value = fix.effect.fit + theta$y.fit,
+              y_ts = y_ts, fix.effect.fit = fix.effect.fit,
+              time = time, nIter = iter))
+}else{
+  return(list(beta = beta, theta = theta, 
+              St = theta$St,
+              Q = as(Q, "sparseMatrix"),
+              Cs = NA,
+              Psi = NA,
+              Vt = NA,
+              range_nugget = rep(NA, J + 1),
+              sigma.sq.s = rep(NA, J),
+              fit.value = fix.effect.fit + theta$y.fit,
+              y_ts = y_ts, fix.effect.fit = fix.effect.fit,
+              time = time, nIter = iter))
 }
-if(method %in% c("WEC_t", "WEC_tw")){
-  C = kronecker(diag(n), Ct$ModCov$Cov)
-  Var.s <- NA
-}
-if(method %in% c("WEC_st", "WEC_stw")){
-  C = kronecker(Cs$Cov, Ct$ModCov$Cov)/(Cs$Var.s)^0
-  Var.s <- Cs$Var.s
-}
-return(list(beta = beta, theta = theta, 
-            Cs = Cs,#NULL, #
-            Ct = Ct,
-            C = C, 
-            Var.s = Var.s,
-            St = theta$St,
-            fit.value = fix.effect.fit + theta$y.fit,
-            y_ts = y_ts, fix.effect.fit = fix.effect.fit,
-            time = time, nIter = iter))
 } 
   
   

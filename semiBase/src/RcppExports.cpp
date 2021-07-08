@@ -423,6 +423,25 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// build_spCov_C
+SEXP build_spCov_C(SEXP Coord_r, SEXP n_r, SEXP J_r, SEXP range_r, SEXP sigma_r, SEXP nu_r, SEXP nuUnifb_r, SEXP CovModel_r, SEXP nThreads_r);
+RcppExport SEXP _semiBase_build_spCov_C(SEXP Coord_rSEXP, SEXP n_rSEXP, SEXP J_rSEXP, SEXP range_rSEXP, SEXP sigma_rSEXP, SEXP nu_rSEXP, SEXP nuUnifb_rSEXP, SEXP CovModel_rSEXP, SEXP nThreads_rSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type Coord_r(Coord_rSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type n_r(n_rSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type J_r(J_rSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type range_r(range_rSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type sigma_r(sigma_rSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type nu_r(nu_rSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type nuUnifb_r(nuUnifb_rSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type CovModel_r(CovModel_rSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type nThreads_r(nThreads_rSEXP);
+    rcpp_result_gen = Rcpp::wrap(build_spCov_C(Coord_r, n_r, J_r, range_r, sigma_r, nu_r, nuUnifb_r, CovModel_r, nThreads_r));
+    return rcpp_result_gen;
+END_RCPP
+}
 // semiCov_Cs
 SEXP semiCov_Cs(SEXP y_r, SEXP Coord_r, SEXP n_r, SEXP m_r, SEXP N_r, SEXP Kernel_r, SEXP h_r, SEXP d_r, SEXP nuUnifb_r, SEXP nu_r, SEXP nThreads_r);
 RcppExport SEXP _semiBase_semiCov_Cs(SEXP y_rSEXP, SEXP Coord_rSEXP, SEXP n_rSEXP, SEXP m_rSEXP, SEXP N_rSEXP, SEXP Kernel_rSEXP, SEXP h_rSEXP, SEXP d_rSEXP, SEXP nuUnifb_rSEXP, SEXP nu_rSEXP, SEXP nThreads_rSEXP) {
@@ -445,8 +464,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // semiCov_Ct
-SEXP semiCov_Ct(SEXP y_r, SEXP Time_r, SEXP CvIndex_r, SEXP n_r, SEXP Nt_r, SEXP Cv_r, SEXP Kernel_r, SEXP h_r, SEXP nuUnifb_r, SEXP nu_r, SEXP nThreads_r);
-RcppExport SEXP _semiBase_semiCov_Ct(SEXP y_rSEXP, SEXP Time_rSEXP, SEXP CvIndex_rSEXP, SEXP n_rSEXP, SEXP Nt_rSEXP, SEXP Cv_rSEXP, SEXP Kernel_rSEXP, SEXP h_rSEXP, SEXP nuUnifb_rSEXP, SEXP nu_rSEXP, SEXP nThreads_rSEXP) {
+SEXP semiCov_Ct(SEXP y_r, SEXP Time_r, SEXP CvIndex_r, SEXP n_r, SEXP Nt_r, SEXP estNt_r, SEXP Cv_r, SEXP Kernel_r, SEXP h_r, SEXP nuUnifb_r, SEXP nu_r, SEXP nThreads_r);
+RcppExport SEXP _semiBase_semiCov_Ct(SEXP y_rSEXP, SEXP Time_rSEXP, SEXP CvIndex_rSEXP, SEXP n_rSEXP, SEXP Nt_rSEXP, SEXP estNt_rSEXP, SEXP Cv_rSEXP, SEXP Kernel_rSEXP, SEXP h_rSEXP, SEXP nuUnifb_rSEXP, SEXP nu_rSEXP, SEXP nThreads_rSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -455,13 +474,14 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< SEXP >::type CvIndex_r(CvIndex_rSEXP);
     Rcpp::traits::input_parameter< SEXP >::type n_r(n_rSEXP);
     Rcpp::traits::input_parameter< SEXP >::type Nt_r(Nt_rSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type estNt_r(estNt_rSEXP);
     Rcpp::traits::input_parameter< SEXP >::type Cv_r(Cv_rSEXP);
     Rcpp::traits::input_parameter< SEXP >::type Kernel_r(Kernel_rSEXP);
     Rcpp::traits::input_parameter< SEXP >::type h_r(h_rSEXP);
     Rcpp::traits::input_parameter< SEXP >::type nuUnifb_r(nuUnifb_rSEXP);
     Rcpp::traits::input_parameter< SEXP >::type nu_r(nu_rSEXP);
     Rcpp::traits::input_parameter< SEXP >::type nThreads_r(nThreads_rSEXP);
-    rcpp_result_gen = Rcpp::wrap(semiCov_Ct(y_r, Time_r, CvIndex_r, n_r, Nt_r, Cv_r, Kernel_r, h_r, nuUnifb_r, nu_r, nThreads_r));
+    rcpp_result_gen = Rcpp::wrap(semiCov_Ct(y_r, Time_r, CvIndex_r, n_r, Nt_r, estNt_r, Cv_r, Kernel_r, h_r, nuUnifb_r, nu_r, nThreads_r));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -533,8 +553,9 @@ static const R_CallMethodDef CallEntries[] = {
     {"_semiBase_theta_Wang_Cst", (DL_FUNC) &_semiBase_theta_Wang_Cst, 13},
     {"_semiBase_theta_Est_Ct", (DL_FUNC) &_semiBase_theta_Est_Ct, 12},
     {"_semiBase_ModCov", (DL_FUNC) &_semiBase_ModCov, 3},
+    {"_semiBase_build_spCov_C", (DL_FUNC) &_semiBase_build_spCov_C, 9},
     {"_semiBase_semiCov_Cs", (DL_FUNC) &_semiBase_semiCov_Cs, 11},
-    {"_semiBase_semiCov_Ct", (DL_FUNC) &_semiBase_semiCov_Ct, 11},
+    {"_semiBase_semiCov_Ct", (DL_FUNC) &_semiBase_semiCov_Ct, 12},
     {"_semiBase_semiCov_Cst", (DL_FUNC) &_semiBase_semiCov_Cst, 14},
     {"_semiBase_stSemiVary_C", (DL_FUNC) &_semiBase_stSemiVary_C, 12},
     {NULL, NULL, 0}

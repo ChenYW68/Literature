@@ -1,13 +1,12 @@
 # # 1 loading packages ---------------------------------------
 packages <- c("RandomFields", "fields", "Rcpp"
               , "data.table","plyr", "Matrix"
-              , "tidyr",  "dplyr", "MASS", "Hmisc"
-              ,"parallel"
+              , "tidyr", "dplyr", "MASS", "Hmisc"
+              , "parallel", "fda"
               # , "spdep"
               # ,"sqldf","gpuR"
               # ,"reticulate","spBayes", "latex2exp"
               # ,"lubridate"
-              
               # , "inlabru","INLA",
               , "progress", "RODBC"
               # , "ggplot2", "cowplot"

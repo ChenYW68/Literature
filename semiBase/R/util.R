@@ -1,4 +1,4 @@
-spT.validation <- function(z, zhat, zhat.Ens = NULL, names = FALSE) 
+spT.validation <- function (z = NULL, zhat = NULL, zhat.Ens = NULL, names = FALSE) 
 {
   VMSE <- function(z, zhat) {
     z <- as.matrix(as.data.frame(z))
@@ -8,12 +8,12 @@ spT.validation <- function(z, zhat, zhat.Ens = NULL, names = FALSE)
     round(sum(u^2)/length(u), 4)
   }
   ## root mean square error
-  RMSE <- function(z, zhat) {
+  RMSE <<- function(z, zhat) {
     z <- as.matrix(as.data.frame(z))
     zhat <- as.matrix(as.data.frame(zhat))
     x <- c(z - zhat)
     u <- x[!is.na(x)]
-    round(sqrt(sum(u^2)/length(u)), 10)
+    round(sqrt(sum(u^2)/length(u)), 4)
   }
   MAE <- function(z, zhat) {
     z <- as.matrix(as.data.frame(z))
@@ -72,7 +72,7 @@ spT.validation <- function(z, zhat, zhat.Ens = NULL, names = FALSE)
     round(sum(u^2)/sum(v^2), 4)
   }
   ## correlation coefficient
-  Coef <- function(z, zhat) {
+  Coef <<- function(z, zhat) {
     z <- z %>% as.data.frame() %>% as.matrix() %>% as.vector()
     zhat <- zhat %>% as.data.frame()  %>% as.matrix() %>% as.vector()
     da <- data.frame(z = z, zhat = zhat)
@@ -97,7 +97,7 @@ spT.validation <- function(z, zhat, zhat.Ens = NULL, names = FALSE)
   #   round(mean(zhat[index]/z[index]), 4)
   # }
   ## fraction within a factor of two
-  FAC2 <- function(z, zhat) {
+  FAC2 <<- function(z, zhat) {
     z <- z %>% as.data.frame() %>% as.matrix() %>% as.vector()
     zhat <- zhat %>% as.data.frame() %>% as.matrix() %>% as.vector()
     da <- data.frame(z = z, zhat = zhat)
@@ -135,7 +135,7 @@ spT.validation <- function(z, zhat, zhat.Ens = NULL, names = FALSE)
   }
   
   
-  CRPS <- function(z, zhat){
+  CRPS <<- function(z, zhat){
     z <- as.matrix(as.data.frame(z))
     zhat <- as.matrix(as.data.frame(zhat))
     
@@ -185,7 +185,7 @@ spT.validation <- function(z, zhat, zhat.Ens = NULL, names = FALSE)
     }else{
       # z <- as.matrix(z)
       # zhat <- as.matrix(zhat)
-      
+      library(scoringRules)
       CRPS <- ES <- vector()
       for(t in 1:Nt)
       {
@@ -208,32 +208,37 @@ spT.validation <- function(z, zhat, zhat.Ens = NULL, names = FALSE)
   if (names == TRUE) {
     cat("##\n Mean Squared Error (MSE) \n Root Mean Squared Error (RMSE) \n Mean Absolute Error (MAE) \n Mean Absolute Percentage Error (MAPE) \n Normalized Mean Error(NME: %) \n Bias (BIAS) \n Relative Bias (rBIAS) \n Normalized Mean Bias(NMB: %) \n Relative Mean Separation (rMSEP) \n Correlation coefficient (Coef.) \n The fraction of predictions within a factor of two of observations (FAC2) \n Continuous ranked probability score (CRPS) based on sample mean and standard deviation \n CRPS based on empirical distribution function \n Energy score (ES) based on empirical distribution function \n##\n")
   }
-  out <- NULL
-  # out$MSE <- VMSE((z), (zhat))
-  out$RMSE <- RMSE((z), (zhat))
-  out$MAE <- MAE((z), (zhat))
-  #out$MAPE <- MAPE((z), (zhat))
-  # out$NMGE <- NMGE((z), (zhat))
-  # out$BIAS <- BIAS((z), (zhat))
-  # out$rBIAS <- rBIAS((z), (zhat))
-  # out$NMB <- nBIAS((z), (zhat))
-  # out$rMSEP <- rMSEP((z), (zhat))
-  # out$Coef <- Coef((z), (zhat))
-  # out$COE <- COE(z, zhat)
-  # out$FAC2 <- FAC2(z, zhat)
-  # out$MGE <- MGE(z, zhat)
-  # out$IOA <- IOA(z, zhat)
-  
-  # if(!is.null(zhat.Ens))
-  # {
-  #   R <- CRPS.ES(z, zhat, zhat.Ens)
-  # }else{
-  #   R <- CRPS.ES(z, zhat, zhat.Ens = NULL)
-  # }
-  out$CRPS <- CRPS(z, zhat)
-  # out$CRPS.sample <- R$CRPS
-  # out$ES.sample <- R$ES
-  unlist(out)
+  if((!is.null(z))&(!is.null(zhat))){
+    out <- NULL
+    out$MSE <- VMSE((z), (zhat))
+    out$RMSE <- RMSE((z), (zhat))
+    out$MAE <- MAE((z), (zhat))
+    out$MAPE <- MAPE((z), (zhat))
+    out$BIAS <- BIAS((z), (zhat))
+    out$rBIAS <- rBIAS((z), (zhat))
+    out$Coef <- Coef((z), (zhat))
+    out$FAC2 <- FAC2(z, zhat)
+   
+    if(!is.null(zhat.Ens))
+    {
+      R <- CRPS.ES(z, zhat, zhat.Ens)
+    }else{
+      R <- CRPS.ES(z, zhat, zhat.Ens = NULL)
+    }
+    out$CRPS <- CRPS(z, zhat)
+    out$CRPS.sample <- R$CRPS
+    out$ES.sample <- R$ES
+    out$NMGE <- NMGE((z), (zhat))
+    out$MGE <- MGE(z, zhat)
+    out$IOA <- IOA(z, zhat)
+    out$NMB <- nBIAS((z), (zhat))
+    out$rMSEP <- rMSEP((z), (zhat))
+    out$COE <- COE(z, zhat)
+    
+    unlist(out)
+  }else{
+    return(0)
+  }
 }
 
 colVar <- function(data){
@@ -254,8 +259,6 @@ rowVar <- function(data){
   # colnames(temp) <- colNames
   return(temp)
 }
-
-
 
 Rdist <- function(loc1, loc2, covModel = 0, phi = 1, nu = 0,
                   nuUnifb = 0, threads = 10){
@@ -302,6 +305,9 @@ Round <- function(x, n =2)
 {
   return(format(round(x, n), nsmall = n))
 }
+
+
+
 theta_Wang1_fun <- function(y_ts = Y_ts$Y_ts, 
                            z_ts = Y_ts$Z_ts,
                            Time = Y_ts$time,
@@ -388,9 +394,6 @@ theta_Wang1_fun <- function(y_ts = Y_ts$Y_ts,
               y.fit = y.fit))
 }
 
-
-
-
 theta_Wang2_fun <- function(y_ts = Y_ts$Y_ts, 
                            z_ts = Y_ts$Z_ts,
                            Time = Y_ts$time,
@@ -458,6 +461,183 @@ theta_Wang2_fun <- function(y_ts = Y_ts$Y_ts,
               y.fit = y.fit))
 }
 
+
+# build_Psi_fun <- function(Psi, n, Nt){
+#   J <- ncol(Psi)
+#   
+#   Psi_t_fun <- function(J, n, t, Psi){
+#     phi <- rep(0, J)
+#     for(j in 1:J){
+#       phi[j] <- Psi[t, j] 
+#     }
+#     Ps <- Matrix(phi, nrow = 1, ncol = J)
+#     for(s in 2:n){
+#       for(j in 1:J){
+#         phi[j] <- Psi[t, j] 
+#       }
+#       temp <- Matrix(phi, nrow = 1, ncol = J)
+#       Ps <- Matrix::bdiag(Ps, temp)
+#     }
+#     return(Ps)
+#   }
+#   Ps <- Psi_t_fun(J, n, t = 1, Psi)
+#   for (t in 2:Nt) {
+#     Ps <- rbind(Ps, Psi_t_fun(J, n, t = t, Psi))
+#   }
+#   return(Ps)
+# }
+
+build_Psi_fun <- function(Psi, n, Nt){
+  J <- ncol(Psi)
+  Psi_t_fun <- function(J, Nt, Psi){
+    phi <- rep(0, J)
+    for(j in 1:J){
+      phi[j] <- Psi[1, j] 
+    }
+    Ps <- matrix(phi, nrow = 1, ncol = J)
+    for(t in 2:Nt){
+      for(j in 1:J){
+        phi[j] <- Psi[t, j] 
+      }
+      temp <- matrix(phi, nrow = 1, ncol = J)
+      Ps <- rbind(Ps, temp)
+    }
+    return(Ps)
+  }
+  
+  # Ps <- matrix(0, nrow = n*Nt, ncol = n*J)
+  # for (s in 1:n) {
+  #   Ps[((s - 1)*Nt + 1):(s*Nt), ((s - 1)*J + 1):(s*J)] <- Psi_t_fun(J, Nt, Psi)
+  # }
+  # library(Matrix)
+  # return(as(Ps, "sparseMatrix"))
+  
+  temp <- Ps <- Psi_t_fun(J, Nt, Psi)
+  for (s in 2:n) {
+    Ps <- Matrix::bdiag(Ps, temp)   
+  }
+  return(Ps) 
+}
+
+
+build_spCov <- function(Coord, J, range = c(rep(0.1, 3)),
+                        sigma.sq.s = c(rep(1, 3)),
+                        nu = c(rep(0.5, 3)), nuUnifb = 1,
+                        CovModel = 0, nThreads = 10){
+  n <- nrow(Coord)
+  storage.mode(n) <- "integer"
+  storage.mode(Coord) <- "double"
+  storage.mode(J) <- "integer"
+  storage.mode(range) <- "double"
+  storage.mode(sigma.sq.s) <- "double"
+  storage.mode(nu) <- "double"
+  storage.mode(nuUnifb) <- "integer"
+  storage.mode(CovModel) <- "integer"
+  storage.mode(nThreads) <- "integer"
+  library(Matrix)
+  return(as(build_spCov_C(Coord, n, J, range, sigma.sq.s,
+                          nu, nuUnifb, CovModel, nThreads)$C,
+            "sparseMatrix"))
+}
+
+
+build_spCov_fun <- function(n, J, D, range = c(rep(0.1, 3)),
+                            sigma.sq.s = c(rep(1, 3)),
+                            nu = c(rep(0.5, 3))){
+  Cst <- Matrix::Matrix(0, nrow = n*J, ncol = n*J)
+  for(s1 in 1:n){
+    for(s2 in s1:n){
+      spCv <- vector()
+      for(i in 1:J){
+        spCv[i] <- Matern(d = D[s1, s2], range = range[i],
+                          smoothness = nu[i],
+                          phi = sigma.sq.s[i]) 
+      }
+      Cst[((s2 - 1)*J + 1):(s2*J), ((s1 - 1)*J + 1):(s1*J)]  =
+        Cst[((s1 - 1)*J + 1):(s1*J), ((s2 - 1)*J + 1):(s2*J)]  = 
+        Matrix::Diagonal(J)*spCv
+    }
+  }
+  return(Cst)
+}
+
+sp.FPCA <- function(y_ts, time, nharm = NULL, lambda = 1e-5){
+  library(fda)
+  Nt <- ncol(y_ts)
+  n <- nrow(y_ts)
+  t1 <- min(time)
+  t2 <- max(time)
+  fbasis <- create.fourier.basis(c(t1,  t2), Nt)
+  harmLfd <- vec2Lfd(c(0, (2*pi/(Nt))^2, 0), c(t1,  t2))
+  dafdPar <- fdPar(fbasis, harmLfd, lambda = lambda)
+  dafd <- smooth.basis(time, t(y_ts), dafdPar)
+ 
+  if(is.null(nharm)){J <- Nt}else{J = nharm}
+  pca_fd <- pca.fd(dafd$fd, nharm = J, harmfdPar = dafdPar)
+  if(is.null(nharm)){
+    J <- min(which(cumsum(pca_fd$varprop) > 0.8))
+    pca_fd <- pca.fd(dafd$fd, nharm = J, harmfdPar = dafdPar)
+  }
+  PCA <- fda::eval.fd(time, pca_fd$harmonics)
+  return(list(pca_fd = pca_fd, PCA = PCA, J = J))
+}
+
+plot.sp.fd <- function(time, Vt, PCA){
+  par(mfrow = c(2, 2))
+  for(i in 1:fd$J){
+    plot(time, Vt[, i])
+  }
+  fda::matplot(time, PCA, xlab = 'time', ylab = 'PCs',
+          lwd = 2, lty = 1, cex.lab = 1.5, cex.axis = 1.5,
+          type = 'l')
+  # legend(0.5,-0.05,c('PC1','PC2'),col=1:3,lty=0.1,lwd=1)
+  title('Principle Component Functions')
+}
+
+optim_semPara <- function(y, Coord, Psi, J, 
+                          sigma.sq.s, theta, 
+                          CovModel){
+  
+  range <- exp(theta[1:J])
+  tau.sq <- exp(theta[J + 1])
+  nu <- rep(0.5, J)#exp(theta[5:(4 + J)])
+  Cs <- build_spCov(Coord = Coord, J = J, 
+                    range = range,
+                    sigma.sq.s = sigma.sq.s,
+                    nu = nu, 
+                    CovModel = CovModel)
+  # t.Psi <- t(Psi)
+  # inv.Cs <- Matrix::solve(Cs)
+  # Phi.tem <- crossprod(Psi)#t.Psi %*% Psi
+  # inv.Cst <- 1/tau.sq - 1/tau.sq*Psi %*% tcrossprod(Matrix::solve(Phi.tem +
+  #                                                                   inv.Cs/tau.sq), Psi)
+  
+  # inv.Cst <- 1/tau.sq - 1/tau.sq*Psi %*% Matrix::solve(Phi.tem +
+  #              inv.Cs/tau.sq) %*% t.Psi
+
+  inv.Cst <- Solve_Cst(Cs, Psi, tau.sq)
+  det.Cst <- nrow(Psi)*log(tau.sq) + Matrix::determinant(Cs)$modulus + 
+             Matrix::determinant(inv.Cst$Phi.crossprod/tau.sq + inv.Cst$inv.Cs)$modulus
+  y <- as.vector(y)
+  loglik <- 0.5*as.vector(y %*% inv.Cst$inv.Cst %*% y) + 0.5*det.Cst 
+  return(loglik)
+}
+
+Solve_Cst <- function(Cs, Psi, tau.sq){
+  inv.Cs <- Matrix::solve(Cs)
+  Phi.crossprod <- Matrix::crossprod(Psi)
+  inv.Cst <- diag(nrow(Psi))/tau.sq - 1/tau.sq*Psi   %*% 
+                Matrix::tcrossprod(Matrix::solve(Phi.crossprod +
+                               inv.Cs*tau.sq), Psi)
+  # %*% 
+  #   Matrix::solve(t(Psi) %*% Psi + inv.Cs*tau.sq) %*% t(Psi)
+  return(list(inv.Cs = inv.Cs, inv.Cst = inv.Cst, 
+              Phi.crossprod = Phi.crossprod))
+}
+
+
+
+
 semPar.space.time <- function(y_ts, z_ts, Time,
                               Q = NULL, S = NULL, 
                                Kernel = 0, h = 0.1, 
@@ -470,7 +650,7 @@ semPar.space.time <- function(y_ts, z_ts, Time,
          WI = theta_WI(y_ts = y_ts,
                         z_ts = z_ts,
                         Time = Time,
-                        Q = diag(Q)*diag(ncol(y_ts)), #
+                        Q = diag(ncol(y_ts)), #
                         Kernel = Kernel,
                         h = h),
          
@@ -655,6 +835,7 @@ theta_st_not_Wang <- function(y_ts = simDa$Y_ts,
       St[(s - 1)*Nt + t, ] <- S[(t - 1)*n + s, ]
     }
   }
+  cat("method:", "theta_st_not_Wang", "\n")
   return(list(St = St, S = S, alpha = alpha, y.fit = y.fit))
 }
 
@@ -711,6 +892,7 @@ theta_stWang <- function(y_ts, z_ts,
       St[(s - 1)*Nt + t, ] <- S[(t - 1)*n + s, ]
     }
   }
+  cat("method:", "theta_stWang", "\n")
   return(list(St = St, S = S, alpha = t(st.theta$alpha), y.fit = y.fit))
 }
 
@@ -1059,7 +1241,32 @@ modify.Cov <- function(est.Cov, est.Var){
   return(Cmat)
 }
 #######################################################
-
+beta_est <- function(y_ts, x_ts, theta, Q = NULL){
+  XX <- NULL
+  Px <- dim(x_ts)[1]
+  for(i in 1:Px){
+    XX <- cbind(XX, as.vector(t(x_ts[i, , ])))
+  }
+  if(is.null(Q)){
+    Q <- diag(nrow(y_ts) *ncol(y_ts))
+  }
+  # beta <- solve(t(XX) %*% Q %*% XX) %*% t(XX) %*% Q %*%
+  #   as.vector(t((y_ts - theta$y.fit)))
+  SS <- diag(nrow(y_ts) *ncol(y_ts)) - theta$St
+  # SS <- theta$St
+  # Matrix::diag(SS) <- 1 - Matrix::diag(SS)
+  # X^T %*% (I - SS)^T %*% Q %*% (I - SS)- theta$y.fit
+  
+  # X.T <- Matrix::t(SS %*% XX ) %*% Q0 #%*% SS
+  # beta <- solve(X.T %*% XX) %*% X.T %*% as.vector(t(y_ts - theta$y.fit))
+  # 
+  
+  X.tild <- Matrix::t(SS %*% XX)
+  beta <- solve(X.tild %*% Q %*% t(X.tild)) %*%
+    X.tild %*% Q %*% SS %*% as.vector(t(y_ts))
+  
+ return(list(beta = beta, fix.residuals = y_ts - X_ts_Transf(x_ts, beta))) 
+}
  
 
 
@@ -1079,21 +1286,28 @@ semiCovs <- function(y, Coord, Kernel = 0,
   n <- nrow(y)
   Nt <- ncol(y)
   thresh <- 1
+  Coord1 <- unique(cbind((c(Coord[, 1],
+                           seq(min(Coord[, 1]), max(Coord[, 1]), ,
+                               2*n))), (c(Coord[, 2],
+                                          seq(min(Coord[, 2]), max(Coord[, 2]),,
+                                              2*n)))))
+  m1 <- nrow(Coord)
   if(is.null(d)){
     d <- fields::rdist(Coord, Coord)
     #Cov <- 0.5*exp(-d)
-    
     thresh <- max(d)*prob
     rho.space <- fields::Wendland(d, theta = thresh , dimension = 1, k =1)
     # rho.space[which(rho.space > 0)] <- 1
     d <- d[lower.tri(d, diag = F)]
   }
-  m1 <- length(d)
+  
   # thresh <- #quantile(d, probs = prob)
   index.upp <- which(d > thresh)
   index.low <- which(d <= thresh)
+  # d <- c(0, d[index.low])
   
-  d <- c(0, d[index.low])
+  d <- c(0, d)
+  
   m <- length(d)
   y <- as.double(y)
   
@@ -1112,12 +1326,12 @@ semiCovs <- function(y, Coord, Kernel = 0,
                    Nt, Kernel,
                    h, d, nuUnifb,
                    nu, nThreads)
-  Cov <- rep(0, m1)
-  Cov[index.upp] <- 0
-  Cov[index.low] <- C$C[-1]
-  
-  Cmat <- matrix(0, nrow = n, ncol= n)
-  Cmat[lower.tri(Cmat, diag = F)] <- Cov#C$C[-1]
+  # Cov <- rep(0, m1)
+  # Cov[index.upp] <- 0
+  # Cov[index.low] <- C$C[-1]
+  # Cmat <- matrix(0, nrow = n, ncol= n)
+  Cmat <- matrix(0, nrow = m1, ncol= m1)
+  Cmat[lower.tri(Cmat, diag = F)] <- C$C[-1]#Cov
   # cv_index <- as.data.frame(which(lower.tri(Cmat), arr.ind = T))
   # setorderv(cv_index, c("row", "col"))
   # 
@@ -1128,18 +1342,20 @@ semiCovs <- function(y, Coord, Kernel = 0,
   diag(Cmat1) <- C$C[1]
   # return(Cmat)
   
-  Var <- rep(C$C[1], n)
+  Var <- rep(C$C[1], m)
   Var <- as.double(Var)
   Cmat <- as.double(Cmat)
   # a <- ModCov(Cmat, Var, n)
   ModCov.0 <- ModCov(Cmat, Var, n)
-  # ModCov.0$Cov <- ModCov.0$Cov
+  ModCov.0$Cov <- ModCov.0$Cov[1:n, 1:n]
   if(prob <= 1){
-    Cov <- rho.space * ModCov.0$Cov
+    Cov <- rho.space[1:n, 1:n] * ModCov.0$Cov
   }else{
-    Cov <- ModCov.0$Cov
+    Cov <- ModCov.0$Cov[1:n, 1:n]
   }
-  return(list(estCov = Cmat1, ModCov = ModCov.0, Cov = Cov, Var.s = C$C[1]))
+  return(list(estCov = Cmat1, 
+              ModCov = ModCov.0, 
+              Cov = Cov, Var.s = C$C[1]))
   # return(ModCov(Cmat, Var, n))
   # return(modify.Cov(Cmat, Var)), Mcov = modify.Cov(Cmat1, Var))
 }
@@ -1152,9 +1368,10 @@ semiCovt <- function(y, Time, Var.s = NULL, Kernel = 0,
   
   # Vt <- diag(Nt)
   # Vt <- abs(row(Vt) - col(Vt))
-  Vt <- rdist(Time , Time)
-  thresh <- max(Vt)*prob
-  rho.time <- fields::Wendland(Vt, theta = thresh , dimension = 1, k =1)
+  # Time <- unique(c(Time, seq(min(Time), max(Time), , 1*Nt)))
+  Vt <- fields::rdist(Time , Time)
+  # thresh <- max(Vt)*prob
+  # rho.time <- fields::Wendland(Vt, theta = thresh , dimension = 1, k = 1)
   y <- as.matrix(y)
   y <- as.double(y)
   Time <- as.double(Time)
@@ -1169,33 +1386,33 @@ semiCovt <- function(y, Time, Var.s = NULL, Kernel = 0,
   nu <- as.double(nu)
   nThreads <- as.integer(nThreads)
   
-  Cmat <- matrix(0, nrow = Nt, ncol= Nt)
+ 
 
   # cv_index <- (which(lower.tri(Cmat), arr.ind = T))
   # data.table::setorderv(cv_index, c("row", "col"))
   # method 1
-  lower <- which(lower.tri(rho.time), arr.ind = T)
-  index <- data.frame(as.data.frame(lower), value = rho.time[lower])
-  cv_index.0 <- cv_index <- as.matrix(index[index$value!=0, 1:2])
-  index.upp <- as.matrix(index[index$value==0, 1:2])
+  lower <- which(lower.tri(Vt), arr.ind = T)
+  # index <- data.frame(as.data.frame(lower), value = Vt[lower])
+  cv_index.0 <- cv_index <- as.matrix(lower[, 1:2])
+  # index.upp <- as.matrix(index[index$value==0, 1:2])
   
   # method 2
   # cv_index.0 <- cv_index <- which(lower.tri(Cmat), arr.ind = T)
   
   
   cv_len <- nrow(cv_index)
-  
+  estNt <- length(Time)
   cv_index <- as.integer(cv_index)
   cv_len <- as.integer(cv_len)
-  
+  estNt <- as.integer(estNt)
   Cov <- semiCov_Ct(y, Time, cv_index, n, Nt,
-                    cv_len, Kernel, h, 
+                    estNt, cv_len, Kernel, h, 
                     nuUnifb, nu, nThreads)
   
   # Cmat <- matrix(0, nrow = Nt, ncol = Nt)
- 
+  Cmat <- matrix(0, nrow = estNt, ncol= estNt)
   Cmat[cv_index.0] <- Cov$Cov
-  Cmat[index.upp] <- 0
+  # Cmat[index.upp] <- 0
   # print(Cmat)
   
   Cmat1 <- (t(Cmat) + Cmat)
@@ -1216,18 +1433,20 @@ semiCovt <- function(y, Time, Var.s = NULL, Kernel = 0,
   
   Var <- as.double(Var)
   Cmat <- as.double(Cmat)
-  ModCov.0 <- ModCov(Cmat, Var, Nt)
-  if(prob <= 1){
-    Cov <- rho.time * ModCov.0$Cov
-  }else{
-    Cov <- ModCov.0$Cov
-  }
+  ModCov.0 <- ModCov(Cmat, Var, estNt)
+  ModCov.0$Cov <- ModCov.0$Cov[1:Nt, 1:Nt]
+  # if(prob <= 1){
+  #   Cov <- rho.time[1:Nt, 1:Nt] * ModCov.0$Cov
+  # }else{
+    # Cov <-
+  # }
   
   
-  return(list(estCov = Cmat1, ModCov = ModCov.0, Cov = Cov, Var.t = Var))
+  return(list(estCov = Cmat1, ModCov = ModCov.0,
+              Cov =  ModCov.0$Cov, Var.t = Var))
 }
-semiCovst <- function(y, Time, Coord, 
-                      Kernel = 0, h = 0.1, d = NULL,
+semiCovst <- function(y, Time, Coord, Kernel = 0,
+                      h = 0.1, d = NULL,
                       prob = c(1, 1.5), nuUnifb = 1,
                       nu = 0.5, nThreads = 10){
   
@@ -1249,19 +1468,33 @@ semiCovst <- function(y, Time, Coord,
   thresh.s <- 1
   if(is.null(d)){
     d <- fields::rdist(Coord, Coord)
-    thresh.s <- max(d)*prob[1]
+    thresh.s <- ifelse(max(d)*prob[1] < min(d[d>0]), min(d[d>0]), max(d)*prob[1])
+    
     rho.space <- fields::Wendland(d, theta = thresh.s , dimension = 1, k =1)
     # rho.space[which(rho.space > 0)] <- 1
     # lower.s <- which(lower.tri(d), arr.ind = T)
     # d <- d[lower.tri(d, diag = F)]
     
     
-    lower.s <- which(lower.tri(rho.space), arr.ind = T)
-    index <- data.frame(as.data.frame(lower.s),
-                        value = rho.space[lower.s])
-    index.low.s <- as.matrix(index[index$value!=0, 1:2])
-    index.upp.s <- as.matrix(index[index$value==0, 1:2])
+    # lower.s <- which(lower.tri(rho.space), arr.ind = T)
+    # index <- data.frame(as.data.frame(lower.s),
+    #                     value = rho.space[lower.s])
+    # index.low.s <- as.matrix(index[index$value!=0, 1:2])
+    # index.upp.s <- as.matrix(index[index$value==0, 1:2])
+    
+    
+    library(fossil)
+    # loc <- data.frame(lon = Site$LON, lat = Site$LAT)
+    # n = nrow(Coord);
+    # D = as.matrix(dist(Coord));
+    MST <- dino.mst(d)
+    index.low.s = as.matrix(which(tril(MST) > 0, arr.ind = TRUE))
+    # a <- as.data.frame(a)
+    # for(s in 1:nrow(a)){
+    #   a$distance[s] <- d[a$row[s], a$col[s]] 
+    # }
   }
+
   # m1 <- length(d)
   # thresh <- #quantile(d, probs = prob)
   # index.upp <- which(d > thresh.s)
@@ -1270,23 +1503,27 @@ semiCovst <- function(y, Time, Coord,
   d <- c(d[index.low.s])
   m <- length(d)
   
-  
-  Vt <- rdist(Time , Time)#diag(Nt)
+  # cat("length(d) = ", m , 
+  #     ";thresh.s = ", thresh.s,
+  #     "; min(d[d>0] = " ,
+  #     min(d[d>0]), "\n")
+  Vt <- rdist(Time, Time)#diag(Nt)
   # Vt <- abs(row(Vt) - col(Vt))
   thresh.t <- max(Vt)*prob[2]
-  rho.time <- fields::Wendland(Vt, theta = thresh.t , dimension = 1, k =1)
+  # rho.time <- fields::Wendland(Vt, theta = thresh.t , dimension = 1, k =1)
   
   if(length(h)!=4){h <- rep(h, 4)}
-  
-  Cmat <- matrix(0, nrow = n*Nt, ncol= n*Nt)
   
   # cv_index <- (which(lower.tri(Cmat), arr.ind = T))
   # data.table::setorderv(cv_index, c("row", "col"))
   # method 1
-  lower.t <- which(lower.tri(rho.time), arr.ind = T)
-  index <- data.frame(as.data.frame(lower.t), value = rho.time[lower.t])
-  cv_index.0 <- CvIndex <- as.matrix(index[index$value!=0, 1:2])
-  index.upp <- as.matrix(index[index$value==0, 1:2])
+  lower.t <- which(lower.tri(Vt), arr.ind = T)
+  cv_index.0 <- CvIndex <- as.matrix(lower.t[, 1:2])
+  
+  
+  # index <- data.frame(as.data.frame(lower.t), value = Vt[lower.t])
+  # cv_index.0 <- CvIndex <- as.matrix(index[index$value!=0, 1:2])
+  # index.upp <- as.matrix(index[index$value==0, 1:2])
   
   
   
@@ -1312,16 +1549,14 @@ semiCovst <- function(y, Time, Coord,
   storage.mode(nuUnifb) <- "integer"
   storage.mode(nu) <- "double"
   storage.mode(nThreads) <- "integer"
-  Rcpp::sourceCpp("E:/Literature/semiBase/src/nonPara.cpp")
-  Cst <- semiCov_Cst( y, Time, Coord, CvIndex, 
-                      n, Nt, cv_len, Kernel, h, 
-                      d, m, nuUnifb, nu, nThreads)
-  
-  Ct <- semiCovt(y, Time, Kernel, h,
-                 prob = 1, nuUnifb, 
-                 nu, nThreads)
-  
-  
+  # Rcpp::sourceCpp("E:/Literature/semiBase/src/nonPara.cpp")
+  Cmat <- matrix(0, nrow = n*Nt, ncol= n*Nt)
+  if(nrow(index.low.s) > 0 ){
+    Cst <- semiCov_Cst(y, Time, Coord, CvIndex, 
+                        n, Nt, cv_len, Kernel, h, 
+                        d, m, nuUnifb, nu, 
+                        nThreads)
+ 
   for(i in 1:nrow(index.low.s)){
     temp <- matrix(0, nrow = Nt, ncol= Nt)
     temp[cv_index.0] <- Cst$Cov[, i]
@@ -1333,8 +1568,13 @@ semiCovst <- function(y, Time, Coord,
          ((index.low.s[i, 2] - 1)*Nt + 1):(index.low.s[i, 2]*Nt)] <- temp
   }
   Cmat <- t(Cmat) + Cmat
+}
+  Ct <- semiCovt(y = y, Time = Time,  Var.s = NULL,
+                 Kernel = Kernel, h = h[c(2, 4)],
+                 prob = 1, nuUnifb = nuUnifb, 
+                 nu = nu, nThreads = nThreads)
   for(i in 1:n){
-    Cmat[((i - 1)*Nt + 1):(i*Nt), ((i - 1)*Nt + 1):(i*Nt)] <- Ct$Cov
+    Cmat[((i - 1)*Nt + 1):(i*Nt), ((i - 1)*Nt + 1):(i*Nt)] <- Ct$estCov
   }
   Cmat0 <- Cmat
   Var <- diag(Cmat)
@@ -1343,25 +1583,28 @@ semiCovst <- function(y, Time, Coord,
   Cmat <- as.double(Cmat)
   # a <- ModCov(Cmat, Var, n)
   ModCov.0 <- ModCov(Cmat, Var, n*Nt)
- 
-  if(prob[2] > 1)
-  {
-    rho.time <-  matrix(1, Nt, Nt)
-  }
+  # 
+  # if(prob[2] > 1)
+  # {
+  #   rho.time <-  matrix(1, Nt, Nt)
+  # }
+  # if(prob[1] <= 1){
+  #   Cov <- ModCov.0$Cov * kronecker(rho.space, rho.time)
+  # }else{
+  #   Cov <- ModCov.0$Cov
+  # }
+   Cov <- nearPD(Cmat0, corr = F, do2eigen = T)$mat
   if(prob[1] <= 1){
-    Cov <- ModCov.0$Cov * kronecker(rho.space, rho.time)
-  }else{
-    Cov <- ModCov.0$Cov
+    Cov.taper <- ModCov.0$Cov * kronecker(rho.space, matrix(1, Nt, Nt))
   }
-  return(list(ModCov = ModCov.0, Cov = Cov, C = Cmat0, Var.st = Var))
+  return(list(ModCov = ModCov.0, ModCov.0 = Cmat0, 
+              Cov.taper = Cov.taper, Cov =  Cov, 
+              Var.st = Var))
 }
-
-
-
-
-
-
-
+  
+  
+  # return(list(ModCov = ModCov.0, Cov = Cov, C = Cmat0, Var.st = Var))
+# }
 
 
 

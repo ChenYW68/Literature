@@ -3647,7 +3647,65 @@ SEXP ModCov(SEXP C_r, SEXP Var_r, SEXP n_r){
 
 
 
+// [[Rcpp::export]]
+SEXP build_spCov_C(SEXP Coord_r, SEXP n_r, SEXP J_r, SEXP range_r, 
+                       SEXP sigma_r, SEXP nu_r, SEXP nuUnifb_r, 
+					   SEXP CovModel_r, SEXP nThreads_r){
+	double *Coord = REAL(Coord_r);
+	int n = INTEGER(n_r)[0];
+	int J = INTEGER(J_r)[0];
+	double *range = REAL(range_r);
+	double *sigma = REAL(sigma_r);
+	double *nu = REAL(nu_r);
+	
+	int nuUnifb = INTEGER(nuUnifb_r)[0];
+	int CovModel = INTEGER(CovModel_r)[0];	
+	int nThreads = INTEGER(nThreads_r)[0];
+	
+	double *bk = (double *) R_alloc(nThreads*(1.0 + static_cast<int>(floor(nuUnifb))), sizeof(double));
+	int nb = 1 + static_cast<int>(floor(nuUnifb));
+	int threadID = 0;
+	int nProtect = 0;
+	SEXP C_r;
+	//PROTECT(C_r = Rf_allocVector(REALSXP, m)); nProtect++;
+	PROTECT(C_r = Rf_allocMatrix(REALSXP, n*J, n*J)); nProtect++;
+	double *C = REAL(C_r); zeros(C, n*J*n*J);
+	
+	#ifdef _OPENMP
+  omp_set_num_threads(nThreads);
+#else
+  if(nThreads > 1){
+    warning("n.omp.threads > %i, but source not compiled with OpenMP support.", nThreads);
+    nThreads = 1;
+  }
+#endif
+    int s1, s2, j;
+	double ds, ck;
+    for(s1 = 0; s1 < n; s1++){
+	   for(s2 = s1; s2 < n; s2++){
+		   ds = dist2(Coord[s1], Coord[s1 + n], Coord[s2], Coord[s2 + n]);
+		   for(j = 0; j < J; j++){
+			 ck = sigma[j]*spCor(ds, range[j], nu[j], CovModel, &bk[threadID*nb]);
+			 C[(s1*J + j)*(n*J) + s2*J + j] = ck;
+			 C[(s2*J + j)*(n*J) + s1*J + j] = ck;
+		   }
+	   }
+	}
+    
+    SEXP result_r, resultName_r;
+    int nResultListObjs = 1;
 
+    PROTECT(result_r = Rf_allocVector(VECSXP, nResultListObjs)); nProtect++;
+    PROTECT(resultName_r = Rf_allocVector(VECSXP, nResultListObjs)); nProtect++;
+    SET_VECTOR_ELT(result_r, 0, C_r);
+    SET_VECTOR_ELT(resultName_r, 0, Rf_mkChar("C"));
+    Rf_namesgets(result_r, resultName_r);
+    
+    //unprotect
+    UNPROTECT(nProtect);
+    
+    return(result_r);	
+}
 
 
 // [[Rcpp::export]]
@@ -3788,6 +3846,7 @@ SEXP semiCov_Ct(SEXP y_r,
 			  SEXP CvIndex_r, 
 			  SEXP n_r, 
 			  SEXP Nt_r,
+			  SEXP estNt_r,
 			  SEXP Cv_r,
 			  SEXP Kernel_r,
 			  SEXP h_r, 
@@ -3810,6 +3869,8 @@ SEXP semiCov_Ct(SEXP y_r,
 	
 	int n = INTEGER(n_r)[0];
 	int Nt = INTEGER(Nt_r)[0];
+	int estNt = INTEGER(estNt_r)[0];
+	
 	int N = INTEGER(Cv_r)[0];
 	int Kernel = INTEGER(Kernel_r)[0];
 	double h1 = REAL(h_r)[0];
@@ -3844,8 +3905,8 @@ SEXP semiCov_Ct(SEXP y_r,
 	SEXP S_r, Cov_r, Index_r, Var_r;
     PROTECT(S_r = Rf_allocMatrix(REALSXP, p, p)); nProtect++;
 	PROTECT(Cov_r = Rf_allocVector(REALSXP, N)); nProtect++;
-	PROTECT(Index_r = Rf_allocVector(REALSXP, N)); nProtect++;//INTSXP
-	PROTECT(Var_r = Rf_allocVector(REALSXP, Nt)); nProtect++;
+	//PROTECT(Index_r = Rf_allocVector(REALSXP, N)); nProtect++;//INTSXP
+	PROTECT(Var_r = Rf_allocVector(REALSXP, estNt)); nProtect++;
 	
 	//double *Index = REAL(Index_r);
 	// zeros(S, p*p);
@@ -3931,7 +3992,7 @@ SEXP semiCov_Ct(SEXP y_r,
 #ifdef _OPENMP
 #pragma omp parallel for private(s, i, dt1,  ck, threadID, s11, s12, s22, a1, a2)
 #endif 
-   for(t = 0; t < Nt; t++){
+   for(t = 0; t < estNt; t++){
 #ifdef _OPENMP
     threadID = omp_get_thread_num();
 #endif
@@ -4092,9 +4153,9 @@ SEXP semiCov_Cst(SEXP y_r,
 		
 		//Index[N*threadID] = t1;
 
-// #ifdef _OPENMP
-// #pragma omp parallel for private(s1, s2, dt3, cs, i, j, dt1, dt2, ck, threadID) reduction(+:s11, s12, s13, s22, s23, s33, a1, a2, a3)
-// #endif
+#ifdef _OPENMP
+#pragma omp parallel for private(s1, s2, dt3, cs, i, j, dt1, dt2, ck, threadID) reduction(+:s11, s12, s13, s22, s23, s33, a1, a2, a3)
+#endif
 		for(s1 = 0; s1 < n; s1++){
 		  for(s2 = 0; s2 < n; s2++){
 // #ifdef _OPENMP
@@ -4170,9 +4231,9 @@ SEXP semiCov_Cst(SEXP y_r,
 		a1 = 0.0; a2 = 0.0;
 		s11 = 0.0; s12 = 0.0; 
 		s22 = 0.0;    
-// #ifdef _OPENMP
-// #pragma omp parallel for private(s1, s2, dt2, cs, dt1, ck, i, threadID) reduction(+:s11, s12, s22, a1, a2)
-// #endif
+#ifdef _OPENMP
+#pragma omp parallel for private(s1, s2, dt2, cs, dt1, ck, i, threadID) reduction(+:s11, s12, s22, a1, a2)
+#endif
 	 for(s1 = 0; s1 < n; s1++){
 		for(s2 = 0; s2 < n; s2++){
       dt2 = dist2(Coord[s1], Coord[s1 + n], Coord[s2], Coord[s2 + n]) - d[k];
